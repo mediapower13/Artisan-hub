@@ -99,6 +99,11 @@
   background-color: var(--color-unilorin-gold);
 }
 
+/* Background patterns */
+.bg-gradient-pattern {
+  background-image: url("data:image/svg+xml,%3csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3e%3cg fill='%239f7aea' fill-opacity='0.1'%3e%3cpath d='m40 40c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20zm-1.5 0c0 10.217-8.283 18.5-18.5 18.5s-18.5-8.283-18.5-18.5 8.283-18.5 18.5-18.5 18.5 8.283 18.5 18.5z'/%3e%3c/g%3e%3c/svg%3e");
+}
+
 .text-unilorin-green {
   color: var(--color-unilorin-green);
 }

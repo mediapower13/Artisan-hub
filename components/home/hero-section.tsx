@@ -1,126 +1,192 @@
 "use client"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Users, BookOpen, Award, Sparkles } from "lucide-react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "@/components/ui/card"
+import { 
+  ArrowRight, 
+  Users, 
+  Star, 
+  BookOpen, 
+  Award,
+  Sparkles,
+  Play,
+  CheckCircle
+} from "lucide-react"
 
 export function HeroSection() {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const stats = [
+    { icon: Users, value: "2,500+", label: "Active Artisans" },
+    { icon: BookOpen, value: "150+", label: "Skills Available" },
+    { icon: Star, value: "4.9", label: "Average Rating" },
+    { icon: Award, value: "95%", label: "Success Rate" }
+  ]
+
+  const features = [
+    "Connect with skilled artisans",
+    "Learn from certified professionals", 
+    "Flexible learning schedules",
+    "Community-driven platform"
+  ]
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 hero-gradient opacity-15"></div>
-      <div className="absolute inset-0 bg-gradient-to-br from-background/90 via-background/70 to-background/90"></div>
-
-      {/* Animated particles */}
-      <div className="absolute inset-0">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-2 bg-unilorin-purple/30 rounded-full animate-float"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 6}s`,
-              animationDuration: `${4 + Math.random() * 4}s`,
-            }}
-          />
-        ))}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-purple-900/20 dark:to-blue-900/20">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Floating Cloud Shapes */}
+        <div className="absolute top-20 left-10 w-64 h-32 bg-white/30 dark:bg-white/10 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-48 h-24 bg-purple-200/40 dark:bg-purple-500/20 rounded-full blur-xl animate-bounce"></div>
+        <div className="absolute bottom-32 left-1/4 w-72 h-36 bg-blue-200/30 dark:bg-blue-500/20 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-1/3 w-56 h-28 bg-indigo-200/40 dark:bg-indigo-500/20 rounded-full blur-xl animate-bounce"></div>
+        
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 opacity-30 bg-gradient-pattern"></div>
       </div>
 
-      <div className="absolute top-20 left-10 animate-float animate-delay-100">
-        <div className="w-16 h-16 glass-card rounded-full flex items-center justify-center animate-pulse-glow">
-          <BookOpen className="h-8 w-8 text-unilorin-purple" />
-        </div>
-      </div>
-      <div className="absolute top-40 right-20 animate-float animate-delay-300">
-        <div className="w-12 h-12 glass-card rounded-full flex items-center justify-center animate-pulse-glow">
-          <Users className="h-6 w-6 text-unilorin-gold" />
-        </div>
-      </div>
-      <div className="absolute bottom-40 left-20 animate-float animate-delay-500">
-        <div className="w-14 h-14 glass-card rounded-full flex items-center justify-center animate-pulse-glow">
-          <Award className="h-7 w-7 text-unilorin-green" />
-        </div>
-      </div>
-      <div className="absolute top-60 right-10 animate-float animate-delay-200">
-        <div className="w-10 h-10 glass-card rounded-full flex items-center justify-center">
-          <Sparkles className="h-5 w-5 text-unilorin-gold" />
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Content */}
-          <div className="text-center lg:text-left space-y-8">
-            <div className="space-y-6 animate-fade-in-up">
-              <Badge
-                variant="secondary"
-                className="glass-card text-unilorin-purple border-unilorin-purple/30 animate-shimmer"
-              >
-                University of Ilorin Community Platform
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          
+          {/* Left Content */}
+          <div className="space-y-8 text-center lg:text-left">
+            {/* Badge */}
+            <div className={`inline-flex ${mounted ? 'animate-in slide-in-from-top duration-700' : ''}`}>
+              <Badge className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 text-sm font-medium shadow-lg">
+                <Sparkles className="h-4 w-4 mr-2" />
+                UNILORIN Artisan Community
               </Badge>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight animate-delay-100">
-                Learn Skills from
-                <span className="animate-text-gradient block mt-2">Expert Artisans</span>
+            </div>
+
+            {/* Main Heading */}
+            <div className={`space-y-4 ${mounted ? 'animate-in slide-in-from-left duration-700 delay-200' : ''}`}>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+                <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  Master Skills,
+                </span>
+                <br />
+                <span className="text-gray-900 dark:text-white">
+                  Build Your Future
+                </span>
               </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl animate-delay-200">
-                Connect with skilled artisans in the UNILORIN community. Learn practical skills, build your expertise,
-                and join a thriving network of learners and creators.
+              <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
+                Connect with expert artisans, learn traditional and modern skills, and become part of Nigeria's most vibrant creative community.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in-up animate-delay-300">
-              <Button size="lg" className="btn-enhanced bg-unilorin-purple hover:bg-unilorin-purple/90" asChild>
-                <Link href="/skills">
-                  Start Learning
-                  <ArrowRight className="ml-2 h-5 w-5" />
+            {/* Features List */}
+            <div className={`space-y-3 ${mounted ? 'animate-in slide-in-from-left duration-700 delay-400' : ''}`}>
+              {features.map((feature, index) => (
+                <div key={index} className="flex items-center space-x-3 text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                  <span className="text-base">{feature}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA Buttons */}
+            <div className={`flex flex-col sm:flex-row gap-4 ${mounted ? 'animate-in slide-in-from-left duration-700 delay-600' : ''}`}>
+              <Button 
+                asChild
+                {...({ size: "lg" } as any)}
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg shadow-purple-500/25 transition-all duration-200 hover:scale-105"
+              >
+                <Link href="/marketplace" className="flex items-center space-x-2">
+                  <span>Explore Marketplace</span>
+                  <ArrowRight className="h-5 w-5" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="btn-enhanced glass-card bg-transparent" asChild>
-                <Link href="/marketplace">Browse Artisans</Link>
+              
+              <Button 
+                {...({ variant: "outline", size: "lg" } as any)}
+                className="border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white transition-all duration-200 hover:scale-105"
+              >
+                <Play className="h-5 w-5 mr-2" />
+                Watch Demo
               </Button>
             </div>
 
-            <div className="grid grid-cols-3 gap-8 pt-8 animate-fade-in-up animate-delay-400">
-              <div className="text-center lg:text-left animate-card-hover">
-                <div className="text-3xl font-bold text-unilorin-purple animate-pulse-glow">50+</div>
-                <div className="text-sm text-muted-foreground">Expert Artisans</div>
-              </div>
-              <div className="text-center lg:text-left animate-card-hover">
-                <div className="text-3xl font-bold text-unilorin-gold animate-pulse-glow">200+</div>
-                <div className="text-sm text-muted-foreground">Skills Available</div>
-              </div>
-              <div className="text-center lg:text-left animate-card-hover">
-                <div className="text-3xl font-bold text-unilorin-green animate-pulse-glow">1000+</div>
-                <div className="text-sm text-muted-foreground">Students Learning</div>
-              </div>
+            {/* Stats */}
+            <div className={`grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 ${mounted ? 'animate-in slide-in-from-bottom duration-700 delay-800' : ''}`}>
+              {stats.map((stat, index) => (
+                <div key={index} className="text-center group">
+                  <div className="flex flex-col items-center space-y-2">
+                    <div className="p-3 rounded-full bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm group-hover:scale-110 transition-transform duration-200">
+                      <stat.icon className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <div className="font-bold text-xl text-gray-900 dark:text-white">{stat.value}</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="relative animate-fade-in-up animate-delay-500">
-            <div className="relative z-10 animate-float">
-              <Image
-                src="/images/unilorin-logo.png"
-                alt="University of Ilorin Logo"
-                width={400}
-                height={400}
-                className="mx-auto opacity-90 hover:opacity-100 transition-all duration-500 hover:scale-105"
-                priority
-              />
-            </div>
+          {/* Right Content - Visual */}
+          <div className={`relative ${mounted ? 'animate-in slide-in-from-right duration-700 delay-300' : ''}`}>
+            {/* Main Image Container */}
+            <div className="relative">
+              {/* Background Glow */}
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-3xl blur-3xl scale-110"></div>
+              
+              {/* Main Card */}
+              <Card className="relative bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl overflow-hidden">
+                <CardContent className="p-0">
+                  <div className="aspect-[4/3] relative">
+                    <Image
+                      src="/professional-woman-tailor.png"
+                      alt="Professional Artisan at Work"
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                    {/* Overlay Gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                    
+                    {/* Floating Achievement Card */}
+                    <div className="absolute top-4 right-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-lg p-3 shadow-lg animate-bounce">
+                      <div className="flex items-center space-x-2">
+                        <Award className="h-5 w-5 text-yellow-500" />
+                        <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                          Master Certified
+                        </div>
+                      </div>
+                    </div>
 
-            {/* Enhanced decorative elements */}
-            <div className="absolute inset-0 bg-gradient-to-r from-unilorin-purple/20 via-unilorin-gold/20 to-unilorin-green/20 rounded-full blur-3xl animate-pulse-glow"></div>
-            <div className="absolute -top-4 -right-4 w-24 h-24 glass-card rounded-full animate-float animate-delay-100"></div>
-            <div className="absolute -bottom-4 -left-4 w-32 h-32 glass-card rounded-full animate-float animate-delay-300"></div>
-            <div className="absolute top-1/2 -right-8 w-16 h-16 glass-card rounded-full animate-float animate-delay-200"></div>
+                    {/* Rating Badge */}
+                    <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
+                      <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star key={star} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          ))}
+                        </div>
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">4.9</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Floating Elements */}
+              <div className="absolute -top-6 -left-6 w-12 h-12 bg-purple-500 rounded-full animate-pulse"></div>
+              <div className="absolute -bottom-4 -right-4 w-8 h-8 bg-blue-500 rounded-full animate-bounce delay-300"></div>
+              <div className="absolute top-1/2 -left-8 w-6 h-6 bg-indigo-500 rounded-full animate-ping"></div>
+            </div>
           </div>
         </div>
       </div>
 
+      {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 glass-card rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-unilorin-purple rounded-full mt-2 animate-pulse"></div>
+        <div className="w-6 h-10 border-2 border-gray-400 dark:border-gray-600 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-purple-600 rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
     </section>
