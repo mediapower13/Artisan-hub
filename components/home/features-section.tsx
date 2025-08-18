@@ -25,79 +25,79 @@ export function FeaturesSection() {
   const features = [
     {
       icon: Users,
-      title: "Expert Artisans",
-      description: "Connect with certified professionals who have years of experience in their craft",
+      title: "Expert Student Artisans",
+      description: "Connect with skilled UNILORIN students who excel in their crafts and creative skills",
       badge: "Verified",
-      color: "from-blue-500 to-cyan-500"
+      color: "from-blue-600 to-cyan-600"
     },
     {
       icon: BookOpen,
       title: "Comprehensive Learning",
-      description: "Access structured courses from beginner to advanced levels with practical projects",
+      description: "Access structured peer-to-peer courses from beginner to advanced levels with hands-on projects",
       badge: "Interactive",
-      color: "from-purple-500 to-pink-500"
+      color: "from-emerald-600 to-teal-600"
     },
     {
       icon: Shield,
       title: "Quality Assurance",
-      description: "All artisans are vetted and courses are quality-checked for the best learning experience",
+      description: "All student artisans are vetted and courses are quality-checked by the university community",
       badge: "Guaranteed",
-      color: "from-green-500 to-emerald-500"
+      color: "from-slate-600 to-slate-700"
     },
     {
       icon: Clock,
       title: "Flexible Schedule",
-      description: "Learn at your own pace with 24/7 access to materials and one-on-one mentorship",
+      description: "Learn at your own pace with campus-friendly timing and peer mentorship support",
       badge: "On-demand",
-      color: "from-orange-500 to-red-500"
+      color: "from-orange-600 to-amber-600"
     },
     {
       icon: Award,
-      title: "Certification",
-      description: "Earn recognized certificates and build a portfolio that showcases your new skills",
+      title: "University Certification",
+      description: "Earn recognized certificates backed by UNILORIN and build a portfolio showcasing your skills",
       badge: "Accredited",
-      color: "from-indigo-500 to-purple-500"
+      color: "from-indigo-600 to-blue-700"
     },
     {
       icon: Globe,
-      title: "Global Community",
-      description: "Join a vibrant community of learners and creators from across Nigeria and beyond",
+      title: "Campus Community",
+      description: "Join UNILORIN's vibrant community of student creators and skilled artisans",
       badge: "Connected",
-      color: "from-teal-500 to-blue-500"
+      color: "from-teal-600 to-cyan-600"
     }
   ]
 
   const stats = [
     { value: "98%", label: "Completion Rate", icon: Zap },
     { value: "4.9/5", label: "Student Rating", icon: Star },
-    { value: "50K+", label: "Happy Students", icon: Heart },
-    { value: "24/7", label: "Support Available", icon: Clock }
+    { value: "2.5K+", label: "Active Students", icon: Heart },
+    { value: "24/7", label: "Campus Support", icon: Clock }
   ]
 
   return (
-    <section className="relative py-20 lg:py-32 bg-white dark:bg-gray-900 overflow-hidden">
+    <section className="relative py-20 lg:py-32 bg-slate-50 dark:bg-slate-900 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 right-10 w-72 h-72 bg-purple-200/30 dark:bg-purple-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-10 w-96 h-96 bg-blue-200/30 dark:bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 right-10 w-72 h-72 bg-blue-200/30 dark:bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-emerald-200/30 dark:bg-emerald-500/10 rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className={`text-center space-y-6 mb-16 ${mounted ? 'animate-in slide-in-from-bottom duration-700' : ''}`}>
-          <Badge className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2">
-            Why Choose Us
+          <Badge className="bg-gradient-to-r from-blue-600 to-emerald-600 text-white px-4 py-2 border-0">
+            Why Choose UNILORIN Hub
           </Badge>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
-            <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              Empowering Artisans
+            <span className="bg-gradient-to-r from-blue-700 to-emerald-600 bg-clip-text text-transparent">
+              Empowering Students
             </span>
             <br />
-            <span className="text-gray-900 dark:text-white">
+            <span className="text-slate-900 dark:text-white">
               Building Futures
             </span>
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
             Our platform provides everything you need to master traditional and modern skills, 
             connect with expert artisans, and build a successful career in the creative industry.
           </p>

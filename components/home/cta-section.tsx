@@ -14,23 +14,20 @@ export function CTASection() {
   }, [])
 
   const benefits = [
-    { icon: Users, text: "Join 50,000+ learners" },
-    { icon: BookOpen, text: "150+ skills available" },
-    { icon: Award, text: "Certified courses" },
-    { icon: Star, text: "4.9/5 rating" }
+    { icon: Users, text: "Join 2,500+ student learners" },
+    { icon: BookOpen, text: "150+ peer-taught skills" },
+    { icon: Award, text: "University-backed courses" },
+    { icon: Star, text: "4.9/5 campus rating" }
   ]
 
   return (
-    <section className="relative py-20 lg:py-32 overflow-hidden bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700">
+    <section className="relative py-20 lg:py-32 overflow-hidden bg-gradient-to-br from-slate-800 via-blue-800 to-emerald-800">
       {/* Background Elements */}
       <div className="absolute inset-0">
-        {/* Animated Shapes */}
-        <div className="absolute top-20 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-ping"></div>
-        
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 opacity-20 bg-gradient-pattern"></div>
+        {/* Professional Shapes */}
+        <div className="absolute top-20 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,7 +38,7 @@ export function CTASection() {
             {/* Badge */}
             <Badge className="bg-white/20 text-white border border-white/30 px-4 py-2">
               <Sparkles className="h-4 w-4 mr-2" />
-              Start Your Journey Today
+              Join UNILORIN Artisan Hub Today
             </Badge>
 
             {/* Main Heading */}

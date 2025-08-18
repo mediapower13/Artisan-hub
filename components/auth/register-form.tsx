@@ -89,13 +89,16 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       return
     }
 
-    const userData: Omit<User, "id" | "createdAt" | "updatedAt"> = {
-      firstName: formData.firstName,
-      lastName: formData.lastName,
+    const userData = {
       email: formData.email,
-      phone: formData.phone,
       password: formData.password,
-      role: formData.role,
+      fullName: `${formData.firstName} ${formData.lastName}`.trim(),
+      userType: formData.role as "student" | "artisan",
+      phone: formData.phone,
+      businessName: formData.role === "artisan" ? formData.businessName : undefined,
+      location: formData.role === "artisan" ? formData.location : undefined,
+      experienceYears: formData.role === "artisan" && formData.experience ? parseInt(formData.experience) : undefined,
+      skills: formData.role === "artisan" && formData.specialization ? [formData.specialization] : undefined,
     }
 
     const success = await register(userData)
@@ -117,7 +120,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           {error && (
-            <Alert variant="destructive">
+            <Alert className="border-red-200 bg-red-50 text-red-800 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400">
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
@@ -184,9 +187,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   required
                 />
                 <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
+                  {...({ type: "button", variant: "ghost", size: "sm" } as any)}
                   className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                   onClick={() => setShowPassword(!showPassword)}
                 >
@@ -206,9 +207,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   required
                 />
                 <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
+                  {...({ type: "button", variant: "ghost", size: "sm" } as any)}
                   className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >

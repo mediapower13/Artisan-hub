@@ -73,12 +73,12 @@ export function Header() {
 
   return (
     <>
-      {/* Standard Professional Header */}
+      {/* Modern Professional Header */}
       <header className={`
         fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out
         ${scrolled 
-          ? 'bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm' 
-          : 'bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800'
+          ? 'bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 shadow-sm' 
+          : 'bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800'
         }
       `}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -95,10 +95,10 @@ export function Header() {
                   className="rounded-full"
                 />
                 <div className="flex flex-col">
-                  <h1 className="text-lg font-bold text-blue-800 dark:text-blue-400">
+                  <h1 className="text-lg font-bold text-emerald-700 dark:text-emerald-400">
                     UNILORIN
                   </h1>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 font-medium leading-tight">
+                  <p className="text-xs text-slate-600 dark:text-slate-400 font-medium leading-tight">
                     Student Artisan Hub
                   </p>
                 </div>
@@ -114,8 +114,8 @@ export function Header() {
                   className={`
                     flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200
                     ${isActive(item.href)
-                      ? 'text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                      : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                      ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20'
+                      : 'text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                     }
                   `}
                 >
@@ -125,7 +125,7 @@ export function Header() {
               ))}
               <Link
                 href="/skills/add"
-                className="flex items-center space-x-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm font-medium transition-colors duration-200"
+                className="flex items-center space-x-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md text-sm font-medium transition-colors duration-200 shadow-sm"
               >
                 <Award className="h-4 w-4" />
                 <span>Teach a Skill</span>
@@ -134,7 +134,28 @@ export function Header() {
 
             {/* Right Side Actions */}
             <div className="flex items-center space-x-3">
-              {/* Theme Toggle */}
+              {/* Quick Theme Toggle Button */}
+              <button
+                onClick={() => {
+                  const isDark = document.documentElement.classList.contains('dark')
+                  if (isDark) {
+                    document.documentElement.classList.remove('dark')
+                    localStorage.setItem('theme', 'light')
+                  } else {
+                    document.documentElement.classList.add('dark')
+                    localStorage.setItem('theme', 'dark')
+                  }
+                }}
+                className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-200"
+                aria-label="Toggle dark mode"
+              >
+                <svg className="h-5 w-5 text-slate-600 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path className="dark:hidden" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  <path className="hidden dark:block" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </button>
+
+              {/* Theme Toggle Dropdown */}
               <ThemeToggle />
 
               {/* User Menu or Auth Buttons */}
@@ -150,7 +171,7 @@ export function Header() {
                           src="/placeholder-user.jpg"
                           alt={user ? user.fullName : "User"}
                         />
-                        <AvatarFallback className="bg-gradient-to-r from-blue-600 to-green-600 text-white font-semibold">
+                        <AvatarFallback className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold">
                           {user ? user.fullName?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() : "U"}
                         </AvatarFallback>
                       </Avatar>
@@ -190,13 +211,13 @@ export function Header() {
                   <Button 
                     {...({ variant: "ghost" } as ButtonProps)}
                     onClick={() => router.push("/login")}
-                    className="text-gray-700 dark:text-gray-300"
+                    className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400"
                   >
                     Sign in
                   </Button>
                   <Button 
                     onClick={() => router.push("/register")}
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
                   >
                     Get started
                   </Button>
@@ -228,10 +249,10 @@ export function Header() {
                           className="rounded-full"
                         />
                         <div>
-                          <h1 className="text-lg font-bold text-blue-800 dark:text-blue-400">
+                          <h1 className="text-lg font-bold text-emerald-700 dark:text-emerald-400">
                             UNILORIN
                           </h1>
-                          <p className="text-xs text-gray-600 dark:text-gray-400">Student Artisan Hub</p>
+                          <p className="text-xs text-slate-600 dark:text-slate-400">Student Artisan Hub</p>
                         </div>
                       </div>
                     </SheetTitle>
@@ -248,8 +269,8 @@ export function Header() {
                           className={`
                             flex items-center space-x-3 px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200
                             ${isActive(item.href)
-                              ? 'text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                              ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20'
+                              : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
                             }
                           `}
                         >
@@ -260,7 +281,7 @@ export function Header() {
                       <Link
                         href="/skills/add"
                         onClick={() => setIsOpen(false)}
-                        className="flex items-center space-x-3 px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg text-base font-medium transition-colors duration-200"
+                        className="flex items-center space-x-3 px-4 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-base font-medium transition-colors duration-200"
                       >
                         <Award className="h-5 w-5" />
                         <span>Teach a Skill</span>
@@ -276,7 +297,7 @@ export function Header() {
                               src="/placeholder-user.jpg"
                               alt={user ? user.fullName : "User"}
                             />
-                            <AvatarFallback className="bg-gradient-to-r from-blue-600 to-green-600 text-white">
+                            <AvatarFallback className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white">
                               {user ? user.fullName?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() : "U"}
                             </AvatarFallback>
                           </Avatar>
@@ -327,7 +348,7 @@ export function Header() {
                             router.push("/register")
                             setIsOpen(false)
                           }}
-                          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
                         >
                           Get started
                         </Button>
