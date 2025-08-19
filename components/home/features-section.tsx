@@ -93,11 +93,11 @@ export function FeaturesSection() {
   ]
 
   return (
-    <section id="features-section" className="relative py-20 lg:py-32 bg-background overflow-hidden">
+    <section id="features-section" className="relative py-20 lg:py-32 bg-slate-50 dark:bg-slate-900 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 right-10 w-72 h-72 bg-blue-200/30 dark:bg-blue-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-10 w-96 h-96 bg-emerald-200/30 dark:bg-emerald-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 right-10 w-72 h-72 bg-blue-200/20 dark:bg-blue-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-emerald-200/20 dark:bg-emerald-500/5 rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -107,7 +107,7 @@ export function FeaturesSection() {
             <Sparkles className="h-4 w-4 mr-2 animate-pulse" />
             Why Choose UNILORIN Hub
           </Badge>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white">
             <span className="bg-gradient-to-r from-blue-700 to-emerald-600 bg-clip-text text-transparent">
               Empowering Students
             </span>
@@ -125,7 +125,7 @@ export function FeaturesSection() {
         {/* Stats Section */}
         <div className={`grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16 ${mounted ? 'animate-in slide-in-from-bottom duration-700 delay-200' : ''}`}>
           {stats.map((stat, index) => (
-            <Card key={index} className="text-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 hover:scale-105 transition-transform duration-200">
+            <Card key={index} className="text-center bg-white dark:bg-slate-800 backdrop-blur-sm border border-slate-200 dark:border-slate-700 hover:scale-105 transition-transform duration-200 shadow-lg">
               <CardContent className="p-6">
                 <div className="flex flex-col items-center space-y-3">
                   <div className="p-3 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white">
@@ -144,7 +144,7 @@ export function FeaturesSection() {
           {features.map((feature, index) => (
             <Card 
               key={index} 
-              className={`group relative bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 ${
+              className={`group relative bg-white dark:bg-slate-800 backdrop-blur-xl border border-slate-200 dark:border-slate-700 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 shadow-lg ${
                 mounted ? 'animate-in slide-in-from-bottom duration-700' : ''
               }`}
               style={{ animationDelay: `${index * 100 + 400}ms` }}
