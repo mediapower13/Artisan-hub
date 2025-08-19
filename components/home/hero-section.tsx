@@ -38,15 +38,15 @@ export function HeroSection() {
   ]
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
       {/* Professional Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Geometric Shapes */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-blue-100/60 to-indigo-100/40 dark:from-blue-900/20 dark:to-indigo-900/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-br from-emerald-100/60 to-teal-100/40 dark:from-emerald-900/20 dark:to-teal-900/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-blue-100/60 to-indigo-100/40 dark:from-blue-950/30 dark:to-indigo-950/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-br from-emerald-100/60 to-teal-100/40 dark:from-emerald-950/30 dark:to-teal-950/20 rounded-full blur-3xl"></div>
         
         {/* Professional Grid Pattern */}
-        <div className="absolute inset-0 opacity-30 bg-gradient-pattern"></div>
+        <div className="absolute inset-0 opacity-10 dark:opacity-5 bg-gradient-pattern"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
