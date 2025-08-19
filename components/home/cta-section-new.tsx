@@ -8,64 +8,48 @@ import { ArrowRight, Sparkles, Users, BookOpen, Award, Star } from "lucide-react
 
 export function CTASection() {
   const [mounted, setMounted] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true)
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
-    
-    const section = document.getElementById('cta-section')
-    if (section) observer.observe(section)
-    
-    return () => observer.disconnect()
   }, [])
 
   const benefits = [
-    { icon: Users, text: "Join 2,500+ student learners" },
-    { icon: BookOpen, text: "150+ peer-taught skills" },
-    { icon: Award, text: "University-backed courses" },
-    { icon: Star, text: "4.9/5 campus rating" }
+    { icon: Users, text: "Join 50,000+ learners" },
+    { icon: BookOpen, text: "150+ skills available" },
+    { icon: Award, text: "Certified courses" },
+    { icon: Star, text: "4.9/5 rating" }
   ]
 
   return (
-    <section id="cta-section" className="relative py-20 lg:py-32 overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-emerald-900 dark:from-black dark:via-slate-900 dark:to-emerald-950">
+    <section className="relative py-20 lg:py-32 overflow-hidden bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700">
       {/* Background Elements */}
       <div className="absolute inset-0">
-        {/* Professional Shapes */}
-        <div className="absolute top-20 left-10 w-64 h-64 bg-blue-500/20 dark:bg-blue-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-emerald-500/15 dark:bg-emerald-500/8 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-500/10 dark:bg-teal-500/5 rounded-full blur-3xl"></div>
+        {/* Animated Shapes */}
+        <div className="absolute top-20 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-ping"></div>
+        
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 opacity-20 bg-gradient-pattern"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           
           {/* Left Content */}
-          <div className={`space-y-8 text-center lg:text-left transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+          <div className={`space-y-8 text-center lg:text-left ${mounted ? 'animate-in slide-in-from-left duration-700' : ''}`}>
             {/* Badge */}
-            <div className={`inline-flex transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-            <Badge className="bg-white/20 text-white border border-white/30 px-4 py-2 hover:bg-white/30 transition-all duration-300 hover:scale-105">
-              <Sparkles className="h-4 w-4 mr-2 animate-pulse" />
-              Join UNILORIN Artisan Hub Today
+            <Badge className="bg-white/20 text-white border border-white/30 px-4 py-2">
+              <Sparkles className="h-4 w-4 mr-2" />
+              Start Your Journey Today
             </Badge>
-            </div>
 
             {/* Main Heading */}
-            <div className={`space-y-4 transition-all duration-1000 delay-200 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+            <div className="space-y-4">
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
                 Ready to Master
                 <br />
-                <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-blue-400 bg-clip-text text-transparent animate-pulse">
+                <span className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
                   New Skills?
                 </span>
               </h2>
@@ -76,10 +60,10 @@ export function CTASection() {
             </div>
 
             {/* Benefits */}
-            <div className={`grid grid-cols-2 gap-4 transition-all duration-1000 delay-400 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+            <div className="grid grid-cols-2 gap-4">
               {benefits.map((benefit, index) => (
-                <div key={index} className={`flex items-center space-x-3 text-white/90 transition-all duration-500 delay-${(index + 1) * 100} ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'}`}>
-                  <div className="p-2 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors duration-300">
+                <div key={index} className="flex items-center space-x-3 text-white/90">
+                  <div className="p-2 rounded-full bg-white/20 backdrop-blur-sm">
                     <benefit.icon className="h-4 w-4" />
                   </div>
                   <span className="text-sm font-medium">{benefit.text}</span>
@@ -88,15 +72,15 @@ export function CTASection() {
             </div>
 
             {/* CTA Buttons */}
-            <div className={`flex flex-col sm:flex-row gap-4 transition-all duration-1000 delay-600 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+            <div className="flex flex-col sm:flex-row gap-4">
               <Button 
                 asChild
                 {...({ size: "lg" } as any)}
-                className="bg-white text-blue-600 hover:bg-gray-100 shadow-xl shadow-black/20 transition-all duration-200 hover:scale-105 group"
+                className="bg-white text-purple-600 hover:bg-gray-100 shadow-xl shadow-black/20 transition-all duration-200 hover:scale-105"
               >
                 <Link href="/register" className="flex items-center space-x-2">
                   <span>Get Started Free</span>
-                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                  <ArrowRight className="h-5 w-5" />
                 </Link>
               </Button>
               

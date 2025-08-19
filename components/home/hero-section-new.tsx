@@ -18,12 +18,9 @@ import {
 
 export function HeroSection() {
   const [mounted, setMounted] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-    const timer = setTimeout(() => setIsVisible(true), 100)
-    return () => clearTimeout(timer)
   }, [])
 
   const stats = [
@@ -41,15 +38,19 @@ export function HeroSection() {
   ]
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
-      {/* Professional Background Elements */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-purple-900/20 dark:to-blue-900/20">
+      {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Geometric Shapes */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-blue-100/60 to-indigo-100/40 dark:from-blue-950/30 dark:to-indigo-950/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-br from-emerald-100/60 to-teal-100/40 dark:from-emerald-950/30 dark:to-teal-950/20 rounded-full blur-3xl"></div>
+        {/* Floating Cloud Shapes */}
+        <div className="absolute top-20 left-10 w-64 h-32 bg-white/30 dark:bg-white/10 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-48 h-24 bg-purple-200/40 dark:bg-purple-500/20 rounded-full blur-xl animate-bounce"></div>
+        <div className="absolute bottom-32 left-1/4 w-72 h-36 bg-blue-200/30 dark:bg-blue-500/20 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-1/3 w-56 h-28 bg-indigo-200/40 dark:bg-indigo-500/20 rounded-full blur-xl animate-bounce"></div>
         
-        {/* Professional Grid Pattern */}
-        <div className="absolute inset-0 opacity-10 dark:opacity-5 bg-gradient-pattern"></div>
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 opacity-30" style={{
+          backgroundImage: `url("data:image/svg+xml,%3csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3e%3cg fill='%239f7aea' fill-opacity='0.1'%3e%3cpath d='m40 40c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20zm-1.5 0c0 10.217-8.283 18.5-18.5 18.5s-18.5-8.283-18.5-18.5 8.283-18.5 18.5-18.5 18.5 8.283 18.5 18.5z'/%3e%3c/g%3e%3c/svg%3e")`
+        }}></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -58,55 +59,55 @@ export function HeroSection() {
           {/* Left Content */}
           <div className="space-y-8 text-center lg:text-left">
             {/* Badge */}
-            <div className={`inline-flex transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-              <Badge className="bg-gradient-to-r from-blue-600 to-emerald-600 text-white px-4 py-2 text-sm font-medium shadow-lg border-0 hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <Sparkles className="h-4 w-4 mr-2 animate-pulse" />
-                UNILORIN Student Artisan Hub
+            <div className={`inline-flex ${mounted ? 'animate-in slide-in-from-top duration-700' : ''}`}>
+              <Badge className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 text-sm font-medium shadow-lg">
+                <Sparkles className="h-4 w-4 mr-2" />
+                UNILORIN Artisan Community
               </Badge>
             </div>
 
             {/* Main Heading */}
-            <div className={`space-y-4 transition-all duration-1000 delay-200 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
+            <div className={`space-y-4 ${mounted ? 'animate-in slide-in-from-left duration-700 delay-200' : ''}`}>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-                <span className="bg-gradient-to-r from-blue-700 via-emerald-600 to-teal-600 bg-clip-text text-transparent animate-pulse">
+                <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
                   Master Skills,
                 </span>
                 <br />
-                <span className="text-slate-900 dark:text-white">
+                <span className="text-gray-900 dark:text-white">
                   Build Your Future
                 </span>
               </h1>
-              <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
-                Connect with expert student artisans, learn traditional and modern skills, and become part of UNILORIN's most vibrant creative community.
+              <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
+                Connect with expert artisans, learn traditional and modern skills, and become part of Nigeria's most vibrant creative community.
               </p>
             </div>
 
             {/* Features List */}
-            <div className={`space-y-3 transition-all duration-1000 delay-400 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+            <div className={`space-y-3 ${mounted ? 'animate-in slide-in-from-left duration-700 delay-400' : ''}`}>
               {features.map((feature, index) => (
-                <div key={index} className={`flex items-center space-x-3 text-slate-700 dark:text-slate-300 transition-all duration-500 delay-${(index + 1) * 100} ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'}`}>
-                  <CheckCircle className="h-5 w-5 text-emerald-500 flex-shrink-0 animate-pulse" />
+                <div key={index} className="flex items-center space-x-3 text-gray-700 dark:text-gray-300">
+                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
                   <span className="text-base">{feature}</span>
                 </div>
               ))}
             </div>
 
             {/* CTA Buttons */}
-            <div className={`flex flex-col sm:flex-row gap-4 transition-all duration-1000 delay-600 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+            <div className={`flex flex-col sm:flex-row gap-4 ${mounted ? 'animate-in slide-in-from-left duration-700 delay-600' : ''}`}>
               <Button 
                 asChild
                 {...({ size: "lg" } as any)}
-                className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg shadow-purple-500/25 transition-all duration-200 hover:scale-105"
               >
                 <Link href="/marketplace" className="flex items-center space-x-2">
                   <span>Explore Marketplace</span>
-                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                  <ArrowRight className="h-5 w-5" />
                 </Link>
               </Button>
               
               <Button 
                 {...({ variant: "outline", size: "lg" } as any)}
-                className="border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800 transition-all duration-300 hover:scale-105"
+                className="border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white transition-all duration-200 hover:scale-105"
               >
                 <Play className="h-5 w-5 mr-2" />
                 Watch Demo
@@ -114,15 +115,15 @@ export function HeroSection() {
             </div>
 
             {/* Stats */}
-            <div className={`grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 transition-all duration-1000 delay-800 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
+            <div className={`grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 ${mounted ? 'animate-in slide-in-from-bottom duration-700 delay-800' : ''}`}>
               {stats.map((stat, index) => (
-                <div key={index} className={`text-center group transition-all duration-500 delay-${(index + 2) * 100} ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'}`}>
+                <div key={index} className="text-center group">
                   <div className="flex flex-col items-center space-y-2">
-                    <div className="p-3 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 group-hover:scale-110 transition-transform duration-300 group-hover:shadow-lg">
-                      <stat.icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                    <div className="p-3 rounded-full bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm group-hover:scale-110 transition-transform duration-200">
+                      <stat.icon className="h-6 w-6 text-purple-600" />
                     </div>
-                    <div className="font-bold text-xl text-slate-900 dark:text-white">{stat.value}</div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400">{stat.label}</div>
+                    <div className="font-bold text-xl text-gray-900 dark:text-white">{stat.value}</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
                   </div>
                 </div>
               ))}
@@ -130,7 +131,7 @@ export function HeroSection() {
           </div>
 
           {/* Right Content - Visual */}
-          <div className={`relative transition-all duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-8 opacity-0 scale-95'}`}>
+          <div className={`relative ${mounted ? 'animate-in slide-in-from-right duration-700 delay-300' : ''}`}>
             {/* Main Image Container */}
             <div className="relative">
               {/* Background Glow */}
@@ -176,9 +177,9 @@ export function HeroSection() {
               </Card>
 
               {/* Floating Elements */}
-              <div className="absolute -top-6 -left-6 w-12 h-12 bg-blue-500 rounded-full animate-pulse"></div>
-              <div className="absolute -bottom-4 -right-4 w-8 h-8 bg-emerald-500 rounded-full animate-bounce delay-300"></div>
-              <div className="absolute top-1/2 -left-8 w-6 h-6 bg-teal-500 rounded-full animate-ping"></div>
+              <div className="absolute -top-6 -left-6 w-12 h-12 bg-purple-500 rounded-full animate-pulse"></div>
+              <div className="absolute -bottom-4 -right-4 w-8 h-8 bg-blue-500 rounded-full animate-bounce delay-300"></div>
+              <div className="absolute top-1/2 -left-8 w-6 h-6 bg-indigo-500 rounded-full animate-ping"></div>
             </div>
           </div>
         </div>
@@ -186,8 +187,8 @@ export function HeroSection() {
 
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-slate-400 dark:border-slate-600 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-blue-600 rounded-full mt-2 animate-pulse"></div>
+        <div className="w-6 h-10 border-2 border-gray-400 dark:border-gray-600 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-purple-600 rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
     </section>
