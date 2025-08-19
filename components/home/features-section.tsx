@@ -125,7 +125,7 @@ export function FeaturesSection() {
         {/* Stats Section */}
         <div className={`grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16 ${mounted ? 'animate-in slide-in-from-bottom duration-700 delay-200' : ''}`}>
           {stats.map((stat, index) => (
-            <Card key={index} className="text-center bg-white/50 dark:bg-black/30 backdrop-blur-sm border border-white/20 dark:border-gray-700/30 hover:scale-105 transition-transform duration-200">
+            <Card key={index} className="text-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 hover:scale-105 transition-transform duration-200">
               <CardContent className="p-6">
                 <div className="flex flex-col items-center space-y-3">
                   <div className="p-3 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white">
@@ -144,7 +144,7 @@ export function FeaturesSection() {
           {features.map((feature, index) => (
             <Card 
               key={index} 
-              className={`group relative bg-white/70 dark:bg-black/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/30 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 ${
+              className={`group relative bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 ${
                 mounted ? 'animate-in slide-in-from-bottom duration-700' : ''
               }`}
               style={{ animationDelay: `${index * 100 + 400}ms` }}
@@ -157,7 +157,7 @@ export function FeaturesSection() {
                   <div className={`p-3 rounded-xl bg-gradient-to-r ${feature.color} text-white shadow-lg group-hover:scale-110 transition-transform duration-200`}>
                     <feature.icon className="h-6 w-6" />
                   </div>
-                  <Badge {...({ variant: "secondary" } as any)} className="bg-gray-100 dark:bg-gray-800/50 text-xs">
+                  <Badge {...({ variant: "secondary" } as any)} className="bg-slate-100 dark:bg-slate-800 dark:text-slate-200 text-xs">
                     {feature.badge}
                   </Badge>
                 </div>

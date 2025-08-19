@@ -115,7 +115,7 @@ export function Header() {
                     flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200
                     ${isActive(item.href)
                       ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20'
-                      : 'text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-900'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-900'
                     }
                   `}
                 >
@@ -249,7 +249,7 @@ export function Header() {
                             flex items-center space-x-3 px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200
                             ${isActive(item.href)
                               ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20'
-                              : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900'
+                              : 'text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900'
                             }
                           `}
                         >

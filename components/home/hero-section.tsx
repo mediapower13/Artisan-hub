@@ -76,7 +76,7 @@ export function HeroSection() {
                   Build Your Future
                 </span>
               </h1>
-              <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+              <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-200 max-w-2xl leading-relaxed">
                 Connect with expert student artisans, learn traditional and modern skills, and become part of UNILORIN's most vibrant creative community.
               </p>
             </div>
@@ -84,7 +84,7 @@ export function HeroSection() {
             {/* Features List */}
             <div className={`space-y-3 transition-all duration-1000 delay-400 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
               {features.map((feature, index) => (
-                <div key={index} className={`flex items-center space-x-3 text-slate-700 dark:text-slate-300 transition-all duration-500 delay-${(index + 1) * 100} ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'}`}>
+                <div key={index} className={`flex items-center space-x-3 text-slate-700 dark:text-slate-200 transition-all duration-500 delay-${(index + 1) * 100} ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'}`}>
                   <CheckCircle className="h-5 w-5 text-emerald-500 flex-shrink-0 animate-pulse" />
                   <span className="text-base">{feature}</span>
                 </div>
@@ -122,7 +122,7 @@ export function HeroSection() {
                       <stat.icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div className="font-bold text-xl text-slate-900 dark:text-white">{stat.value}</div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400">{stat.label}</div>
+                    <div className="text-sm text-slate-600 dark:text-slate-300">{stat.label}</div>
                   </div>
                 </div>
               ))}
