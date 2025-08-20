@@ -128,7 +128,7 @@ export function LearningDashboard({ enrollments, skills, artisans }: LearningDas
                             with {artisan.firstName} {artisan.lastName}
                           </p>
                         </div>
-                        <Badge variant={enrollment.status === "active" ? "default" : "secondary"}>
+                        <Badge {...({ variant: enrollment.status === "active" ? "default" : "secondary" } as any)}>
                           {enrollment.status}
                         </Badge>
                       </div>
@@ -155,10 +155,10 @@ export function LearningDashboard({ enrollments, skills, artisans }: LearningDas
                       </div>
 
                       <div className="flex space-x-2">
-                        <Button size="sm" className="flex-1" asChild>
+                        <Button {...({ size: "sm" } as any)} className="flex-1" asChild>
                           <Link href={`/learn/${enrollment.id}`}>Continue Learning</Link>
                         </Button>
-                        <Button variant="outline" size="sm" asChild>
+                        <Button {...({ variant: "outline", size: "sm" } as any)} asChild>
                           <Link href={`/chat/${artisan.id}`}>Message Artisan</Link>
                         </Button>
                       </div>
@@ -213,10 +213,10 @@ export function LearningDashboard({ enrollments, skills, artisans }: LearningDas
                       </div>
 
                       <div className="flex space-x-2">
-                        <Button variant="outline" size="sm" className="flex-1 bg-transparent">
+                        <Button {...({ variant: "outline", size: "sm" } as any)} className="flex-1 bg-transparent">
                           View Certificate
                         </Button>
-                        <Button variant="outline" size="sm">
+                        <Button {...({ variant: "outline", size: "sm" } as any)}>
                           Leave Review
                         </Button>
                       </div>

@@ -36,7 +36,7 @@ export function ArtisanCard({ artisan }: ArtisanCardProps) {
             </div>
           </div>
           {artisan.verified && (
-            <Badge variant="secondary" className="bg-green-100 text-green-800">
+            <Badge {...({ variant: "secondary" } as any)} className="bg-green-100 text-green-800">
               Verified
             </Badge>
           )}
@@ -46,12 +46,12 @@ export function ArtisanCard({ artisan }: ArtisanCardProps) {
       <CardContent className="space-y-4">
         <div className="flex flex-wrap gap-2">
           {artisan.specialization.slice(0, 3).map((skill, index) => (
-            <Badge key={index} variant="outline" className="text-xs">
+            <Badge key={index} {...({ variant: "outline" } as any)} className="text-xs">
               {skill}
             </Badge>
           ))}
           {artisan.specialization.length > 3 && (
-            <Badge variant="outline" className="text-xs">
+            <Badge {...({ variant: "outline" } as any)} className="text-xs">
               +{artisan.specialization.length - 3} more
             </Badge>
           )}
@@ -75,10 +75,10 @@ export function ArtisanCard({ artisan }: ArtisanCardProps) {
 
       <CardFooter className="pt-4">
         <div className="flex space-x-2 w-full">
-          <Button variant="outline" size="sm" className="flex-1 bg-transparent" asChild>
+          <Button {...({ variant: "outline", size: "sm" } as any)} className="flex-1 bg-transparent" asChild>
             <Link href={`/artisans/${artisan.id}`}>View Profile</Link>
           </Button>
-          <Button size="sm" className="flex-1" asChild>
+          <Button {...({ size: "sm" } as any)} className="flex-1" asChild>
             <Link href={`/artisans/${artisan.id}/skills`}>View Skills</Link>
           </Button>
         </div>

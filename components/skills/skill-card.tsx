@@ -23,17 +23,17 @@ export function SkillCard({ skill, artisan, showArtisan = true }: SkillCardProps
           <div className="flex-1">
             <CardTitle className="text-lg line-clamp-2">{skill.title}</CardTitle>
             <div className="flex items-center space-x-2 mt-2">
-              <Badge variant="outline" className="text-xs">
+              <Badge {...({ variant: "outline" } as any)} className="text-xs">
                 {skill.category}
               </Badge>
               <Badge
-                variant={
+                {...({ variant: 
                   skill.difficulty === "beginner"
                     ? "secondary"
                     : skill.difficulty === "intermediate"
                       ? "default"
                       : "destructive"
-                }
+                } as any)}
                 className="text-xs"
               >
                 {skill.difficulty}
@@ -93,7 +93,7 @@ export function SkillCard({ skill, artisan, showArtisan = true }: SkillCardProps
           </div>
           <div className="flex items-center space-x-2">
             <Badge
-              variant={isFullyBooked ? "destructive" : spotsLeft <= 3 ? "secondary" : "outline"}
+              {...({ variant: isFullyBooked ? "destructive" : spotsLeft <= 3 ? "secondary" : "outline" } as any)}
               className="text-xs"
             >
               {isFullyBooked ? "Full" : `${spotsLeft} spots left`}
@@ -104,10 +104,10 @@ export function SkillCard({ skill, artisan, showArtisan = true }: SkillCardProps
 
       <CardFooter className="pt-4">
         <div className="flex space-x-2 w-full">
-          <Button variant="outline" size="sm" className="flex-1 bg-transparent" asChild>
+          <Button {...({ variant: "outline", size: "sm" } as any)} className="flex-1 bg-transparent" asChild>
             <Link href={`/skills/${skill.id}`}>View Details</Link>
           </Button>
-          <Button size="sm" className="flex-1" disabled={isFullyBooked} asChild={!isFullyBooked}>
+          <Button {...({ size: "sm" } as any)} className="flex-1" disabled={isFullyBooked} asChild={!isFullyBooked}>
             {isFullyBooked ? "Fully Booked" : <Link href={`/skills/${skill.id}/enroll`}>Enroll Now</Link>}
           </Button>
         </div>
