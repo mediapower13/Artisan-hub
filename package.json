@@ -7,7 +7,14 @@
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
-    "generate-jwt-secret": "node -e \"console.log('JWT_SECRET=' + require('crypto').randomBytes(64).toString('hex'))\""
+    "generate-jwt-secret": "node -e \"console.log('JWT_SECRET=' + require('crypto').randomBytes(64).toString('hex'))\"",
+    "setup-env": "node scripts/setup-env.js",
+    "setup-db": "node scripts/setup-db.js",
+    "setup": "npm run setup-env && npm run setup-db",
+    "db:push": "echo 'Database schema push - implement with your preferred ORM'",
+    "db:seed": "echo 'Database seeding - using mock data for now'",
+    "type-check": "npx tsc --noEmit",
+    "clean": "rm -rf .next out dist"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
