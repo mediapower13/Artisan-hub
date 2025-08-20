@@ -8,7 +8,7 @@ export function Toaster() {
 
   return (
     <div
-      className={`fixed top-4 right-4 z-50 ${theme === "dark" ? "text-white" : "text-black"}`}
+      className={`fixed top-4 right-4 z-50 ${theme === "dark" ? "text-white" : "text-blue-600"}`}
       id="toast-container"
     />
   )

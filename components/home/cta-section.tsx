@@ -94,8 +94,8 @@ export function CTASection() {
                 {...({ size: "lg" } as any)}
                 className="bg-white text-blue-600 hover:bg-gray-100 shadow-xl shadow-black/20 transition-all duration-200 hover:scale-105 group"
               >
-                <Link href="/register" className="flex items-center space-x-2">
-                  <span>Get Started Free</span>
+                <Link href="/register" className="flex items-center space-x-2 text-blue-600">
+                  <span className="text-blue-600">Get Started Free</span>
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>
               </Button>

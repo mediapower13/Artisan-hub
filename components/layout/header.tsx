@@ -125,7 +125,7 @@ export function Header() {
               ))}
               <Link
                 href="/skills/add"
-                className="flex items-center space-x-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md text-sm font-medium transition-colors duration-200 shadow-sm"
+                className="flex items-center space-x-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md text-sm font-medium transition-colors duration-200 shadow-sm border border-orange-400"
               >
                 <Award className="h-4 w-4" />
                 <span>Teach a Skill</span>
@@ -190,13 +190,13 @@ export function Header() {
                   <Button 
                     {...({ variant: "ghost" } as ButtonProps)}
                     onClick={() => router.push("/login")}
-                    className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400"
+                    className="text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800"
                   >
                     Sign in
                   </Button>
                   <Button 
                     onClick={() => router.push("/register")}
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm border border-emerald-500"
                   >
                     Get started
                   </Button>
@@ -208,7 +208,7 @@ export function Header() {
                 <SheetTrigger asChild>
                   <Button 
                     {...({ variant: "ghost", size: "icon" } as ButtonProps)}
-                    className="md:hidden h-9 w-9"
+                    className="md:hidden h-9 w-9 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800"
                   >
                     <Menu className="h-5 w-5" />
                     <span className="sr-only">Toggle menu</span>
@@ -248,8 +248,8 @@ export function Header() {
                           className={`
                             flex items-center space-x-3 px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200
                             ${isActive(item.href)
-                              ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20'
-                              : 'text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900'
+                              ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800'
+                              : 'text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-900/50'
                             }
                           `}
                         >
@@ -260,7 +260,7 @@ export function Header() {
                       <Link
                         href="/skills/add"
                         onClick={() => setIsOpen(false)}
-                        className="flex items-center space-x-3 px-4 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-base font-medium transition-colors duration-200"
+                        className="flex items-center space-x-3 px-4 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-base font-medium transition-colors duration-200 shadow-sm border border-orange-400"
                       >
                         <Award className="h-5 w-5" />
                         <span>Teach a Skill</span>
@@ -294,7 +294,7 @@ export function Header() {
                               key={item.name}
                               href={item.href}
                               onClick={() => setIsOpen(false)}
-                              className="flex items-center space-x-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-xl transition-colors"
+                              className="flex items-center space-x-3 px-4 py-3 text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200"
                             >
                               <item.icon className="h-5 w-5" />
                               <span>{item.name}</span>
@@ -302,7 +302,7 @@ export function Header() {
                           ))}
                           <button
                             onClick={handleLogout}
-                            className="w-full flex items-center space-x-3 px-4 py-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors"
+                            className="w-full flex items-center space-x-3 px-4 py-3 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors duration-200"
                           >
                             <LogOut className="h-5 w-5" />
                             <span>Log out</span>
@@ -317,7 +317,7 @@ export function Header() {
                             router.push("/login")
                             setIsOpen(false)
                           }}
-                          className="w-full justify-start"
+                          className="w-full justify-start text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-emerald-600 dark:hover:text-emerald-400"
                         >
                           <User className="h-4 w-4 mr-2" />
                           Sign in
@@ -327,7 +327,7 @@ export function Header() {
                             router.push("/register")
                             setIsOpen(false)
                           }}
-                          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
+                          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm border border-emerald-500"
                         >
                           Get started
                         </Button>

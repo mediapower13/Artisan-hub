@@ -107,12 +107,12 @@ export function FeaturesSection() {
             <Sparkles className="h-4 w-4 mr-2 animate-pulse" />
             Why Choose UNILORIN Hub
           </Badge>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-blue-600 dark:text-white">
             <span className="bg-gradient-to-r from-blue-700 to-emerald-600 bg-clip-text text-transparent">
               Empowering Students
             </span>
             <br />
-            <span className="text-slate-900 dark:text-white">
+            <span className="text-blue-600 dark:text-white">
               Building Futures
             </span>
           </h2>
@@ -131,7 +131,7 @@ export function FeaturesSection() {
                   <div className="p-3 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white">
                     <stat.icon className="h-6 w-6" />
                   </div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</div>
+                  <div className="text-2xl font-bold text-blue-600 dark:text-white">{stat.value}</div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
                 </div>
               </CardContent>
@@ -161,7 +161,7 @@ export function FeaturesSection() {
                     {feature.badge}
                   </Badge>
                 </div>
-                <CardTitle className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                <CardTitle className="text-xl font-semibold text-blue-600 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                   {feature.title}
                 </CardTitle>
               </CardHeader>

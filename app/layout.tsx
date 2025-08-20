@@ -7,7 +7,7 @@ import { AuthProvider } from "@/contexts/auth-context"
 export const metadata: Metadata = {
   title: "UNILORIN Artisan Community - Skills & Learning Platform",
   description: "Connect with skilled artisans and learn new skills at University of Ilorin community platform",
-  generator: "v0.app",
+  generator: "",
 }
 
 export default function RootLayout({
