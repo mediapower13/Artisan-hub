@@ -31,7 +31,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Failed to create user" }, { status: 500 })
     }
 
-    const newUser = result[0]
+    const newUser = result[0] as {
+      id: string
+      email: string
+      full_name: string
+      user_type: "student" | "artisan"
+      created_at: string
+    }
 
     if (userData.userType === "artisan" && userData.businessName) {
       await sql`

@@ -105,7 +105,7 @@ export function CTASection() {
                 {...({ variant: "outline", size: "lg" } as any)}
                 className="border-2 border-white/30 text-white hover:bg-white/10 backdrop-blur-sm transition-all duration-200 hover:scale-105"
               >
-                <Link href="/marketplace">
+                <Link href="/marketplace" className="text-white hover:text-blue-200">
                   Browse Courses
                 </Link>
               </Button>

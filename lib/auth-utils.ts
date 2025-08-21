@@ -148,7 +148,12 @@ export const authUtils = {
 
       if (result.length === 0) return null
 
-      const user = result[0]
+      const user = result[0] as {
+        id: string
+        email: string
+        full_name: string
+        user_type: "student" | "artisan"
+      }
       return {
         id: user.id,
         email: user.email,
@@ -171,7 +176,13 @@ export const authUtils = {
 
       if (result.length === 0) return null
 
-      const user = result[0]
+      const user = result[0] as {
+        id: string
+        email: string
+        full_name: string
+        user_type: "student" | "artisan"
+        password: string
+      }
       return {
         id: user.id,
         email: user.email,
