@@ -47,11 +47,7 @@ export function ThemeProvider({
     if (typeof window === "undefined") return
     const root = window.document.documentElement
 
-    // Debugging: log theme application
-    try {
-      // eslint-disable-next-line no-console
-      console.debug("applyTheme called with:", t, "current html classes:", root.className)
-    } catch (e) {}
+  // (no-op) apply theme silently
 
     if (disableTransitionOnChange) {
       root.classList.add("[&_*]:!transition-none")
@@ -75,10 +71,7 @@ export function ThemeProvider({
       // ignore storage errors in restrictive environments
     }
 
-    try {
-      // eslint-disable-next-line no-console
-      console.debug("applied classes:", root.className)
-    } catch (e) {}
+  // finished applying theme
   }
 
   useEffect(() => {
@@ -89,14 +82,8 @@ export function ThemeProvider({
   const value = {
     theme,
     setTheme: (t: Theme) => {
-      // Debugging: log requested theme set
-      try {
-        // eslint-disable-next-line no-console
-        console.debug("setTheme called with:", t)
-      } catch (e) {}
-
-      setThemeState(t)
-      applyTheme(t)
+  setThemeState(t)
+  applyTheme(t)
     },
   }
 
