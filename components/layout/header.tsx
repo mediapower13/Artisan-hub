@@ -134,8 +134,7 @@ export function Header() {
 
             {/* Right Side Actions */}
             <div className="flex items-center space-x-3">
-              {/* Theme Toggle */}
-              <ThemeToggle />
+              {/* Theme Toggle removed */}
 
               {/* User Menu or Auth Buttons */}
               {isAuthenticated ? (
