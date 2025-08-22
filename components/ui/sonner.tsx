@@ -1,14 +1,10 @@
 "use client"
 
-import { useTheme } from "@/components/theme-provider"
-
 // Simple toast notification component without external dependencies
 export function Toaster() {
-  const { theme } = useTheme()
-
   return (
     <div
-      className={`fixed top-4 right-4 z-50 ${theme === "dark" ? "text-white" : "text-blue-600"}`}
+      className={`fixed top-4 right-4 z-50 text-blue-600`}
       id="toast-container"
     />
   )

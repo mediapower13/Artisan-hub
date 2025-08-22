@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { ThemeToggle } from "@/components/layout/theme-toggle"
+// ThemeToggle removed per request
 import { useAuth } from "@/contexts/auth-context"
 import { 
   Menu, 
