@@ -32,21 +32,26 @@ export function ThemeProvider({
   disableTransitionOnChange = false,
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(defaultTheme)
+  const [theme, setThemeState] = useState<Theme>(defaultTheme)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
     const stored = localStorage.getItem("theme") as Theme
     if (stored) {
-      setTheme(stored)
+  setThemeState(stored)
     }
   }, [])
 
-  useEffect(() => {
-    if (!mounted) return
-
+  const applyTheme = (t: Theme) => {
+    if (typeof window === "undefined") return
     const root = window.document.documentElement
+
+    // Debugging: log theme application
+    try {
+      // eslint-disable-next-line no-console
+      console.debug("applyTheme called with:", t, "current html classes:", root.className)
+    } catch (e) {}
 
     if (disableTransitionOnChange) {
       root.classList.add("[&_*]:!transition-none")
@@ -57,25 +62,42 @@ export function ThemeProvider({
 
     root.classList.remove("light", "dark")
 
-    if (theme === "system" && enableSystem) {
+    if (t === "system" && enableSystem) {
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
       root.classList.add(systemTheme)
     } else {
-      root.classList.add(theme)
+      root.classList.add(t)
     }
 
-    localStorage.setItem("theme", theme)
+    try {
+      localStorage.setItem("theme", t)
+    } catch (e) {
+      // ignore storage errors in restrictive environments
+    }
+
+    try {
+      // eslint-disable-next-line no-console
+      console.debug("applied classes:", root.className)
+    } catch (e) {}
+  }
+
+  useEffect(() => {
+    if (!mounted) return
+    applyTheme(theme)
   }, [theme, mounted, enableSystem, disableTransitionOnChange])
 
   const value = {
     theme,
-    setTheme: (theme: Theme) => {
-      setTheme(theme)
-    },
-  }
+    setTheme: (t: Theme) => {
+      // Debugging: log requested theme set
+      try {
+        // eslint-disable-next-line no-console
+        console.debug("setTheme called with:", t)
+      } catch (e) {}
 
-  if (!mounted) {
-    return <>{children}</>
+      setThemeState(t)
+      applyTheme(t)
+    },
   }
 
   return (
