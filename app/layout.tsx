@@ -18,9 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased font-sans bg-background text-foreground">
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+  <ThemeProvider>
           <AuthProvider>{children}</AuthProvider>
-        </ThemeProvider>
+  </ThemeProvider>
       </body>
     </html>
   )
