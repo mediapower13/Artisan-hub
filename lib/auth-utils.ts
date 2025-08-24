@@ -7,7 +7,16 @@ export interface AuthUser {
   id: string
   email: string
   fullName: string
+  firstName?: string
+  lastName?: string
   userType: "student" | "artisan"
+  role: "student" | "artisan" | "admin"
+  studentId?: string
+  department?: string
+  level?: number
+  phone?: string
+  location?: string
+  bio?: string
 }
 
 async function hashPassword(password: string): Promise<string> {
@@ -131,6 +140,13 @@ export const authUtils = {
         email: payload.email,
         fullName: payload.fullName || "",
         userType: payload.userType,
+        role: payload.userType, // Map userType to role for backward compatibility
+        studentId: payload.studentId,
+        department: payload.department,
+        level: payload.level,
+        phone: payload.phone,
+        location: payload.location,
+        bio: payload.bio,
       }
     } catch (error) {
       console.log("[v0] JWT verification failed:", error)
@@ -141,7 +157,7 @@ export const authUtils = {
   async getUserById(id: string): Promise<AuthUser | null> {
     try {
       const result = await sql`
-        SELECT id, email, full_name, user_type 
+        SELECT id, email, full_name, user_type, student_id, department, level, phone, location, bio
         FROM users 
         WHERE id = ${id}
       `
@@ -153,12 +169,25 @@ export const authUtils = {
         email: string
         full_name: string
         user_type: "student" | "artisan"
+        student_id?: string
+        department?: string
+        level?: number
+        phone?: string
+        location?: string
+        bio?: string
       }
       return {
         id: user.id,
         email: user.email,
         fullName: user.full_name,
         userType: user.user_type,
+        role: user.user_type, // Map userType to role for backward compatibility
+        studentId: user.student_id,
+        department: user.department,
+        level: user.level,
+        phone: user.phone,
+        location: user.location,
+        bio: user.bio,
       }
     } catch (error) {
       console.error("Error fetching user:", error)
@@ -169,7 +198,7 @@ export const authUtils = {
   async getUserByEmail(email: string): Promise<(AuthUser & { password: string }) | null> {
     try {
       const result = await sql`
-        SELECT id, email, full_name, user_type, password 
+        SELECT id, email, full_name, user_type, password, student_id, department, level, phone, location, bio
         FROM users 
         WHERE email = ${email}
       `
@@ -182,12 +211,25 @@ export const authUtils = {
         full_name: string
         user_type: "student" | "artisan"
         password: string
+        student_id?: string
+        department?: string
+        level?: number
+        phone?: string
+        location?: string
+        bio?: string
       }
       return {
         id: user.id,
         email: user.email,
         fullName: user.full_name,
         userType: user.user_type,
+        role: user.user_type, // Map userType to role for backward compatibility
+        studentId: user.student_id,
+        department: user.department,
+        level: user.level,
+        phone: user.phone,
+        location: user.location,
+        bio: user.bio,
         password: user.password,
       }
     } catch (error) {

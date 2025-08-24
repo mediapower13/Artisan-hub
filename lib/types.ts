@@ -1,4 +1,4 @@
-// Database schema types for the University of Ilorin Artisan Community Platform
+// Database schema types for the University of Ilorin Artisan Community Platform (PRD-aligned)
 
 export interface User {
   id: string
@@ -6,9 +6,13 @@ export interface User {
   password: string
   firstName: string
   lastName: string
+  fullName: string
   phone: string
   role: "student" | "artisan" | "admin"
   profileImage?: string
+  studentId?: string // For student verification
+  department?: string
+  level?: string
   createdAt: Date
   updatedAt: Date
 }
@@ -21,18 +25,37 @@ export interface Student extends User {
   enrolledSkills: string[]
 }
 
-export interface Artisan extends User {
+// PRD-aligned Provider (Artisan) with portfolio and verification
+export interface Provider extends User {
   role: "artisan"
   businessName: string
+  description: string
   specialization: string[]
   experience: number
   location: string
   rating: number
   totalReviews: number
   verified: boolean
+  verificationStatus: "pending" | "approved" | "rejected"
+  verificationEvidence?: string[] // Upload URLs for certificates/evidence
   portfolio: PortfolioItem[]
   skills: Skill[]
+  availability: {
+    isAvailable: boolean
+    availableForWork: boolean
+    availableForLearning: boolean
+    responseTime: string // e.g., "Usually responds within 2 hours"
+  }
+  pricing: {
+    baseRate?: number
+    learningRate?: number
+    currency: string
+  }
+  whatsappNumber: string // For WhatsApp CTA
 }
+
+// Legacy alias for backward compatibility
+export interface Artisan extends Provider {}
 
 export interface Skill {
   id: string
@@ -64,7 +87,7 @@ export interface Enrollment {
   id: string
   studentId: string
   skillId: string
-  artisanId: string
+  providerId: string  // Updated from artisanId to providerId
   status: "pending" | "active" | "completed" | "cancelled"
   progress: number
   enrolledAt: Date
@@ -87,4 +110,93 @@ export interface Category {
   description: string
   icon: string
   skillCount: number
+  providerCount: number
+}
+
+// Verification request type
+export interface VerificationRequest {
+  id: string
+  providerId: string
+  providerName: string
+  providerEmail: string
+  studentId: string
+  department: string
+  businessName: string
+  businessDescription: string
+  specializations: string[]
+  experienceYears: number
+  evidenceFiles: {
+    url: string
+    type: 'portfolio' | 'certificate' | 'student_id'
+  }[]
+  status: "pending" | "approved" | "rejected"
+  adminNotes?: string
+  submittedAt: Date
+  reviewedAt?: Date
+  reviewedBy?: string
+}
+
+export interface AdminUser extends User {
+  role: "admin"
+  permissions: string[]
+  department?: string
+}
+
+// Contact and booking types
+export interface ContactRequest {
+  id: string
+  studentId: string
+  providerId: string
+  serviceType: "skill_learning" | "direct_service"
+  contactMethod?: string
+  messagePreview?: string
+  contactedAt: Date
+  responseReceived?: boolean
+  responseTimeHours?: number
+  bookingCompleted?: boolean
+  rating?: number
+}
+
+// Analytics types for admin dashboard
+export interface PlatformStats {
+  totalUsers: number
+  totalProviders: number
+  totalStudents: number
+  pendingVerifications: number
+  approvedProviders: number
+  rejectedApplications: number
+  totalSkills: number
+  totalEnrollments: number
+  monthlyGrowthRate: number
+  averageRating: number
+}
+
+// Search and filter types
+export interface SearchFilters {
+  query?: string
+  category?: string
+  location?: string
+  minRating?: number
+  verified?: boolean
+  availableForLearning?: boolean
+  priceRange?: {
+    min: number
+    max: number
+  }
+  experience?: {
+    min: number
+    max: number
+  }
+}
+
+// WhatsApp integration types
+export interface WhatsAppMessage {
+  recipientNumber: string
+  message: string
+  context: {
+    studentName: string
+    providerName: string
+    serviceType: string
+    skillTitle?: string
+  }
 }

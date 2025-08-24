@@ -2,19 +2,42 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Star, MapPin, Clock, Users } from "lucide-react"
-import type { Artisan } from "@/lib/types"
+import { Star, MapPin, Clock, Users, MessageCircle, CheckCircle } from "lucide-react"
+import { WhatsAppCTACompact } from "@/components/providers/whatsapp-cta"
+import { useAuth } from "@/contexts/auth-context"
+import type { Artisan, Provider } from "@/lib/types"
 import Link from "next/link"
 
 interface ArtisanCardProps {
-  artisan: Artisan
+  artisan: Artisan | Provider
 }
 
 export function ArtisanCard({ artisan }: ArtisanCardProps) {
+  const { user } = useAuth()
   const initials = `${artisan.firstName[0]}${artisan.lastName[0]}`
+  
+  // Convert to Provider type for WhatsApp CTA (backward compatibility)
+  const provider: Provider = {
+    ...artisan,
+    role: "artisan",
+    fullName: `${artisan.firstName} ${artisan.lastName}`,
+    availability: {
+      isAvailable: true, // Default assumption for card display
+      availableForLearning: true, // Show all artisans as potentially available for learning
+      responseTime: "Usually responds within 24 hours"
+    },
+    pricing: {
+      baseRate: undefined,
+      learningRate: undefined,
+      currency: "NGN"
+    },
+    whatsappNumber: "+234" + Math.random().toString().slice(2, 13), // Mock number for demo
+    verificationStatus: artisan.verified ? "approved" : "pending",
+    verificationEvidence: []
+  }
 
   return (
-    <Card className="h-full hover:shadow-lg transition-shadow duration-200">
+    <Card className="h-full hover:shadow-lg transition-all duration-200 hover:scale-[1.02]">
       <CardHeader className="pb-4">
         <div className="flex items-start space-x-4">
           <Avatar className="h-16 w-16">
@@ -31,27 +54,34 @@ export function ArtisanCard({ artisan }: ArtisanCardProps) {
             <p className="text-sm text-muted-foreground font-medium">{artisan.businessName}</p>
             <div className="flex items-center space-x-1 mt-1">
               <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-              <span className="text-sm font-medium">{artisan.rating}</span>
+              <span className="text-sm font-medium">{artisan.rating.toFixed(1)}</span>
               <span className="text-sm text-muted-foreground">({artisan.totalReviews} reviews)</span>
             </div>
           </div>
-          {artisan.verified && (
-            <Badge {...({ variant: "secondary" } as any)} className="bg-green-100 text-green-800">
-              Verified
+          <div className="flex flex-col gap-1">
+            {artisan.verified && (
+              <Badge variant="secondary" className="bg-green-100 text-green-800 flex items-center gap-1">
+                <CheckCircle className="h-3 w-3" />
+                Verified
+              </Badge>
+            )}
+            {/* Available for Learning badge */}
+            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 text-xs">
+              Available for Learning
             </Badge>
-          )}
+          </div>
         </div>
       </CardHeader>
 
       <CardContent className="space-y-4">
         <div className="flex flex-wrap gap-2">
           {artisan.specialization.slice(0, 3).map((skill, index) => (
-            <Badge key={index} {...({ variant: "outline" } as any)} className="text-xs">
+            <Badge key={index} variant="outline" className="text-xs">
               {skill}
             </Badge>
           ))}
           {artisan.specialization.length > 3 && (
-            <Badge {...({ variant: "outline" } as any)} className="text-xs">
+            <Badge variant="outline" className="text-xs">
               +{artisan.specialization.length - 3} more
             </Badge>
           )}
@@ -73,15 +103,25 @@ export function ArtisanCard({ artisan }: ArtisanCardProps) {
         </div>
       </CardContent>
 
-      <CardFooter className="pt-4">
+      <CardFooter className="pt-4 space-y-3">
         <div className="flex space-x-2 w-full">
-          <Button {...({ variant: "outline", size: "sm" } as any)} className="flex-1 bg-transparent" asChild>
+          <Button variant="outline" size="sm" className="flex-1" asChild>
             <Link href={`/artisans/${artisan.id}`}>View Profile</Link>
           </Button>
-          <Button {...({ size: "sm" } as any)} className="flex-1" asChild>
+          <Button size="sm" className="flex-1" asChild>
             <Link href={`/artisans/${artisan.id}/skills`}>View Skills</Link>
           </Button>
         </div>
+        
+        {/* WhatsApp CTA - only show if user is logged in as student */}
+        {user && user.role === "student" && (
+          <WhatsAppCTACompact
+            provider={provider}
+            student={user}
+            serviceType="direct_service"
+            className="bg-green-600 hover:bg-green-700 text-white"
+          />
+        )}
       </CardFooter>
     </Card>
   )

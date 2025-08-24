@@ -1,4 +1,5 @@
 import { mockSql } from "./mock-database"
+import type { Provider, VerificationRequest, ContactRequest, User } from "./types"
 
 const sql = mockSql
 
@@ -51,7 +52,7 @@ export async function getUserByEmail(email: string) {
   `
 
   const result = await executeQuery(query, [email])
-  return result.success ? result.data[0] : null
+  return result.success && result.data && result.data.length > 0 ? result.data[0] : null
 }
 
 export async function getUserById(id: string) {
@@ -62,7 +63,7 @@ export async function getUserById(id: string) {
   `
 
   const result = await executeQuery(query, [id])
-  return result.success ? result.data[0] : null
+  return result.success && result.data && result.data.length > 0 ? result.data[0] : null
 }
 
 // Skills management functions
@@ -95,7 +96,7 @@ export async function getSkillById(id: string) {
   `
 
   const result = await executeQuery(query, [id])
-  return result.success ? result.data[0] : null
+  return result.success && result.data && result.data.length > 0 ? result.data[0] : null
 }
 
 // Artisan management functions
@@ -124,7 +125,7 @@ export async function getArtisanById(id: string) {
   `
 
   const result = await executeQuery(query, [id])
-  return result.success ? result.data[0] : null
+  return result.success && result.data && result.data.length > 0 ? result.data[0] : null
 }
 
 export async function getArtisanSkills(artisanId: string) {
@@ -143,30 +144,249 @@ export async function getArtisanSkills(artisanId: string) {
 // Enrollment management functions
 export async function createEnrollment(enrollmentData: {
   student_id: string
-  artisan_id: string
+  provider_id: string
   skill_id: string
 }) {
   const query = `
-    INSERT INTO enrollments (student_id, artisan_id, skill_id)
+    INSERT INTO enrollments (student_id, provider_id, skill_id)
     VALUES ($1, $2, $3)
     RETURNING *
   `
 
-  return executeQuery(query, [enrollmentData.student_id, enrollmentData.artisan_id, enrollmentData.skill_id])
+  return executeQuery(query, [enrollmentData.student_id, enrollmentData.provider_id, enrollmentData.skill_id])
 }
 
 export async function getUserEnrollments(userId: string) {
   const query = `
     SELECT e.*, s.name as skill_name, s.description as skill_description,
-           ap.business_name, u.name as artisan_name
+           pp.business_name, u.full_name as provider_name
     FROM enrollments e
     JOIN skills s ON e.skill_id = s.id
-    JOIN artisan_profiles ap ON e.artisan_id = ap.id
-    JOIN users u ON ap.user_id = u.id
+    JOIN provider_profiles pp ON e.provider_id = pp.id
+    JOIN users u ON pp.user_id = u.id
     WHERE e.student_id = $1
     ORDER BY e.created_at DESC
   `
 
   const result = await executeQuery(query, [userId])
   return result.success ? result.data : []
+}
+
+// Provider management functions
+export async function createProvider(providerData: {
+  userId: string
+  businessName: string
+  description: string
+  specialization: string[]
+  whatsappNumber?: string
+  availability: Provider['availability']
+  pricing: Provider['pricing']
+  verificationEvidence: any[]
+  experience?: number
+}) {
+  const query = `
+    INSERT INTO provider_profiles (
+      user_id, business_name, description, specializations, whatsapp_number,
+      availability, pricing, verification_evidence, experience_years
+    )
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    RETURNING *
+  `
+
+  return executeQuery(query, [
+    providerData.userId,
+    providerData.businessName,
+    providerData.description,
+    JSON.stringify(providerData.specialization),
+    providerData.whatsappNumber,
+    JSON.stringify(providerData.availability),
+    JSON.stringify(providerData.pricing),
+    JSON.stringify(providerData.verificationEvidence),
+    providerData.experience || 0
+  ])
+}
+
+export async function getProviderById(providerId: string) {
+  const query = `
+    SELECT pp.*, u.email, u.full_name, u.student_id, u.department, u.phone, u.location, u.bio
+    FROM provider_profiles pp
+    JOIN users u ON pp.user_id = u.id
+    WHERE pp.id = $1
+  `
+
+  const result = await executeQuery(query, [providerId])
+  return result.success && result.data && result.data.length > 0 ? result.data[0] : null
+}
+
+export async function getAllProviders(filters?: {
+  specialization?: string
+  verificationStatus?: string
+  availability?: boolean
+}) {
+  let query = `
+    SELECT pp.*, u.email, u.full_name, u.student_id, u.department, u.phone, u.location, u.bio
+    FROM provider_profiles pp
+    JOIN users u ON pp.user_id = u.id
+    WHERE 1=1
+  `
+  const params: any[] = []
+
+  if (filters?.specialization) {
+    query += ` AND $${params.length + 1} = ANY(pp.specializations)`
+    params.push(filters.specialization)
+  }
+
+  if (filters?.verificationStatus) {
+    query += ` AND pp.verification_status = $${params.length + 1}`
+    params.push(filters.verificationStatus)
+  }
+
+  if (filters?.availability) {
+    query += ` AND (pp.availability->>'isAvailable')::boolean = true`
+  }
+
+  query += ` ORDER BY pp.created_at DESC`
+
+  const result = await executeQuery(query, params)
+  return result.success ? result.data || [] : []
+}
+
+export async function updateProviderVerification(
+  providerId: string, 
+  status: 'approved' | 'rejected', 
+  adminId: string, 
+  notes?: string
+) {
+  const query = `
+    UPDATE provider_profiles 
+    SET verification_status = $1, verified_at = NOW(), verified_by = $2
+    WHERE id = $3
+    RETURNING *
+  `
+
+  const updateResult = await executeQuery(query, [status, adminId, providerId])
+
+  // Also update the verification request
+  if (updateResult.success) {
+    const requestQuery = `
+      UPDATE verification_requests
+      SET status = $1, reviewed_at = NOW(), reviewed_by = $2, admin_notes = $3
+      WHERE provider_id = $4
+    `
+    await executeQuery(requestQuery, [status, adminId, notes || null, providerId])
+  }
+
+  return updateResult
+}
+
+// Verification request functions
+export async function getVerificationRequests(status?: string) {
+  let query = `
+    SELECT vr.*, pp.business_name as current_business_name
+    FROM verification_requests vr
+    LEFT JOIN provider_profiles pp ON vr.provider_id = pp.id
+  `
+  const params: any[] = []
+
+  if (status && status !== 'all') {
+    query += ` WHERE vr.status = $${params.length + 1}`
+    params.push(status)
+  }
+
+  query += ` ORDER BY vr.submitted_at DESC`
+
+  const result = await executeQuery(query, params)
+  return result.success ? result.data : []
+}
+
+export async function getVerificationRequestById(requestId: string): Promise<VerificationRequest | null> {
+  const query = `
+    SELECT vr.*, pp.business_name as current_business_name
+    FROM verification_requests vr
+    LEFT JOIN provider_profiles pp ON vr.provider_id = pp.id
+    WHERE vr.id = $1
+  `
+
+  const result = await executeQuery(query, [requestId])
+  return result.success && result.data && result.data.length > 0 ? result.data[0] as VerificationRequest : null
+}
+
+// Contact request functions
+export async function createContactRequest(contactData: {
+  studentId: string
+  providerId: string
+  serviceType: 'direct_service' | 'skill_learning'
+  contactMethod?: string
+  messagePreview?: string
+}) {
+  const query = `
+    INSERT INTO contact_requests (
+      student_id, provider_id, service_type, contact_method, message_preview
+    )
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING *
+  `
+
+  return executeQuery(query, [
+    contactData.studentId,
+    contactData.providerId,
+    contactData.serviceType,
+    contactData.contactMethod || 'whatsapp',
+    contactData.messagePreview
+  ])
+}
+
+export async function getContactRequests(providerId?: string, studentId?: string) {
+  let query = `
+    SELECT cr.*, 
+           pp.business_name, 
+           u_student.full_name as student_name,
+           u_provider.full_name as provider_name
+    FROM contact_requests cr
+    JOIN provider_profiles pp ON cr.provider_id = pp.id
+    JOIN users u_student ON cr.student_id = u_student.id
+    JOIN users u_provider ON pp.user_id = u_provider.id
+    WHERE 1=1
+  `
+  const params: any[] = []
+
+  if (providerId) {
+    query += ` AND cr.provider_id = $${params.length + 1}`
+    params.push(providerId)
+  }
+
+  if (studentId) {
+    query += ` AND cr.student_id = $${params.length + 1}`
+    params.push(studentId)
+  }
+
+  query += ` ORDER BY cr.contacted_at DESC`
+
+  const result = await executeQuery(query, params)
+  return result.success ? result.data || [] : []
+}
+
+export async function updateContactResponse(
+  contactId: string, 
+  responseReceived: boolean, 
+  responseTimeHours?: number
+) {
+  const query = `
+    UPDATE contact_requests 
+    SET response_received = $1, response_time_hours = $2
+    WHERE id = $3
+    RETURNING *
+  `
+
+  return executeQuery(query, [responseReceived, responseTimeHours || null, contactId])
+}
+
+// Analytics functions
+export async function getPlatformStats() {
+  const query = `
+    SELECT * FROM platform_stats
+  `
+
+  const result = await executeQuery(query, [])
+  return result.success && result.data && result.data.length > 0 ? result.data[0] : null
 }
