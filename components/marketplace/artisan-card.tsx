@@ -23,6 +23,7 @@ export function ArtisanCard({ artisan }: ArtisanCardProps) {
     fullName: `${artisan.firstName} ${artisan.lastName}`,
     availability: {
       isAvailable: true, // Default assumption for card display
+      availableForWork: true, // Show all artisans as potentially available for work
       availableForLearning: true, // Show all artisans as potentially available for learning
       responseTime: "Usually responds within 24 hours"
     },
@@ -117,7 +118,20 @@ export function ArtisanCard({ artisan }: ArtisanCardProps) {
         {user && user.role === "student" && (
           <WhatsAppCTACompact
             provider={provider}
-            student={user}
+            student={{
+              ...user,
+              role: "student" as const,
+              firstName: user.firstName || "Student",
+              lastName: user.lastName || "User",
+              phone: user.phone || "",
+              studentId: user.studentId || "default-student-id",
+              department: user.department || "Computer Science",
+              level: String(user.level || "300"),
+              enrolledSkills: [],
+              password: "",
+              createdAt: new Date(),
+              updatedAt: new Date()
+            }}
             serviceType="direct_service"
             className="bg-green-600 hover:bg-green-700 text-white"
           />

@@ -61,6 +61,7 @@ export function ProviderProfileForm({
     experience: existingProfile?.experience || 0,
     availability: {
       isAvailable: existingProfile?.availability?.isAvailable ?? true,
+      availableForWork: existingProfile?.availability?.availableForWork ?? true,
       availableForLearning: existingProfile?.availability?.availableForLearning ?? false,
       responseTime: existingProfile?.availability?.responseTime || "Usually responds within 24 hours"
     },

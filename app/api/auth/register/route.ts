@@ -58,6 +58,7 @@ export async function POST(request: NextRequest) {
       email: newUser.email,
       fullName: newUser.full_name,
       userType: newUser.user_type,
+      role: newUser.user_type, // Map userType to role for compatibility
     }
 
     const token = authUtils.generateToken(authUser)

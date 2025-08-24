@@ -26,6 +26,13 @@ export async function POST(request: NextRequest) {
       email: user.email,
       fullName: user.fullName,
       userType: user.userType,
+      role: user.userType, // Map userType to role for compatibility
+      studentId: user.studentId,
+      department: user.department,
+      level: user.level,
+      phone: user.phone,
+      location: user.location,
+      bio: user.bio,
     }
     const token = authUtils.generateToken(authUser)
 

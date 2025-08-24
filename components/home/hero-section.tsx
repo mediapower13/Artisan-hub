@@ -86,7 +86,7 @@ export function HeroSection() {
               {features.map((feature, index) => (
                 <div key={index} className={`flex items-center space-x-3 text-slate-800 dark:text-slate-100 transition-all duration-500 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'}`}>
                   <CheckCircle className="h-5 w-5 text-emerald-500 flex-shrink-0" />
-                  <span className="text-base font-medium">{feature}</span>
+                  <span className="text-base font-medium text-slate-800 dark:text-slate-100">{feature}</span>
                 </div>
               ))}
             </div>
@@ -99,7 +99,7 @@ export function HeroSection() {
                 className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
               >
                 <Link href="/marketplace" className="flex items-center space-x-2">
-                  <span>Explore Marketplace</span>
+                  <span className="text-white">Explore Marketplace</span>
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>
               </Button>

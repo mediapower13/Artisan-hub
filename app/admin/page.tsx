@@ -7,13 +7,20 @@ export default function AdminDashboardPage() {
   const admin: AdminUser = {
     id: "admin-1",
     email: "admin@unilorin.edu.ng",
+    password: "", // Not displayed in dashboard
+    firstName: "Admin",
+    lastName: "User",
+    fullName: "Admin User",
+    phone: "+234 800 000 0000",
     role: "admin",
     permissions: ["manage_verifications", "view_analytics", "manage_users"],
-    department: "Student Affairs"
+    department: "Student Affairs",
+    createdAt: new Date(),
+    updatedAt: new Date()
   }
 
   return (
-    <AuthGuard requiredRole="admin">
+    <AuthGuard allowedRoles={["admin"]}>
       <div className="container mx-auto py-8 space-y-8">
         <div className="flex flex-col space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>

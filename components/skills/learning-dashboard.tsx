@@ -114,7 +114,7 @@ export function LearningDashboard({ enrollments, skills, artisans }: LearningDas
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {activeEnrollments.map((enrollment) => {
                 const skill = getSkillById(enrollment.skillId)
-                const artisan = getArtisanById(enrollment.artisanId)
+                const artisan = getArtisanById(enrollment.providerId)
 
                 if (!skill || !artisan) return null
 
@@ -183,7 +183,7 @@ export function LearningDashboard({ enrollments, skills, artisans }: LearningDas
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {completedEnrollments.map((enrollment) => {
                 const skill = getSkillById(enrollment.skillId)
-                const artisan = getArtisanById(enrollment.artisanId)
+                const artisan = getArtisanById(enrollment.providerId)
 
                 if (!skill || !artisan) return null
 

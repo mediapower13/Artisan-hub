@@ -1,5 +1,7 @@
 // Custom class variance authority replacement
-export type VariantProps<T extends (...args: any) => any> = Omit<Parameters<T>[0], "class" | "className">
+export type VariantProps<T extends (...args: any) => any> = {
+  [K in keyof NonNullable<Parameters<T>[0]>]?: NonNullable<Parameters<T>[0]>[K]
+}
 
 export function cva(
   base: string,

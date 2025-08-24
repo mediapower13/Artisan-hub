@@ -39,8 +39,10 @@ export function ProviderDashboard() {
       // Mock provider data
       const mockProvider: Provider = {
         id: "provider-1",
-        userId: user.id,
         email: user.email,
+        password: "", // Not displayed in dashboard
+        firstName: user.firstName || "John",
+        lastName: user.lastName || "Doe",
         fullName: user.fullName,
         role: "artisan",
         businessName: "Custom Tailoring Services",
@@ -52,6 +54,8 @@ export function ProviderDashboard() {
         totalReviews: 24,
         phone: "+234 803 123 4567",
         whatsappNumber: "+234 803 123 4567",
+        verified: true,
+        skills: [], // Empty for now
         availability: {
           isAvailable: true,
           availableForWork: true,
@@ -66,8 +70,8 @@ export function ProviderDashboard() {
         verificationStatus: "approved",
         verificationEvidence: [],
         portfolio: [],
-        created_at: new Date("2024-01-15"),
-        updated_at: new Date("2024-01-20")
+        createdAt: new Date("2024-01-15"),
+        updatedAt: new Date("2024-01-20")
       }
 
       // Mock contact requests
