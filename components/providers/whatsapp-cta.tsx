@@ -228,11 +228,11 @@ export function WhatsAppCTACompact({
     <Button
       onClick={() => contactProvider(provider, student, serviceType, skillTitle)}
       size="sm"
-      className={`w-full ${className}`}
+      className={`w-full flex items-center justify-center gap-1 sm:gap-2 ${className}`}
       disabled={serviceType === "skill_learning" && !provider.availability?.availableForLearning}
     >
-      <MessageCircle className="h-3 w-3 mr-1" />
-      Contact
+      <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+      <span className="text-xs sm:text-sm font-medium">Contact</span>
     </Button>
   )
 }

@@ -145,47 +145,47 @@ export default function MarketplacePage() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-muted/20">
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-hidden">
         {/* Hero Section with Stats */}
-        <section className="relative overflow-hidden bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 py-16">
+        <section className="relative overflow-hidden bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 py-8 sm:py-12 lg:py-16">
           <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-          <div className="container mx-auto px-4 relative">
-            <div className="text-center mb-12 animate-in slide-in-from-bottom duration-1000">
-              <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative max-w-7xl">
+            <div className="text-center mb-8 sm:mb-12 animate-in slide-in-from-bottom duration-1000">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4 leading-tight">
                 Artisan Marketplace
               </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+              <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-6 sm:mb-8 px-4">
                 Discover skilled artisans in the UNILORIN community. Connect, learn, and grow together.
               </p>
               
               {/* Stats Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 max-w-4xl mx-auto px-2 sm:px-0">
                 <Card className="glass-card hover:scale-105 transition-all duration-300 animate-in fade-in slide-in-from-bottom delay-200">
-                  <CardContent className="p-6 text-center">
-                    <Users className="h-8 w-8 mx-auto mb-2 text-primary" />
-                    <div className="text-2xl font-bold text-primary">{stats.totalArtisans}</div>
-                    <div className="text-sm text-muted-foreground">Expert Artisans</div>
+                  <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
+                    <Users className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 text-primary" />
+                    <div className="text-lg sm:text-2xl font-bold text-primary">{stats.totalArtisans}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">Expert Artisans</div>
                   </CardContent>
                 </Card>
                 <Card className="glass-card hover:scale-105 transition-all duration-300 animate-in fade-in slide-in-from-bottom delay-300">
-                  <CardContent className="p-6 text-center">
-                    <Star className="h-8 w-8 mx-auto mb-2 text-yellow-500" />
-                    <div className="text-2xl font-bold text-primary">{stats.avgRating.toFixed(1)}</div>
-                    <div className="text-sm text-muted-foreground">Average Rating</div>
+                  <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
+                    <Star className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 text-yellow-500" />
+                    <div className="text-lg sm:text-2xl font-bold text-primary">{stats.avgRating.toFixed(1)}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">Average Rating</div>
                   </CardContent>
                 </Card>
                 <Card className="glass-card hover:scale-105 transition-all duration-300 animate-in fade-in slide-in-from-bottom delay-400">
-                  <CardContent className="p-6 text-center">
-                    <TrendingUp className="h-8 w-8 mx-auto mb-2 text-green-500" />
-                    <div className="text-2xl font-bold text-primary">{stats.totalSkills}</div>
-                    <div className="text-sm text-muted-foreground">Skills Available</div>
+                  <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
+                    <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 text-green-500" />
+                    <div className="text-lg sm:text-2xl font-bold text-primary">{stats.totalSkills}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">Skills Available</div>
                   </CardContent>
                 </Card>
                 <Card className="glass-card hover:scale-105 transition-all duration-300 animate-in fade-in slide-in-from-bottom delay-500">
-                  <CardContent className="p-6 text-center">
-                    <Clock className="h-8 w-8 mx-auto mb-2 text-blue-500" />
-                    <div className="text-2xl font-bold text-primary">{stats.activeToday}</div>
-                    <div className="text-sm text-muted-foreground">Active Today</div>
+                  <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
+                    <Clock className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 text-blue-500" />
+                    <div className="text-lg sm:text-2xl font-bold text-primary">{stats.activeToday}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">Active Today</div>
                   </CardContent>
                 </Card>
               </div>
@@ -194,65 +194,65 @@ export default function MarketplacePage() {
         </section>
 
         {/* Main Content */}
-        <section className="container mx-auto px-4 py-12">
-          <Tabs defaultValue="artisans" className="space-y-8">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-7xl">
+          <Tabs defaultValue="artisans" className="space-y-6 sm:space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
               <TabsList className="grid w-full max-w-md grid-cols-2 bg-muted/50 backdrop-blur">
-                <TabsTrigger value="artisans" className="data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                <TabsTrigger value="artisans" className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-sm">
                   Browse Artisans
                 </TabsTrigger>
-                <TabsTrigger value="categories" className="data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                <TabsTrigger value="categories" className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-sm">
                   Categories
                 </TabsTrigger>
               </TabsList>
               
-              <Badge {...({ variant: "outline" } as any)} className="w-fit bg-primary/10 text-primary border-primary/20">
+              <Badge {...({ variant: "outline" } as any)} className="w-fit bg-primary/10 text-primary border-primary/20 self-start sm:self-auto">
                 <MapPin className="h-3 w-3 mr-1" />
                 UNILORIN Community
               </Badge>
             </div>
 
-            <TabsContent value="artisans" className="space-y-8 animate-in fade-in slide-in-from-bottom duration-700">
-              <div className="bg-white/50 dark:bg-muted/50 backdrop-blur rounded-xl p-6 border border-white/20">
+            <TabsContent value="artisans" className="space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom duration-700">
+              <div className="bg-white/50 dark:bg-muted/50 backdrop-blur rounded-xl p-4 sm:p-6 border border-white/20 overflow-hidden">
                 <SearchFilters categories={categories} onSearch={handleSearch} onFilterChange={handleFilterChange} />
               </div>
 
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/30 dark:bg-muted/30 backdrop-blur rounded-lg p-4">
-                <div className="flex items-center space-x-4">
-                  <Badge {...({ variant: "secondary" } as any)} className="bg-primary/10 text-primary">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/30 dark:bg-muted/30 backdrop-blur rounded-lg p-3 sm:p-4">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                  <Badge {...({ variant: "secondary" } as any)} className="bg-primary/10 text-primary w-fit">
                     {filteredArtisans.length} artisans found
                   </Badge>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     from {artisans.length} total
                   </p>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 self-start sm:self-auto">
                   <Button
                     {...({ variant: viewMode === "grid" ? "default" : "outline", size: "sm" } as any)}
                     onClick={() => setViewMode("grid")}
-                    className="transition-all duration-200 hover:scale-105"
+                    className="transition-all duration-200 hover:scale-105 h-8 w-8 p-0"
                   >
-                    <Grid className="h-4 w-4" />
+                    <Grid className="h-3 w-3 sm:h-4 sm:w-4" />
                   </Button>
                   <Button
                     {...({ variant: viewMode === "list" ? "default" : "outline", size: "sm" } as any)}
                     onClick={() => setViewMode("list")}
-                    className="transition-all duration-200 hover:scale-105"
+                    className="transition-all duration-200 hover:scale-105 h-8 w-8 p-0"
                   >
-                    <List className="h-4 w-4" />
+                    <List className="h-3 w-3 sm:h-4 sm:w-4" />
                   </Button>
                 </div>
               </div>
 
               {filteredArtisans.length === 0 ? (
-                <div className="text-center py-16">
-                  <div className="max-w-md mx-auto space-y-6">
-                    <div className="w-24 h-24 mx-auto rounded-full bg-muted/50 flex items-center justify-center">
-                      <Users className="h-12 w-12 text-muted-foreground" />
+                <div className="text-center py-12 sm:py-16">
+                  <div className="max-w-md mx-auto space-y-6 px-4">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-muted/50 flex items-center justify-center">
+                      <Users className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-xl font-semibold">No artisans found</h3>
-                      <p className="text-muted-foreground">Try adjusting your search criteria to find more artisans</p>
+                      <h3 className="text-lg sm:text-xl font-semibold">No artisans found</h3>
+                      <p className="text-sm sm:text-base text-muted-foreground">Try adjusting your search criteria to find more artisans</p>
                     </div>
                     <Button
                       {...({ variant: "outline" } as any)}
@@ -272,40 +272,42 @@ export default function MarketplacePage() {
                   </div>
                 </div>
               ) : (
-                <div
-                  className={
-                    viewMode === "grid" 
-                      ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" 
-                      : "space-y-4"
-                  }
-                >
-                  {filteredArtisans.map((artisan, index) => (
-                    <div 
-                      key={artisan.id} 
-                      className={`animate-in fade-in slide-in-from-bottom duration-500 ${
-                        index < 3 ? 'delay-100' :
-                        index < 6 ? 'delay-200' :
-                        index < 9 ? 'delay-300' : 'delay-500'
-                      }`}
-                    >
-                      <ArtisanCard artisan={artisan} />
-                    </div>
-                  ))}
+                <div className="overflow-hidden">
+                  <div
+                    className={
+                      viewMode === "grid" 
+                        ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6" 
+                        : "space-y-4"
+                    }
+                  >
+                    {filteredArtisans.map((artisan, index) => (
+                      <div 
+                        key={artisan.id} 
+                        className={`animate-in fade-in slide-in-from-bottom duration-500 w-full ${
+                          index < 3 ? 'delay-100' :
+                          index < 6 ? 'delay-200' :
+                          index < 9 ? 'delay-300' : 'delay-500'
+                        }`}
+                      >
+                        <ArtisanCard artisan={artisan} />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </TabsContent>
 
             <TabsContent value="categories" className="animate-in fade-in slide-in-from-bottom duration-700">
-              <div className="space-y-8">
-                <div className="text-center space-y-4">
-                  <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <div className="space-y-6 sm:space-y-8">
+                <div className="text-center space-y-4 px-4">
+                  <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     Explore by Category
                   </h2>
-                  <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+                  <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base lg:text-lg">
                     Discover artisans organized by their areas of expertise. Each category represents skilled professionals ready to share their knowledge.
                   </p>
                 </div>
-                <div className="bg-white/50 dark:bg-muted/50 backdrop-blur rounded-xl p-6 border border-white/20">
+                <div className="bg-white/50 dark:bg-muted/50 backdrop-blur rounded-xl p-4 sm:p-6 border border-white/20 overflow-hidden">
                   <CategoryGrid categories={categories} />
                 </div>
               </div>
