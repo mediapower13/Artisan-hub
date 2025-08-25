@@ -22,9 +22,9 @@ export function ArtisanCard({ artisan }: ArtisanCardProps) {
     role: "artisan",
     fullName: `${artisan.firstName} ${artisan.lastName}`,
     availability: {
-      isAvailable: true, // Default assumption for card display
-      availableForWork: true, // Show all artisans as potentially available for work
-      availableForLearning: true, // Show all artisans as potentially available for learning
+      isAvailable: true,
+      availableForWork: true,
+      availableForLearning: true,
       responseTime: "Usually responds within 24 hours"
     },
     pricing: {
@@ -32,92 +32,128 @@ export function ArtisanCard({ artisan }: ArtisanCardProps) {
       learningRate: undefined,
       currency: "NGN"
     },
-    whatsappNumber: "+234" + Math.random().toString().slice(2, 13), // Mock number for demo
+    whatsappNumber: "+234" + Math.random().toString().slice(2, 13),
     verificationStatus: artisan.verified ? "approved" : "pending",
     verificationEvidence: []
   }
 
   return (
-    <Card className="h-full hover:shadow-lg transition-all duration-200 hover:scale-[1.02]">
-      <CardHeader className="pb-3 sm:pb-4">
-        <div className="flex items-start space-x-3 sm:space-x-4">
-          <Avatar className="h-12 w-12 sm:h-16 sm:w-16 flex-shrink-0">
-            <AvatarImage
-              src={artisan.profileImage || "/placeholder.svg"}
-              alt={`${artisan.firstName} ${artisan.lastName}`}
-            />
-            <AvatarFallback className="bg-unilorin-purple text-white text-sm sm:text-lg font-semibold">{initials}</AvatarFallback>
-          </Avatar>
-          <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-base sm:text-lg truncate">
+    <Card className="h-full flex flex-col hover:shadow-xl transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 border-0 shadow-md bg-white/95 backdrop-blur-sm overflow-hidden group">
+      <CardHeader className="pb-3 flex-shrink-0">
+        <div className="flex items-start space-x-3">
+          <div className="relative flex-shrink-0">
+            <Avatar className="h-14 w-14 ring-2 ring-primary/10 group-hover:ring-primary/20 transition-all duration-300">
+              <AvatarImage
+                src={artisan.profileImage || "/placeholder.svg"}
+                alt={`${artisan.firstName} ${artisan.lastName}`}
+                className="object-cover"
+              />
+              <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-white text-lg font-bold">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
+            {artisan.verified && (
+              <div className="absolute -bottom-1 -right-1 bg-green-500 text-white rounded-full p-1">
+                <CheckCircle className="h-3 w-3" />
+              </div>
+            )}
+          </div>
+          
+          <div className="flex-1 min-w-0 space-y-1">
+            <h3 className="font-bold text-lg leading-tight text-gray-900 truncate group-hover:text-primary transition-colors">
               {artisan.firstName} {artisan.lastName}
             </h3>
-            <p className="text-xs sm:text-sm text-muted-foreground font-medium truncate">{artisan.businessName}</p>
-            <div className="flex items-center space-x-1 mt-1">
-              <Star className="h-3 w-3 sm:h-4 sm:w-4 fill-yellow-400 text-yellow-400" />
-              <span className="text-xs sm:text-sm font-medium">{artisan.rating.toFixed(1)}</span>
-              <span className="text-xs sm:text-sm text-muted-foreground">({artisan.totalReviews})</span>
+            <p className="text-sm text-gray-600 font-medium truncate">{artisan.businessName}</p>
+            
+            {/* Rating */}
+            <div className="flex items-center space-x-1">
+              <div className="flex">
+                {[...Array(5)].map((_, i) => (
+                  <Star 
+                    key={i} 
+                    className={`h-3.5 w-3.5 ${
+                      i < Math.floor(artisan.rating) 
+                        ? 'fill-yellow-400 text-yellow-400' 
+                        : 'text-gray-300'
+                    }`} 
+                  />
+                ))}
+              </div>
+              <span className="text-sm font-semibold text-gray-700">{artisan.rating.toFixed(1)}</span>
+              <span className="text-xs text-gray-500">({artisan.totalReviews})</span>
             </div>
           </div>
+
           <div className="flex flex-col gap-1 flex-shrink-0">
             {artisan.verified && (
-              <Badge variant="secondary" className="bg-green-100 text-green-800 flex items-center gap-1 text-xs px-2 py-0.5">
-                <CheckCircle className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-                <span className="hidden sm:inline">Verified</span>
-                <span className="sm:hidden">✓</span>
+              <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200 text-xs px-2 py-0.5 font-medium">
+                Verified
               </Badge>
             )}
-            {/* Available for Learning badge */}
-            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 text-xs px-2 py-0.5">
-              <span className="hidden sm:inline">Available for Learning</span>
-              <span className="sm:hidden">Available</span>
+            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 text-xs px-2 py-0.5 font-medium">
+              Available
             </Badge>
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-3 sm:space-y-4 px-4 sm:px-6">
-        <div className="flex flex-wrap gap-1.5 sm:gap-2">
-          {artisan.specialization.slice(0, 3).map((skill, index) => (
-            <Badge key={index} variant="outline" className="text-xs px-2 py-0.5">
-              {skill}
-            </Badge>
-          ))}
-          {artisan.specialization.length > 3 && (
-            <Badge variant="outline" className="text-xs px-2 py-0.5">
-              +{artisan.specialization.length - 3} more
-            </Badge>
-          )}
+      <CardContent className="flex-1 space-y-4 px-4">
+        {/* Skills */}
+        <div className="space-y-2">
+          <div className="flex flex-wrap gap-1.5">
+            {artisan.specialization.slice(0, 3).map((skill, index) => (
+              <Badge 
+                key={index} 
+                variant="outline" 
+                className="text-xs px-2 py-1 bg-gray-50 text-gray-700 border-gray-200 hover:bg-primary/10 hover:border-primary/30 transition-all"
+              >
+                {skill}
+              </Badge>
+            ))}
+            {artisan.specialization.length > 3 && (
+              <Badge variant="outline" className="text-xs px-2 py-1 bg-gray-100 text-gray-600">
+                +{artisan.specialization.length - 3} more
+              </Badge>
+            )}
+          </div>
         </div>
 
-        <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-muted-foreground">
+        {/* Info */}
+        <div className="space-y-2 text-sm text-gray-600">
           <div className="flex items-center space-x-2">
-            <MapPin className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+            <MapPin className="h-4 w-4 flex-shrink-0 text-gray-400" />
             <span className="truncate">{artisan.location}</span>
           </div>
           <div className="flex items-center space-x-2">
-            <Clock className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+            <Clock className="h-4 w-4 flex-shrink-0 text-gray-400" />
             <span>{artisan.experience} years experience</span>
           </div>
           <div className="flex items-center space-x-2">
-            <Users className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+            <Users className="h-4 w-4 flex-shrink-0 text-gray-400" />
             <span>{artisan.skills.length} skills offered</span>
           </div>
         </div>
       </CardContent>
 
-      <CardFooter className="pt-3 sm:pt-4 space-y-2 sm:space-y-3 px-4 sm:px-6">
-        <div className="flex flex-col sm:flex-row gap-2 w-full">
-          <Button variant="outline" size="sm" className="flex-1 text-xs sm:text-sm h-8 sm:h-9" asChild>
+      <CardFooter className="pt-4 space-y-3 flex-shrink-0 bg-gray-50/50">
+        <div className="grid grid-cols-2 gap-2 w-full">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="h-9 text-xs font-medium hover:bg-primary hover:text-white transition-all duration-200" 
+            asChild
+          >
             <Link href={`/artisans/${artisan.id}`}>
-              <span className="hidden sm:inline">View Profile</span>
-              <span className="sm:hidden">Profile</span>
+              View Profile
             </Link>
           </Button>
-          <Button size="sm" className="flex-1 text-xs sm:text-sm h-8 sm:h-9" asChild>
+          <Button 
+            size="sm" 
+            className="h-9 text-xs font-medium bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-200" 
+            asChild
+          >
             <Link href={`/artisans/${artisan.id}/skills`}>
-              <span className="hidden sm:inline">View Skills</span>
-              <span className="sm:hidden">Skills</span>
+              View Skills
             </Link>
           </Button>
         </div>
@@ -141,7 +177,7 @@ export function ArtisanCard({ artisan }: ArtisanCardProps) {
               updatedAt: new Date()
             }}
             serviceType="direct_service"
-            className="bg-green-600 hover:bg-green-700 text-white h-8 sm:h-9 text-xs sm:text-sm"
+            className="w-full bg-green-600 hover:bg-green-700 text-white h-9 text-xs font-medium transition-all duration-200 hover:scale-[1.02]"
           />
         )}
       </CardFooter>

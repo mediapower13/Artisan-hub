@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { ArtisanCard } from "@/components/marketplace/artisan-card"
-import { SearchFilters, type FilterState } from "@/components/marketplace/search-filters"
+import { SearchFilters } from "@/components/marketplace/search-filters"
 import { CategoryGrid } from "@/components/marketplace/category-grid"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -12,7 +12,16 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { mockDatabase } from "@/lib/mock-data"
 import type { Artisan, Category } from "@/lib/types"
-import { Grid, List, Users, Star, MapPin, Clock, TrendingUp } from "lucide-react"
+import { Grid, List, Users, Star, MapPin, Clock, TrendingUp, Filter, LayoutGrid } from "lucide-react"
+
+interface FilterState {
+  search: string
+  category: string
+  location: string
+  minRating: number
+  experience: string
+  availability: string
+}
 
 export default function MarketplacePage() {
   const [artisans, setArtisans] = useState<Artisan[]>([])
@@ -20,6 +29,7 @@ export default function MarketplacePage() {
   const [categories, setCategories] = useState<Category[]>([])
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [isLoading, setIsLoading] = useState(true)
+  const [isFiltersVisible, setIsFiltersVisible] = useState(true)
   const [stats, setStats] = useState({
     totalArtisans: 0,
     totalSkills: 0,
@@ -55,54 +65,71 @@ export default function MarketplacePage() {
     loadData()
   }, [])
 
-  const handleSearch = (query: string) => {
-    if (!query.trim()) {
-      setFilteredArtisans(artisans)
-      return
-    }
-
-    const filtered = artisans.filter(
-      (artisan) =>
-        artisan.firstName.toLowerCase().includes(query.toLowerCase()) ||
-        artisan.lastName.toLowerCase().includes(query.toLowerCase()) ||
-        artisan.businessName.toLowerCase().includes(query.toLowerCase()) ||
-        artisan.specialization.some((skill) => skill.toLowerCase().includes(query.toLowerCase())),
-    )
-    setFilteredArtisans(filtered)
-  }
-
-  const handleFilterChange = (filters: FilterState) => {
+  const handleFiltersChange = (filters: FilterState) => {
     let filtered = [...artisans]
 
-    if (filters.category && filters.category !== "All categories") {
-      filtered = filtered.filter((artisan) =>
-        artisan.specialization.some(
-          (skill) => categories.find((cat) => cat.name === filters.category)?.name === filters.category,
-        ),
+    // Search filter
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase()
+      filtered = filtered.filter(artisan =>
+        artisan.firstName.toLowerCase().includes(searchTerm) ||
+        artisan.lastName.toLowerCase().includes(searchTerm) ||
+        artisan.businessName.toLowerCase().includes(searchTerm) ||
+        artisan.specialization.some(skill => skill.toLowerCase().includes(searchTerm)) ||
+        artisan.skills.some(skill => skill.name.toLowerCase().includes(searchTerm))
       )
     }
 
-    if (filters.location && filters.location !== "All locations") {
-      filtered = filtered.filter((artisan) => artisan.location.toLowerCase().includes(filters.location.toLowerCase()))
-    }
-
-    if (filters.experience && filters.experience !== "Any experience") {
-      const [min, max] = filters.experience.includes("+")
-        ? [Number.parseInt(filters.experience), Number.POSITIVE_INFINITY]
-        : filters.experience.split("-").map(Number)
-
-      filtered = filtered.filter(
-        (artisan) => artisan.experience >= min && (max === undefined || artisan.experience <= max),
+    // Category filter
+    if (filters.category !== "All Categories") {
+      filtered = filtered.filter(artisan =>
+        artisan.specialization.some(spec => {
+          if (filters.category === "Fashion & Tailoring") {
+            return spec.toLowerCase().includes('fashion') || 
+                   spec.toLowerCase().includes('tailoring') || 
+                   spec.toLowerCase().includes('sewing')
+          }
+          if (filters.category === "Electronics & Technology") {
+            return spec.toLowerCase().includes('electronics') || 
+                   spec.toLowerCase().includes('tech') || 
+                   spec.toLowerCase().includes('computer')
+          }
+          return spec.toLowerCase().includes(filters.category.toLowerCase())
+        })
       )
     }
 
-    if (filters.rating && filters.rating !== "Any rating") {
-      const minRating = Number.parseFloat(filters.rating.replace("+", ""))
-      filtered = filtered.filter((artisan) => artisan.rating >= minRating)
+    // Location filter
+    if (filters.location !== "All Locations") {
+      filtered = filtered.filter(artisan => 
+        artisan.location.toLowerCase().includes(filters.location.toLowerCase())
+      )
     }
 
-    if (filters.verified) {
-      filtered = filtered.filter((artisan) => artisan.verified)
+    // Rating filter
+    if (filters.minRating > 0) {
+      filtered = filtered.filter(artisan => artisan.rating >= filters.minRating)
+    }
+
+    // Experience filter
+    if (filters.experience !== "All Experience") {
+      const experienceYears = filters.experience
+      filtered = filtered.filter(artisan => {
+        switch (experienceYears) {
+          case "0-1 years":
+            return artisan.experience <= 1
+          case "2-3 years":
+            return artisan.experience >= 2 && artisan.experience <= 3
+          case "4-5 years":
+            return artisan.experience >= 4 && artisan.experience <= 5
+          case "6-10 years":
+            return artisan.experience >= 6 && artisan.experience <= 10
+          case "10+ years":
+            return artisan.experience >= 10
+          default:
+            return true
+        }
+      })
     }
 
     setFilteredArtisans(filtered)
@@ -110,82 +137,99 @@ export default function MarketplacePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-muted/20">
+      <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
         <Header />
-        <div className="flex-1 container mx-auto px-4 py-8">
-          <div className="flex items-center justify-center min-h-[600px]">
-            <div className="text-center space-y-6">
-              <div className="relative">
-                <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary/20 border-t-primary mx-auto"></div>
-                <div className="absolute inset-0 rounded-full h-16 w-16 border-4 border-transparent border-t-secondary animate-spin [animation-delay:0.5s] mx-auto"></div>
+        <main className="flex-1 overflow-x-hidden">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
+            <div className="space-y-6">
+              <div className="text-center space-y-4">
+                <Skeleton className="h-12 w-3/4 mx-auto" />
+                <Skeleton className="h-6 w-1/2 mx-auto" />
               </div>
-              <div className="space-y-2">
-                <h2 className="text-2xl font-semibold animate-pulse">Loading Marketplace</h2>
-                <p className="text-muted-foreground animate-pulse">Discovering amazing artisans for you...</p>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <Card key={i} className="p-6">
+                    <Skeleton className="h-8 w-8 mx-auto mb-2" />
+                    <Skeleton className="h-6 w-12 mx-auto mb-1" />
+                    <Skeleton className="h-4 w-16 mx-auto" />
+                  </Card>
+                ))}
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl">
-                {[...Array(6)].map((_, i) => (
-                  <Card key={i} className="animate-pulse">
-                    <CardContent className="p-6">
-                      <Skeleton className="h-20 w-20 rounded-full mx-auto mb-4" />
-                      <Skeleton className="h-4 w-3/4 mx-auto mb-2" />
-                      <Skeleton className="h-3 w-1/2 mx-auto" />
-                    </CardContent>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <Card key={i} className="p-6">
+                    <Skeleton className="h-16 w-16 rounded-full mx-auto mb-4" />
+                    <Skeleton className="h-4 w-3/4 mx-auto mb-2" />
+                    <Skeleton className="h-3 w-1/2 mx-auto" />
                   </Card>
                 ))}
               </div>
             </div>
           </div>
-        </div>
+        </main>
         <Footer />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-muted/20">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
       <Header />
       <main className="flex-1 overflow-x-hidden">
-        {/* Hero Section with Stats */}
-        <section className="relative overflow-hidden bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 py-8 sm:py-12 lg:py-16">
+        {/* Hero Section */}
+        <section className="relative overflow-hidden bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 py-12 lg:py-20">
           <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative max-w-7xl">
-            <div className="text-center mb-8 sm:mb-12 animate-in slide-in-from-bottom duration-1000">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4 leading-tight">
-                Artisan Marketplace
-              </h1>
-              <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-6 sm:mb-8 px-4">
-                Discover skilled artisans in the UNILORIN community. Connect, learn, and grow together.
-              </p>
-              
-              {/* Stats Grid */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 max-w-4xl mx-auto px-2 sm:px-0">
-                <Card className="glass-card hover:scale-105 transition-all duration-300 animate-in fade-in slide-in-from-bottom delay-200">
-                  <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
-                    <Users className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 text-primary" />
-                    <div className="text-lg sm:text-2xl font-bold text-primary">{stats.totalArtisans}</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Expert Artisans</div>
+            <div className="text-center space-y-8">
+              <div className="space-y-4">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                  Discover Skilled
+                  <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"> Artisans</span>
+                </h1>
+                <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                  Connect with verified local artisans and skilled professionals. Learn new skills or hire experts for your projects.
+                </p>
+              </div>
+
+              {/* Stats Cards */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+                  <CardContent className="p-6 text-center">
+                    <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-xl mx-auto mb-3">
+                      <Users className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div className="text-2xl font-bold text-gray-900">{stats.totalArtisans}</div>
+                    <div className="text-sm text-gray-600">Total Artisans</div>
                   </CardContent>
                 </Card>
-                <Card className="glass-card hover:scale-105 transition-all duration-300 animate-in fade-in slide-in-from-bottom delay-300">
-                  <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
-                    <Star className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 text-yellow-500" />
-                    <div className="text-lg sm:text-2xl font-bold text-primary">{stats.avgRating.toFixed(1)}</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Average Rating</div>
+
+                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+                  <CardContent className="p-6 text-center">
+                    <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-xl mx-auto mb-3">
+                      <TrendingUp className="h-6 w-6 text-green-600" />
+                    </div>
+                    <div className="text-2xl font-bold text-gray-900">{stats.activeToday}</div>
+                    <div className="text-sm text-gray-600">Available Now</div>
                   </CardContent>
                 </Card>
-                <Card className="glass-card hover:scale-105 transition-all duration-300 animate-in fade-in slide-in-from-bottom delay-400">
-                  <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
-                    <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 text-green-500" />
-                    <div className="text-lg sm:text-2xl font-bold text-primary">{stats.totalSkills}</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Skills Available</div>
+
+                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+                  <CardContent className="p-6 text-center">
+                    <div className="flex items-center justify-center w-12 h-12 bg-yellow-100 rounded-xl mx-auto mb-3">
+                      <Star className="h-6 w-6 text-yellow-600" />
+                    </div>
+                    <div className="text-2xl font-bold text-gray-900">{stats.avgRating.toFixed(1)}</div>
+                    <div className="text-sm text-gray-600">Avg Rating</div>
                   </CardContent>
                 </Card>
-                <Card className="glass-card hover:scale-105 transition-all duration-300 animate-in fade-in slide-in-from-bottom delay-500">
-                  <CardContent className="p-3 sm:p-4 lg:p-6 text-center">
-                    <Clock className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 text-blue-500" />
-                    <div className="text-lg sm:text-2xl font-bold text-primary">{stats.activeToday}</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">Active Today</div>
+
+                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+                  <CardContent className="p-6 text-center">
+                    <div className="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-xl mx-auto mb-3">
+                      <MapPin className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <div className="text-2xl font-bold text-gray-900">{stats.totalSkills}</div>
+                    <div className="text-sm text-gray-600">Skills Available</div>
                   </CardContent>
                 </Card>
               </div>
@@ -195,122 +239,130 @@ export default function MarketplacePage() {
 
         {/* Main Content */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-7xl">
-          <Tabs defaultValue="artisans" className="space-y-6 sm:space-y-8">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-              <TabsList className="grid w-full max-w-md grid-cols-2 bg-muted/50 backdrop-blur">
-                <TabsTrigger value="artisans" className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-sm">
-                  Browse Artisans
-                </TabsTrigger>
-                <TabsTrigger value="categories" className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-sm">
-                  Categories
-                </TabsTrigger>
-              </TabsList>
-              
-              <Badge {...({ variant: "outline" } as any)} className="w-fit bg-primary/10 text-primary border-primary/20 self-start sm:self-auto">
-                <MapPin className="h-3 w-3 mr-1" />
-                UNILORIN Community
-              </Badge>
-            </div>
+          <Tabs defaultValue="artisans" className="space-y-8">
+            <TabsList className="grid w-full grid-cols-2 lg:w-[400px] mx-auto bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-1 h-12">
+              <TabsTrigger 
+                value="artisans" 
+                className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-white transition-all duration-200 font-medium"
+              >
+                Browse Artisans ({filteredArtisans.length})
+              </TabsTrigger>
+              <TabsTrigger 
+                value="categories" 
+                className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-white transition-all duration-200 font-medium"
+              >
+                By Category
+              </TabsTrigger>
+            </TabsList>
 
-            <TabsContent value="artisans" className="space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom duration-700">
-              <div className="bg-white/50 dark:bg-muted/50 backdrop-blur rounded-xl p-4 sm:p-6 border border-white/20 overflow-hidden">
-                <SearchFilters categories={categories} onSearch={handleSearch} onFilterChange={handleFilterChange} />
-              </div>
-
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/30 dark:bg-muted/30 backdrop-blur rounded-lg p-3 sm:p-4">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                  <Badge {...({ variant: "secondary" } as any)} className="bg-primary/10 text-primary w-fit">
-                    {filteredArtisans.length} artisans found
-                  </Badge>
-                  <p className="text-xs sm:text-sm text-muted-foreground">
-                    from {artisans.length} total
-                  </p>
-                </div>
-                <div className="flex items-center space-x-2 self-start sm:self-auto">
-                  <Button
-                    {...({ variant: viewMode === "grid" ? "default" : "outline", size: "sm" } as any)}
-                    onClick={() => setViewMode("grid")}
-                    className="transition-all duration-200 hover:scale-105 h-8 w-8 p-0"
-                  >
-                    <Grid className="h-3 w-3 sm:h-4 sm:w-4" />
-                  </Button>
-                  <Button
-                    {...({ variant: viewMode === "list" ? "default" : "outline", size: "sm" } as any)}
-                    onClick={() => setViewMode("list")}
-                    className="transition-all duration-200 hover:scale-105 h-8 w-8 p-0"
-                  >
-                    <List className="h-3 w-3 sm:h-4 sm:w-4" />
-                  </Button>
-                </div>
-              </div>
-
-              {filteredArtisans.length === 0 ? (
-                <div className="text-center py-12 sm:py-16">
-                  <div className="max-w-md mx-auto space-y-6 px-4">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full bg-muted/50 flex items-center justify-center">
-                      <Users className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground" />
+            <TabsContent value="artisans" className="space-y-6">
+              {/* Search and Filters */}
+              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg overflow-hidden">
+                <CardContent className="p-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-xl font-semibold text-gray-900">Find Artisans</h2>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setIsFiltersVisible(!isFiltersVisible)}
+                          className="flex items-center gap-2 bg-white/50"
+                        >
+                          <Filter className="h-4 w-4" />
+                          {isFiltersVisible ? 'Hide' : 'Show'} Filters
+                        </Button>
+                        
+                        <div className="flex items-center bg-gray-100 rounded-lg p-1">
+                          <Button
+                            variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                            size="sm"
+                            onClick={() => setViewMode('grid')}
+                            className="h-8 w-8 p-0"
+                          >
+                            <LayoutGrid className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant={viewMode === 'list' ? 'default' : 'ghost'}
+                            size="sm"
+                            onClick={() => setViewMode('list')}
+                            className="h-8 w-8 p-0"
+                          >
+                            <List className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
                     </div>
-                    <div className="space-y-2">
-                      <h3 className="text-lg sm:text-xl font-semibold">No artisans found</h3>
-                      <p className="text-sm sm:text-base text-muted-foreground">Try adjusting your search criteria to find more artisans</p>
-                    </div>
-                    <Button
-                      {...({ variant: "outline" } as any)}
-                      onClick={() =>
-                        handleFilterChange({
-                          category: "All categories",
-                          location: "All locations",
-                          experience: "Any experience",
-                          rating: "Any rating",
-                          verified: false,
-                        })
-                      }
-                      className="hover:scale-105 transition-all duration-200"
-                    >
-                      Clear all filters
-                    </Button>
+
+                    {isFiltersVisible && (
+                      <SearchFilters onFiltersChange={handleFiltersChange} />
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Results */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {filteredArtisans.length} Artisan{filteredArtisans.length !== 1 ? 's' : ''} Found
+                    </h3>
+                    <Badge variant="secondary" className="bg-primary/10 text-primary">
+                      From {artisans.length} total
+                    </Badge>
                   </div>
                 </div>
-              ) : (
-                <div className="overflow-hidden">
-                  <div
-                    className={
-                      viewMode === "grid" 
-                        ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6" 
-                        : "space-y-4"
-                    }
-                  >
-                    {filteredArtisans.map((artisan, index) => (
-                      <div 
-                        key={artisan.id} 
-                        className={`animate-in fade-in slide-in-from-bottom duration-500 w-full ${
-                          index < 3 ? 'delay-100' :
-                          index < 6 ? 'delay-200' :
-                          index < 9 ? 'delay-300' : 'delay-500'
-                        }`}
-                      >
+
+                {filteredArtisans.length > 0 ? (
+                  <div className={`grid gap-6 ${
+                    viewMode === 'grid' 
+                      ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
+                      : 'grid-cols-1 lg:grid-cols-2'
+                  }`}>
+                    {filteredArtisans.map((artisan) => (
+                      <div key={artisan.id} className="w-full">
                         <ArtisanCard artisan={artisan} />
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
+                ) : (
+                  <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg overflow-hidden">
+                    <CardContent className="p-12 text-center">
+                      <div className="space-y-4">
+                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
+                          <Users className="h-8 w-8 text-gray-400" />
+                        </div>
+                        <div className="space-y-2">
+                          <h3 className="text-xl font-semibold text-gray-900">No artisans found</h3>
+                          <p className="text-gray-600">
+                            Try adjusting your search criteria or filters to find more artisans.
+                          </p>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          onClick={() => window.location.reload()}
+                          className="mt-4"
+                        >
+                          Clear All Filters
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
             </TabsContent>
 
-            <TabsContent value="categories" className="animate-in fade-in slide-in-from-bottom duration-700">
-              <div className="space-y-6 sm:space-y-8">
-                <div className="text-center space-y-4 px-4">
-                  <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    Explore by Category
-                  </h2>
-                  <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base lg:text-lg">
-                    Discover artisans organized by their areas of expertise. Each category represents skilled professionals ready to share their knowledge.
-                  </p>
-                </div>
-                <div className="bg-white/50 dark:bg-muted/50 backdrop-blur rounded-xl p-4 sm:p-6 border border-white/20 overflow-hidden">
+            <TabsContent value="categories" className="space-y-6">
+              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg overflow-hidden">
+                <CardContent className="p-6">
+                  <div className="text-center space-y-2 mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900">Browse by Category</h2>
+                    <p className="text-gray-600">Explore artisans organized by their specializations</p>
+                  </div>
                   <CategoryGrid categories={categories} />
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </section>
