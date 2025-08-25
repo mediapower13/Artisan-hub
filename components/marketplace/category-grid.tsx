@@ -78,7 +78,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                     variant="secondary" 
                     className="bg-primary/10 text-primary text-xs px-2 py-1 font-medium"
                   >
-                    {category.artisanCount || 0} artisans
+                    {category.artisanCount || category.providerCount || 0} artisans
                   </Badge>
                 </div>
                 
@@ -99,7 +99,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                     <div className="flex items-center justify-center">
                       <Users className="h-3 w-3 text-gray-400" />
                     </div>
-                    <div className="text-xs font-semibold text-gray-700">{category.artisanCount || 0}</div>
+                    <div className="text-xs font-semibold text-gray-700">{category.artisanCount || category.providerCount || 0}</div>
                     <div className="text-xs text-gray-500">Artisans</div>
                   </div>
                   
@@ -125,7 +125,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                   <div className="space-y-2">
                     <h4 className="text-xs font-medium text-gray-700">Popular Skills:</h4>
                     <div className="flex flex-wrap gap-1">
-                      {category.skills.slice(0, 3).map((skill, index) => (
+                      {category.skills.slice(0, 3).map((skill: string, index: number) => (
                         <Badge 
                           key={index}
                           variant="outline" 
@@ -181,7 +181,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
                 All artisans are verified students and professionals with proven skills
               </p>
               <div className="text-2xl font-bold text-blue-600">
-                {categories.reduce((sum, cat) => sum + (cat.artisanCount || 0), 0)}+
+                {categories.reduce((sum, cat) => sum + (cat.artisanCount || cat.providerCount || 0), 0)}+
               </div>
               <div className="text-xs text-gray-500">Total Registered</div>
             </CardContent>

@@ -111,6 +111,8 @@ export interface Category {
   icon: string
   skillCount: number
   providerCount: number
+  artisanCount?: number // Optional for compatibility
+  skills?: string[] // Optional popular skills array
 }
 
 // Verification request type

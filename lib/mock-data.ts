@@ -8,6 +8,8 @@ export const mockCategories: Category[] = [
     description: "Learn clothing design, tailoring, and fashion creation",
     icon: "👗",
     skillCount: 12,
+    providerCount: 8,
+    skills: ["Dress Making", "Alterations", "Pattern Design"]
   },
   {
     id: "2",
@@ -15,6 +17,8 @@ export const mockCategories: Category[] = [
     description: "Phone repairs, computer maintenance, and tech skills",
     icon: "📱",
     skillCount: 8,
+    providerCount: 5,
+    skills: ["Phone Repair", "Computer Maintenance", "Software Installation"]
   },
   {
     id: "3",
@@ -22,6 +26,8 @@ export const mockCategories: Category[] = [
     description: "Hair styling, makeup, skincare, and wellness services",
     icon: "💄",
     skillCount: 15,
+    providerCount: 12,
+    skills: ["Hair Styling", "Makeup Artistry", "Skincare"]
   },
   {
     id: "4",
@@ -29,6 +35,8 @@ export const mockCategories: Category[] = [
     description: "Cooking, baking, catering, and food business",
     icon: "🍳",
     skillCount: 10,
+    providerCount: 7,
+    skills: ["Baking", "Catering", "Nigerian Cuisine"]
   },
   {
     id: "5",
@@ -36,6 +44,8 @@ export const mockCategories: Category[] = [
     description: "Painting, sculpture, crafts, and creative arts",
     icon: "🎨",
     skillCount: 7,
+    providerCount: 4,
+    skills: ["Portrait Painting", "Crafts", "Digital Art"]
   },
   {
     id: "6",
@@ -43,6 +53,8 @@ export const mockCategories: Category[] = [
     description: "Carpentry, plumbing, electrical work, and building trades",
     icon: "🔨",
     skillCount: 9,
+    providerCount: 6,
+    skills: ["Carpentry", "Plumbing", "Electrical Work"]
   },
 ]
 
@@ -53,15 +65,19 @@ export const mockArtisans: Artisan[] = [
     password: "hashed_password",
     firstName: "Fatima",
     lastName: "Adebayo",
+    fullName: "Fatima Adebayo",
     phone: "+234 803 123 4567",
     role: "artisan",
     businessName: "Fatima's Fashion House",
+    description: "Professional fashion designer and tailor specializing in traditional and modern clothing. Expert in custom designs, alterations, and embroidery work.",
     specialization: ["Fashion Design", "Tailoring", "Embroidery"],
     experience: 8,
     location: "Ilorin, Kwara State",
     rating: 4.8,
     totalReviews: 127,
     verified: true,
+    verificationStatus: "approved",
+    verificationEvidence: ["/certificates/fashion-cert.pdf"],
     profileImage: "/professional-woman-tailor.png",
     portfolio: [
       {
@@ -73,6 +89,18 @@ export const mockArtisans: Artisan[] = [
       },
     ],
     skills: [],
+    availability: {
+      isAvailable: true,
+      availableForWork: true,
+      availableForLearning: true,
+      responseTime: "Usually responds within 2 hours"
+    },
+    pricing: {
+      baseRate: 15000,
+      learningRate: 8000,
+      currency: "NGN"
+    },
+    whatsappNumber: "+234 803 123 4567",
     createdAt: new Date("2023-06-01"),
     updatedAt: new Date("2024-01-20"),
   },
@@ -82,18 +110,34 @@ export const mockArtisans: Artisan[] = [
     password: "hashed_password",
     firstName: "Ibrahim",
     lastName: "Suleiman",
+    fullName: "Ibrahim Suleiman",
     phone: "+234 807 987 6543",
     role: "artisan",
     businessName: "TechFix Solutions",
+    description: "Experienced technician specializing in phone repairs, computer maintenance, and software solutions. Quick and reliable service with warranty.",
     specialization: ["Phone Repair", "Computer Maintenance", "Software Installation"],
     experience: 5,
     location: "Ilorin, Kwara State",
     rating: 4.6,
     totalReviews: 89,
     verified: true,
+    verificationStatus: "approved",
+    verificationEvidence: ["/certificates/tech-cert.pdf"],
     profileImage: "/young-man-technician.png",
     portfolio: [],
     skills: [],
+    availability: {
+      isAvailable: true,
+      availableForWork: true,
+      availableForLearning: false,
+      responseTime: "Usually responds within 1 hour"
+    },
+    pricing: {
+      baseRate: 5000,
+      learningRate: 3000,
+      currency: "NGN"
+    },
+    whatsappNumber: "+234 807 987 6543",
     createdAt: new Date("2023-08-15"),
     updatedAt: new Date("2024-01-18"),
   },

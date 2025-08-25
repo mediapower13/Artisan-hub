@@ -76,7 +76,7 @@ export default function MarketplacePage() {
         artisan.lastName.toLowerCase().includes(searchTerm) ||
         artisan.businessName.toLowerCase().includes(searchTerm) ||
         artisan.specialization.some(skill => skill.toLowerCase().includes(searchTerm)) ||
-        artisan.skills.some(skill => skill.name.toLowerCase().includes(searchTerm))
+        artisan.skills.some(skill => skill.title.toLowerCase().includes(searchTerm))
       )
     }
 
