@@ -1,5 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server"
-import { authUtils } from "@/lib/auth-utils"
+
+// Simple session verification for demo purposes
+function verifySessionToken(token: string): boolean {
+  if (!token || !token.startsWith('session_')) {
+    return false
+  }
+  
+  // Simple validation - in production you'd check against a database
+  const parts = token.split('_')
+  return parts.length === 3 && parts[0] === 'session'
+}
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next()
@@ -12,16 +22,8 @@ export async function middleware(request: NextRequest) {
   const isProtectedRoute = protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
 
   if (isProtectedRoute) {
-    if (!token) {
+    if (!token || !verifySessionToken(token)) {
       return NextResponse.redirect(new URL("/login", request.url))
-    }
-
-    const user = authUtils.verifyToken(token)
-    if (!user) {
-      // Clear invalid token
-      const response = NextResponse.redirect(new URL("/login", request.url))
-      response.cookies.delete("auth-token")
-      return response
     }
   }
 
@@ -29,11 +31,8 @@ export async function middleware(request: NextRequest) {
   const authRoutes = ["/login", "/register"]
   const isAuthRoute = authRoutes.includes(request.nextUrl.pathname)
 
-  if (isAuthRoute && token) {
-    const user = authUtils.verifyToken(token)
-    if (user) {
-      return NextResponse.redirect(new URL("/dashboard", request.url))
-    }
+  if (isAuthRoute && token && verifySessionToken(token)) {
+    return NextResponse.redirect(new URL("/dashboard", request.url))
   }
 
   return response

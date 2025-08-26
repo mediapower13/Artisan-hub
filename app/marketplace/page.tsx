@@ -130,13 +130,7 @@ export default function MarketplacePage() {
       // Use database search for better performance with large datasets
       try {
         setLoading(true)
-        const searchResults = await searchProviders({
-          search: filters.search || undefined,
-          category: filters.category !== "All Categories" ? filters.category : undefined,
-          location: filters.location || undefined,
-          minRating: filters.minRating > 0 ? filters.minRating : undefined,
-          verified: true // Only show verified providers
-        })
+        const searchResults = await searchProviders(filters.search || "")
         setFilteredArtisans(searchResults)
       } catch (error) {
         console.error('Database search failed, falling back to client-side filtering:', error)
@@ -234,30 +228,33 @@ export default function MarketplacePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+      <div className="min-h-screen flex flex-col bg-white">
         <Header />
         <main className="flex-1 overflow-x-hidden">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
-            <div className="space-y-6">
-              <div className="text-center space-y-4">
-                <Skeleton className="h-12 w-3/4 mx-auto" />
-                <Skeleton className="h-6 w-1/2 mx-auto" />
+            <div className="space-y-8">
+              <div className="text-center space-y-6">
+                <div className="inline-flex items-center justify-center p-4 bg-blue-600 rounded-2xl mb-6 shadow-lg">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                </div>
+                <Skeleton className="h-16 w-3/4 mx-auto rounded-2xl" />
+                <Skeleton className="h-8 w-1/2 mx-auto rounded-xl" />
               </div>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <Card key={i} className="p-6">
-                    <Skeleton className="h-8 w-8 mx-auto mb-2" />
-                    <Skeleton className="h-6 w-12 mx-auto mb-1" />
-                    <Skeleton className="h-4 w-16 mx-auto" />
+                  <Card key={i} className="p-6 bg-white border border-gray-200 shadow-lg">
+                    <Skeleton className="h-12 w-12 mx-auto mb-4 rounded-2xl" />
+                    <Skeleton className="h-8 w-16 mx-auto mb-2 rounded-xl" />
+                    <Skeleton className="h-4 w-20 mx-auto rounded-lg" />
                   </Card>
                 ))}
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {Array.from({ length: 8 }).map((_, i) => (
-                  <Card key={i} className="p-6">
-                    <Skeleton className="h-16 w-16 rounded-full mx-auto mb-4" />
-                    <Skeleton className="h-4 w-3/4 mx-auto mb-2" />
-                    <Skeleton className="h-3 w-1/2 mx-auto" />
+                  <Card key={i} className="p-6 bg-white border border-gray-200 shadow-lg">
+                    <Skeleton className="h-20 w-20 rounded-full mx-auto mb-4" />
+                    <Skeleton className="h-6 w-3/4 mx-auto mb-2 rounded-lg" />
+                    <Skeleton className="h-4 w-1/2 mx-auto rounded-lg" />
                   </Card>
                 ))}
               </div>
@@ -270,7 +267,7 @@ export default function MarketplacePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+    <div className="min-h-screen flex flex-col bg-white">
       <Header />
       
       {/* Database Status Indicator */}
@@ -305,60 +302,62 @@ export default function MarketplacePage() {
       )}
 
       <main className="flex-1 overflow-x-hidden">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 py-12 lg:py-20">
-          <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        {/* Enhanced Hero Section */}
+        <section className="relative overflow-hidden bg-gray-50 py-16 lg:py-24">
+          
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative max-w-7xl">
-            <div className="text-center space-y-8">
-              <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  Discover Skilled
-                  <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"> Artisans</span>
+            <div className="text-center space-y-10">
+              <div className="space-y-6">
+                <div className="inline-flex items-center justify-center p-4 bg-blue-600 rounded-2xl mb-6 shadow-lg">
+                  <Users className="h-12 w-12 text-white" />
+                </div>
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
+                  Discover Skilled Artisans
                 </h1>
-                <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                  Connect with verified local artisans and skilled professionals. Learn new skills or hire experts for your projects.
+                <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                  Connect with verified local artisans and skilled professionals. Learn new skills or hire experts for your projects in the UNILORIN community.
                 </p>
               </div>
 
-              {/* Stats Cards */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
-                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+              {/* Enhanced Stats Cards */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+                <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
                   <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-xl mx-auto mb-3">
-                      <Users className="h-6 w-6 text-blue-600" />
+                    <div className="flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mx-auto mb-4 shadow-lg">
+                      <Users className="h-8 w-8 text-white" />
                     </div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.totalArtisans}</div>
-                    <div className="text-sm text-gray-600">Total Artisans</div>
+                    <div className="text-3xl font-bold text-gray-900">{stats.totalArtisans}</div>
+                    <div className="text-sm font-medium text-gray-600">Total Artisans</div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+                <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
                   <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-xl mx-auto mb-3">
-                      <TrendingUp className="h-6 w-6 text-green-600" />
+                    <div className="flex items-center justify-center w-16 h-16 bg-green-600 rounded-2xl mx-auto mb-4 shadow-lg">
+                      <TrendingUp className="h-8 w-8 text-white" />
                     </div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.activeToday}</div>
-                    <div className="text-sm text-gray-600">Available Now</div>
+                    <div className="text-3xl font-bold text-gray-900">{stats.activeToday}</div>
+                    <div className="text-sm font-medium text-gray-600">Available Now</div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+                <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
                   <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-12 h-12 bg-yellow-100 rounded-xl mx-auto mb-3">
-                      <Star className="h-6 w-6 text-yellow-600" />
+                    <div className="flex items-center justify-center w-16 h-16 bg-yellow-600 rounded-2xl mx-auto mb-4 shadow-lg">
+                      <Star className="h-8 w-8 text-white" />
                     </div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.avgRating.toFixed(1)}</div>
-                    <div className="text-sm text-gray-600">Avg Rating</div>
+                    <div className="text-3xl font-bold text-gray-900">{stats.avgRating.toFixed(1)}</div>
+                    <div className="text-sm font-medium text-gray-600">Avg Rating</div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+                <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
                   <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-xl mx-auto mb-3">
-                      <MapPin className="h-6 w-6 text-purple-600" />
+                    <div className="flex items-center justify-center w-16 h-16 bg-purple-600 rounded-2xl mx-auto mb-4 shadow-lg">
+                      <MapPin className="h-8 w-8 text-white" />
                     </div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.totalSkills}</div>
-                    <div className="text-sm text-gray-600">Skills Available</div>
+                    <div className="text-3xl font-bold text-gray-900">{stats.totalSkills}</div>
+                    <div className="text-sm font-medium text-gray-600">Skills Available</div>
                   </CardContent>
                 </Card>
               </div>
@@ -366,78 +365,88 @@ export default function MarketplacePage() {
           </div>
         </section>
 
-        {/* Main Content */}
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-7xl">
-          <Tabs defaultValue="artisans" className="space-y-8">
-            <TabsList className="grid w-full grid-cols-2 lg:w-[400px] mx-auto bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl p-1 h-12">
+        {/* Enhanced Main Content */}
+        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 max-w-7xl">
+          <Tabs defaultValue="artisans" className="space-y-10">
+            <TabsList className="grid w-full grid-cols-2 lg:w-[450px] mx-auto bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border-2 border-orange-200 dark:border-orange-800 rounded-2xl p-2 h-14 shadow-lg">
               <TabsTrigger 
                 value="artisans" 
-                className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-white transition-all duration-200 font-medium"
+                className="rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white transition-all duration-200 font-semibold text-lg"
               >
                 Browse Artisans ({filteredArtisans.length})
               </TabsTrigger>
               <TabsTrigger 
                 value="categories" 
-                className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-white transition-all duration-200 font-medium"
+                className="rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white transition-all duration-200 font-semibold text-lg"
               >
                 By Category
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="artisans" className="space-y-6">
-              {/* Search and Filters */}
-              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg overflow-hidden">
-                <CardContent className="p-6">
-                  <div className="space-y-4">
+            <TabsContent value="artisans" className="space-y-8">
+              {/* Enhanced Search and Filters */}
+              <Card className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border-2 border-orange-200 dark:border-orange-800 shadow-xl overflow-hidden">
+                <CardContent className="p-8">
+                  <div className="space-y-6">
                     <div className="flex items-center justify-between">
-                      <h2 className="text-xl font-semibold text-gray-900">Find Artisans</h2>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center space-x-4">
+                        <div className="p-3 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl shadow-lg">
+                          <Filter className="h-6 w-6 text-white" />
+                        </div>
+                        <div>
+                          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Find Artisans</h2>
+                          <p className="text-slate-600 dark:text-slate-400">Discover skilled professionals in your area</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4">
                         <Button
                           variant="outline"
-                          size="sm"
+                          size="lg"
                           onClick={() => setIsFiltersVisible(!isFiltersVisible)}
-                          className="flex items-center gap-2 bg-white/50"
+                          className="flex items-center gap-2 bg-white/50 dark:bg-slate-800/50 border-2 border-orange-200 dark:border-orange-800 hover:border-orange-300 dark:hover:border-orange-700 rounded-xl h-12 px-6"
                         >
                           <Filter className="h-4 w-4" />
                           {isFiltersVisible ? 'Hide' : 'Show'} Filters
                         </Button>
                         
-                        <div className="flex items-center bg-gray-100 rounded-lg p-1">
+                        <div className="flex items-center bg-orange-100 dark:bg-orange-900/50 rounded-xl p-1 border-2 border-orange-200 dark:border-orange-800">
                           <Button
                             variant={viewMode === 'grid' ? 'default' : 'ghost'}
                             size="sm"
                             onClick={() => setViewMode('grid')}
-                            className="h-8 w-8 p-0"
+                            className={`h-10 w-10 p-0 rounded-lg ${viewMode === 'grid' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg' : 'hover:bg-orange-200 dark:hover:bg-orange-800'}`}
                           >
-                            <LayoutGrid className="h-4 w-4" />
+                            <LayoutGrid className="h-5 w-5" />
                           </Button>
                           <Button
                             variant={viewMode === 'list' ? 'default' : 'ghost'}
                             size="sm"
                             onClick={() => setViewMode('list')}
-                            className="h-8 w-8 p-0"
+                            className={`h-10 w-10 p-0 rounded-lg ${viewMode === 'list' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg' : 'hover:bg-orange-200 dark:hover:bg-orange-800'}`}
                           >
-                            <List className="h-4 w-4" />
+                            <List className="h-5 w-5" />
                           </Button>
                         </div>
                       </div>
                     </div>
 
                     {isFiltersVisible && (
-                      <SearchFilters onFiltersChange={handleFiltersChange} />
+                      <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/30 rounded-2xl p-6 border-2 border-orange-200 dark:border-orange-800">
+                        <SearchFilters onFiltersChange={handleFiltersChange} />
+                      </div>
                     )}
                   </div>
                 </CardContent>
               </Card>
 
-              {/* Results */}
-              <div className="space-y-4">
+              {/* Enhanced Results */}
+              <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
                       {filteredArtisans.length} Artisan{filteredArtisans.length !== 1 ? 's' : ''} Found
                     </h3>
-                    <Badge variant="secondary" className="bg-primary/10 text-primary">
+                    <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 text-sm font-semibold rounded-xl shadow-lg">
                       From {artisans.length} total
                     </Badge>
                   </div>
@@ -456,22 +465,22 @@ export default function MarketplacePage() {
                     ))}
                   </div>
                 ) : (
-                  <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg overflow-hidden">
-                    <CardContent className="p-12 text-center">
-                      <div className="space-y-4">
-                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                          <Users className="h-8 w-8 text-gray-400" />
+                  <Card className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border-2 border-orange-200 dark:border-orange-800 shadow-xl overflow-hidden">
+                    <CardContent className="p-16 text-center">
+                      <div className="space-y-6">
+                        <div className="w-20 h-20 bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/50 dark:to-red-900/50 rounded-2xl flex items-center justify-center mx-auto border-2 border-orange-200 dark:border-orange-800">
+                          <Users className="h-10 w-10 text-orange-500" />
                         </div>
-                        <div className="space-y-2">
-                          <h3 className="text-xl font-semibold text-gray-900">No artisans found</h3>
-                          <p className="text-gray-600">
+                        <div className="space-y-3">
+                          <h3 className="text-2xl font-bold text-slate-900 dark:text-white">No artisans found</h3>
+                          <p className="text-slate-600 dark:text-slate-400 text-lg">
                             Try adjusting your search criteria or filters to find more artisans.
                           </p>
                         </div>
                         <Button 
                           variant="outline" 
                           onClick={() => window.location.reload()}
-                          className="mt-4"
+                          className="mt-6 h-12 px-8 text-lg font-semibold border-2 border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/50 rounded-xl"
                         >
                           Clear All Filters
                         </Button>
@@ -482,14 +491,19 @@ export default function MarketplacePage() {
               </div>
             </TabsContent>
 
-            <TabsContent value="categories" className="space-y-6">
-              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg overflow-hidden">
-                <CardContent className="p-6">
-                  <div className="text-center space-y-2 mb-6">
-                    <h2 className="text-2xl font-bold text-gray-900">Browse by Category</h2>
-                    <p className="text-gray-600">Explore artisans organized by their specializations</p>
+            <TabsContent value="categories" className="space-y-8">
+              <Card className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border-2 border-orange-200 dark:border-orange-800 shadow-xl overflow-hidden">
+                <CardContent className="p-8">
+                  <div className="text-center space-y-4 mb-8">
+                    <div className="inline-flex items-center justify-center p-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-3xl mb-6 shadow-lg">
+                      <LayoutGrid className="h-8 w-8 text-white" />
+                    </div>
+                    <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Browse by Category</h2>
+                    <p className="text-xl text-slate-600 dark:text-slate-400">Explore artisans organized by their specializations</p>
                   </div>
-                  <CategoryGrid categories={categories} />
+                  <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/30 rounded-2xl p-6 border-2 border-orange-200 dark:border-orange-800">
+                    <CategoryGrid categories={categories} />
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>

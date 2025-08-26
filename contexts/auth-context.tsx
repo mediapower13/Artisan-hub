@@ -1,7 +1,19 @@
 "use client"
 import type React from "react"
 import { createContext, useContext, useEffect, useState } from "react"
-import { authUtils, type AuthUser } from "@/lib/auth-utils"
+
+interface AuthUser {
+  id: string
+  email: string
+  fullName: string
+  firstName?: string
+  lastName?: string
+  role: "student" | "artisan" | "admin"
+  phone?: string
+  studentId?: string
+  department?: string
+  level?: string
+}
 
 interface AuthContextType {
   user: AuthUser | null
@@ -11,14 +23,13 @@ interface AuthContextType {
   register: (userData: {
     email: string
     password: string
-    fullName: string
-    userType: "student" | "artisan"
-    businessName?: string
-    description?: string
-    location?: string
-    phone?: string
-    skills?: string[]
-    experienceYears?: number
+    firstName: string
+    lastName: string
+    phone: string
+    role: "student" | "artisan"
+    studentId?: string
+    department?: string
+    level?: string
   }) => Promise<boolean>
   logout: () => void
 }
@@ -38,12 +49,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           .find((row) => row.startsWith("auth-token="))
           ?.split("=")[1]
 
-        if (token) {
-          const currentUser = authUtils.verifyToken(token)
-          if (currentUser) {
-            // Fetch full user data
-            const fullUser = await authUtils.getUserById(currentUser.id)
-            setUser(fullUser)
+        if (token && token.startsWith('session_')) {
+          // Simple token validation - in production you'd verify against a database
+          const parts = token.split('_')
+          if (parts.length === 3 && parts[0] === 'session') {
+            // For demo purposes, set a mock user
+            setUser({
+              id: parts[1],
+              email: "demo@example.com",
+              fullName: "Demo User",
+              role: "student"
+            })
           }
         }
       } catch (error) {
@@ -56,27 +72,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkAuth()
   }, [])
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+    const login = async (email: string, password: string) => {
     setIsLoading(true)
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch("/api/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ email, password }),
       })
 
       const data = await response.json()
 
-      if (response.ok && data.user) {
-        setUser(data.user)
-        // Set cookie
-        document.cookie = `auth-token=${data.token}; path=/; max-age=${7 * 24 * 60 * 60}; secure; samesite=strict`
-        return true
+      if (!response.ok) {
+        throw new Error(data.error || "Login failed")
       }
-      return false
+
+      console.log("Login successful:", data)
+      setUser(data.user)
+      
+      return true
     } catch (error) {
-      console.error("Login failed:", error)
-      return false
+      console.error("Login error:", error)
+      throw error
     } finally {
       setIsLoading(false)
     }
@@ -85,18 +104,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const register = async (userData: {
     email: string
     password: string
-    fullName: string
-    userType: "student" | "artisan"
-    businessName?: string
-    description?: string
-    location?: string
-    phone?: string
-    skills?: string[]
-    experienceYears?: number
+    firstName: string
+    lastName: string
+    phone: string
+    role: "student" | "artisan"
+    studentId?: string
+    department?: string
+    level?: string
   }): Promise<boolean> => {
     setIsLoading(true)
     try {
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
@@ -106,8 +124,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (response.ok && data.user) {
         setUser(data.user)
-        // Set cookie
-        document.cookie = `auth-token=${data.token}; path=/; max-age=${7 * 24 * 60 * 60}; secure; samesite=strict`
         return true
       }
       return false

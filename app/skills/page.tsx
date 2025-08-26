@@ -8,8 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { getAllProviders, getAllCategories, getAllSkills } from "@/lib/database-operations"
-import { mockDatabase } from "@/lib/mock-data" // Fallback for development
+import { mockDatabase } from "@/lib/mock-data"
 import type { Skill, Artisan, Category } from "@/lib/types"
 import { Grid, List, BookOpen, Users, Award, Clock, TrendingUp, Star } from "lucide-react"
 
@@ -30,47 +29,23 @@ export default function SkillsPage() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        // Try to load from database first
         const [skillsData, artisansData, categoriesData] = await Promise.all([
-          getAllSkills(),
-          getAllProviders(),
-          getAllCategories(),
+          mockDatabase.getSkills(),
+          mockDatabase.getArtisans(),
+          mockDatabase.getCategories(),
         ])
+        setSkills(skillsData)
+        setFilteredSkills(skillsData)
+        setArtisans(artisansData)
+        setCategories(categoriesData)
         
-        // If database data is available, use it
-        if (skillsData.length > 0) {
-          setSkills(skillsData)
-          setFilteredSkills(skillsData)
-          setArtisans(artisansData)
-          setCategories(categoriesData)
-          
-          // Calculate stats from database data
-          setStats({
-            totalSkills: skillsData.length,
-            totalCategories: categoriesData.length,
-            avgPrice: skillsData.reduce((acc, skill) => acc + skill.price, 0) / skillsData.length,
-            popularSkills: skillsData.filter(skill => skill.currentStudents > 10).length
-          })
-        } else {
-          // Fallback to mock data
-          const [mockSkillsData, mockArtisansData, mockCategoriesData] = await Promise.all([
-            mockDatabase.getSkills(),
-            mockDatabase.getArtisans(),
-            mockDatabase.getCategories(),
-          ])
-          setSkills(mockSkillsData)
-          setFilteredSkills(mockSkillsData)
-          setArtisans(mockArtisansData)
-          setCategories(mockCategoriesData)
-          
-          // Calculate stats from mock data
-          setStats({
-            totalSkills: mockSkillsData.length,
-            totalCategories: mockCategoriesData.length,
-            avgPrice: mockSkillsData.reduce((acc, skill) => acc + skill.price, 0) / mockSkillsData.length,
-            popularSkills: mockSkillsData.filter(skill => skill.currentStudents > 10).length
-          })
-        }
+        // Calculate stats
+        setStats({
+          totalSkills: skillsData.length,
+          totalCategories: categoriesData.length,
+          avgPrice: skillsData.reduce((acc, skill) => acc + skill.price, 0) / skillsData.length,
+          popularSkills: skillsData.filter(skill => skill.currentStudents > 10).length
+        })
       } catch (error) {
         console.error("Failed to load skills data:", error)
       } finally {
@@ -81,38 +56,59 @@ export default function SkillsPage() {
     loadData()
   }, [])
 
-  const handleSearch = (query: string) => {
-    if (!query.trim()) {
-      setFilteredSkills(skills)
-      return
-    }
-
-    const filtered = skills.filter(
-      (skill) =>
-        skill.title.toLowerCase().includes(query.toLowerCase()) ||
-        skill.description.toLowerCase().includes(query.toLowerCase()) ||
-        skill.category.toLowerCase().includes(query.toLowerCase()),
-    )
-    setFilteredSkills(filtered)
-  }
-
-  const handleFilterChange = (filters: FilterState) => {
+  const handleFiltersChange = (filters: FilterState) => {
     let filtered = [...skills]
 
-    if (filters.category && filters.category !== "All categories") {
+    // Handle search
+    if (filters.search && filters.search.trim()) {
+      filtered = filtered.filter(
+        (skill) =>
+          skill.title.toLowerCase().includes(filters.search.toLowerCase()) ||
+          skill.description.toLowerCase().includes(filters.search.toLowerCase()) ||
+          skill.category.toLowerCase().includes(filters.search.toLowerCase()),
+      )
+    }
+
+    // Handle category filter
+    if (filters.category && filters.category !== "All Categories") {
       filtered = filtered.filter((skill) => skill.category === filters.category)
     }
 
-    if (filters.experience && filters.experience !== "Any experience") {
+    // Handle location filter
+    if (filters.location && filters.location !== "All Locations") {
+      // For skills, we can filter by the artisan's location
+      filtered = filtered.filter((skill) => {
+        const artisan = getArtisanById(skill.artisanId)
+        return artisan?.location === filters.location
+      })
+    }
+
+    // Handle rating filter
+    if (filters.minRating > 0) {
+      filtered = filtered.filter((skill) => skill.instructor.rating >= filters.minRating)
+    }
+
+    // Handle experience filter
+    if (filters.experience && filters.experience !== "All Experience") {
       // Filter by difficulty level as a proxy for experience requirement
       const difficultyMap: { [key: string]: string[] } = {
-        "1-2": ["beginner"],
-        "3-5": ["beginner", "intermediate"],
-        "5+": ["intermediate", "advanced"],
+        "Beginner": ["beginner"],
+        "Intermediate": ["beginner", "intermediate"],
+        "Advanced": ["intermediate", "advanced"],
       }
 
       if (difficultyMap[filters.experience]) {
         filtered = filtered.filter((skill) => difficultyMap[filters.experience].includes(skill.difficulty))
+      }
+    }
+
+    // Handle availability filter
+    if (filters.availability && filters.availability !== "All") {
+      // For skills, filter by current availability status
+      if (filters.availability === "Available") {
+        filtered = filtered.filter((skill) => skill.currentStudents < skill.maxStudents)
+      } else if (filters.availability === "Full") {
+        filtered = filtered.filter((skill) => skill.currentStudents >= skill.maxStudents)
       }
     }
 
@@ -210,7 +206,7 @@ export default function SkillsPage() {
         <section className="container mx-auto px-4 py-12">
           <div className="space-y-8">
             <div className="bg-white/50 dark:bg-muted/50 backdrop-blur rounded-xl p-6 border border-white/20 animate-in fade-in slide-in-from-bottom duration-700">
-              <SearchFilters onFiltersChange={handleFilterChange} />
+              <SearchFilters onFiltersChange={handleFiltersChange} />
             </div>
 
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/30 dark:bg-muted/30 backdrop-blur rounded-lg p-4 animate-in fade-in slide-in-from-bottom duration-700 delay-200">
@@ -254,7 +250,15 @@ export default function SkillsPage() {
                     {...({ variant: "outline" } as any)}
                     onClick={() => {
                       setFilteredSkills(skills)
-                      handleSearch("")
+                      // Reset filters by calling handleFiltersChange with default filters
+                      handleFiltersChange({
+                        search: "",
+                        category: "All Categories",
+                        location: "All Locations",
+                        minRating: 0,
+                        experience: "All Experience",
+                        availability: "All"
+                      })
                     }}
                     className="hover:scale-105 transition-all duration-200"
                   >

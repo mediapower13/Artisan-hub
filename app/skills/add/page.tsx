@@ -1,4 +1,5 @@
 "use client"
+
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Header } from "@/components/layout/header"
@@ -9,24 +10,21 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
 import { useAuth } from "@/contexts/auth-context"
 import { useToast } from "@/hooks/use-toast"
-import { 
-  Plus, 
-  X, 
-  Upload, 
-  BookOpen, 
-  Clock, 
-  Users, 
+import {
+  BookOpen,
+  Clock,
+  Users,
   DollarSign,
   Award,
-  CheckCircle
+  Info,
+  ChevronRight
 } from "lucide-react"
 
 const categories = [
   "Fashion & Tailoring",
-  "Technology & Programming", 
+  "Technology & Programming",
   "Arts & Crafts",
   "Beauty & Cosmetics",
   "Food & Culinary",
@@ -48,68 +46,40 @@ export default function AddSkillPage() {
   const router = useRouter()
   const { toast } = useToast()
   
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
     title: "",
-    description: "",
     category: "",
+    description: "",
     difficulty: "",
     duration: "",
     price: "",
-    maxStudents: "",
-    requirements: [""],
-    syllabus: [""],
-    images: [] as string[]
+    maxStudents: ""
   })
-  
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  // Redirect if not authenticated
-  if (!isAuthenticated) {
-    router.push("/login")
-    return null
-  }
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
-  const handleArrayChange = (field: "requirements" | "syllabus", index: number, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: prev[field].map((item, i) => i === index ? value : item)
-    }))
-  }
-
-  const addArrayItem = (field: "requirements" | "syllabus") => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: [...prev[field], ""]
-    }))
-  }
-
-  const removeArrayItem = (field: "requirements" | "syllabus", index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: prev[field].filter((_, i) => i !== index)
-    }))
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSubmitting(true)
+    
+    if (!isAuthenticated) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to add a skill.",
+      })
+      router.push("/login")
+      return
+    }
 
+    setIsSubmitting(true)
     try {
-      // Filter out empty requirements and syllabus items
       const cleanedData = {
         ...formData,
-        requirements: formData.requirements.filter(req => req.trim()),
-        syllabus: formData.syllabus.filter(item => item.trim()),
         price: parseFloat(formData.price),
         maxStudents: parseInt(formData.maxStudents)
       }
-
-      // Here you would normally send to your API
-      console.log("Skill data:", cleanedData)
       
       toast({
         title: "Skill Added Successfully!",
@@ -127,277 +97,231 @@ export default function AddSkillPage() {
     }
   }
 
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="max-w-md mx-auto px-4 py-20">
+          <Card className="text-center p-8 bg-white border shadow-lg">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Award className="h-8 w-8 text-blue-600" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">Authentication Required</h1>
+            <p className="text-gray-600 mb-6">Please log in to share your skills with the community.</p>
+            <Button onClick={() => router.push("/login")} className="w-full">
+              Log In
+            </Button>
+          </Card>
+        </div>
+        <Footer />
+      </div>
+    )
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Page Header */}
         <div className="mb-8">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-              <BookOpen className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+          <div className="flex items-center text-sm text-gray-500 mb-4">
+            <span>Dashboard</span>
+            <ChevronRight className="h-4 w-4 mx-2" />
+            <span className="text-gray-900 font-medium">Add New Skill</span>
+          </div>
+          
+          <div className="flex items-center space-x-4 mb-6">
+            <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+              <BookOpen className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                Teach a New Skill
-              </h1>
-              <p className="text-gray-600 dark:text-gray-400">
-                Share your expertise with the UNILORIN community
-              </p>
+              <h1 className="text-3xl font-bold text-gray-900">Add New Skill</h1>
+              <p className="text-gray-600">Share your expertise and teach others in the UNILORIN community</p>
             </div>
           </div>
           
-          {/* Steps Indicator */}
-          <div className="flex items-center space-x-4 p-4 bg-blue-50 dark:bg-blue-900/10 rounded-lg">
-            <CheckCircle className="h-5 w-5 text-blue-600" />
-            <span className="text-sm text-blue-800 dark:text-blue-300">
-              Fill out the form below to add your skill to the marketplace
-            </span>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start space-x-3">
+            <Info className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <h3 className="text-sm font-medium text-blue-800">Getting Started</h3>
+              <p className="text-sm text-blue-700 mt-1">
+                Fill out the form below to create your skill. Make sure to provide clear descriptions and set appropriate pricing for your expertise.
+              </p>
+            </div>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Basic Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Award className="h-5 w-5" />
-                <span>Basic Information</span>
-              </CardTitle>
-              <CardDescription>
-                Tell us about the skill you want to teach
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="md:col-span-2">
-                  <Label htmlFor="title">Skill Title *</Label>
-                  <Input
-                    id="title"
-                    value={formData.title}
-                    onChange={(e) => handleInputChange("title", e.target.value)}
-                    placeholder="e.g., Professional Tailoring for Beginners"
-                    required
-                  />
+        <Card className="bg-white border shadow-sm">
+          <CardHeader className="border-b border-gray-200 bg-white">
+            <CardTitle className="text-xl font-semibold text-gray-900">Skill Information</CardTitle>
+            <CardDescription className="text-gray-600">
+              Provide the basic details about the skill you want to teach
+            </CardDescription>
+          </CardHeader>
+          
+          <CardContent className="p-6">
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="space-y-6">
+                <div className="border-l-4 border-blue-500 pl-4">
+                  <h3 className="text-lg font-medium text-gray-900 mb-1">Basic Information</h3>
+                  <p className="text-sm text-gray-600">Tell us about the skill you want to teach</p>
                 </div>
                 
-                <div>
-                  <Label htmlFor="category">Category *</Label>
-                  <Select value={formData.category} onValueChange={(value) => handleInputChange("category", value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category} value={category}>
-                          {category}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="md:col-span-2">
+                    <Label htmlFor="title" className="text-sm font-medium text-gray-700 mb-2 block">
+                      Skill Title *
+                    </Label>
+                    <Input
+                      id="title"
+                      value={formData.title}
+                      onChange={(e) => handleInputChange("title", e.target.value)}
+                      placeholder="e.g., Professional Fashion Design Masterclass"
+                      required
+                      className="h-11 border border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md bg-white"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="category" className="text-sm font-medium text-gray-700 mb-2 block">
+                      Category *
+                    </Label>
+                    <Select value={formData.category} onValueChange={(value) => handleInputChange("category", value)}>
+                      <SelectTrigger className="h-11 border border-gray-300 focus:border-blue-500 rounded-md bg-white">
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white border border-gray-200 shadow-lg rounded-md">
+                        {categories.map((category) => (
+                          <SelectItem key={category} value={category} className="hover:bg-gray-50">
+                            {category}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                <div>
-                  <Label htmlFor="difficulty">Difficulty Level *</Label>
-                  <Select value={formData.difficulty} onValueChange={(value) => handleInputChange("difficulty", value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select difficulty" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {difficultyLevels.map((level) => (
-                        <SelectItem key={level.value} value={level.value}>
-                          <div>
-                            <div className="font-medium">{level.label}</div>
-                            <div className="text-xs text-gray-500">{level.description}</div>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                  <div>
+                    <Label htmlFor="difficulty" className="text-sm font-medium text-gray-700 mb-2 block">
+                      Difficulty Level *
+                    </Label>
+                    <Select value={formData.difficulty} onValueChange={(value) => handleInputChange("difficulty", value)}>
+                      <SelectTrigger className="h-11 border border-gray-300 focus:border-blue-500 rounded-md bg-white">
+                        <SelectValue placeholder="Select difficulty" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white border border-gray-200 shadow-lg rounded-md">
+                        {difficultyLevels.map((level) => (
+                          <SelectItem key={level.value} value={level.value} className="hover:bg-gray-50">
+                            <div className="py-1">
+                              <div className="font-medium">{level.label}</div>
+                              <div className="text-sm text-gray-500">{level.description}</div>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                <div className="md:col-span-2">
-                  <Label htmlFor="description">Description *</Label>
-                  <Textarea
-                    id="description"
-                    value={formData.description}
-                    onChange={(e) => handleInputChange("description", e.target.value)}
-                    placeholder="Describe what students will learn, your teaching approach, and why they should choose your skill..."
-                    rows={4}
-                    required
-                  />
+                  <div className="md:col-span-2">
+                    <Label htmlFor="description" className="text-sm font-medium text-gray-700 mb-2 block">
+                      Description *
+                    </Label>
+                    <Textarea
+                      id="description"
+                      value={formData.description}
+                      onChange={(e) => handleInputChange("description", e.target.value)}
+                      placeholder="Describe what students will learn, your teaching approach, and why they should choose your skill..."
+                      rows={4}
+                      required
+                      className="border border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md resize-none bg-white"
+                    />
+                  </div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
 
-          {/* Course Details */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Clock className="h-5 w-5" />
-                <span>Course Details</span>
-              </CardTitle>
-              <CardDescription>
-                Specify the practical details of your course
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div>
-                  <Label htmlFor="duration">Duration *</Label>
-                  <Input
-                    id="duration"
-                    value={formData.duration}
-                    onChange={(e) => handleInputChange("duration", e.target.value)}
-                    placeholder="e.g., 4 weeks, 10 hours"
-                    required
-                  />
+              <div className="space-y-6 pt-6 border-t border-gray-200">
+                <div className="border-l-4 border-green-500 pl-4">
+                  <h3 className="text-lg font-medium text-gray-900 mb-1">Course Details</h3>
+                  <p className="text-sm text-gray-600">Set up your course structure and pricing</p>
                 </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div>
+                    <Label htmlFor="duration" className="text-sm font-medium text-gray-700 mb-2 block">
+                      Duration *
+                    </Label>
+                    <Input
+                      id="duration"
+                      value={formData.duration}
+                      onChange={(e) => handleInputChange("duration", e.target.value)}
+                      placeholder="e.g., 4 weeks, 10 hours"
+                      required
+                      className="h-11 border border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md bg-white"
+                    />
+                  </div>
 
-                <div>
-                  <Label htmlFor="price">Price (₦) *</Label>
-                  <div className="relative">
-                    <DollarSign className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <div>
+                    <Label htmlFor="price" className="text-sm font-medium text-gray-700 mb-2 block">
+                      Price (₦) *
+                    </Label>
                     <Input
                       id="price"
                       type="number"
                       value={formData.price}
                       onChange={(e) => handleInputChange("price", e.target.value)}
-                      placeholder="5000"
-                      className="pl-10"
+                      placeholder="15000"
                       required
+                      className="h-11 border border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md bg-white"
                     />
                   </div>
-                </div>
 
-                <div>
-                  <Label htmlFor="maxStudents">Max Students *</Label>
-                  <div className="relative">
-                    <Users className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <div>
+                    <Label htmlFor="maxStudents" className="text-sm font-medium text-gray-700 mb-2 block">
+                      Max Students *
+                    </Label>
                     <Input
                       id="maxStudents"
                       type="number"
                       value={formData.maxStudents}
                       onChange={(e) => handleInputChange("maxStudents", e.target.value)}
                       placeholder="20"
-                      className="pl-10"
                       required
+                      className="h-11 border border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md bg-white"
                     />
                   </div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
 
-          {/* Requirements */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Requirements</CardTitle>
-              <CardDescription>
-                What do students need before taking this course?
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {formData.requirements.map((req, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <Input
-                      value={req}
-                      onChange={(e) => handleArrayChange("requirements", index, e.target.value)}
-                      placeholder="e.g., Basic sewing machine, Measuring tape"
-                    />
-                    {formData.requirements.length > 1 && (
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        onClick={() => removeArrayItem("requirements", index)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-                ))}
+              <div className="flex flex-col-reverse sm:flex-row justify-end space-y-2 space-y-reverse sm:space-y-0 sm:space-x-3 pt-6 border-t border-gray-200">
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => addArrayItem("requirements")}
-                  className="w-full"
+                  onClick={() => router.back()}
+                  className="h-11 px-6 border border-gray-300 text-gray-700 hover:bg-gray-50"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Requirement
+                  Cancel
                 </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Syllabus */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Course Syllabus</CardTitle>
-              <CardDescription>
-                Break down what you'll teach in each session
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {formData.syllabus.map((item, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <Badge className="min-w-fit bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200">
-                      {index + 1}
-                    </Badge>
-                    <Input
-                      value={item}
-                      onChange={(e) => handleArrayChange("syllabus", index, e.target.value)}
-                      placeholder="e.g., Introduction to pattern making"
-                    />
-                    {formData.syllabus.length > 1 && (
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        onClick={() => removeArrayItem("syllabus", index)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-                ))}
                 <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => addArrayItem("syllabus")}
-                  className="w-full"
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="h-11 px-8 bg-blue-600 hover:bg-blue-700 text-white font-medium"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Lesson
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Creating Course...
+                    </>
+                  ) : (
+                    <>
+                      <Award className="h-4 w-4 mr-2" />
+                      Create Course
+                    </>
+                  )}
                 </Button>
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Submit Button */}
-          <div className="flex justify-end space-x-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => router.back()}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="bg-blue-600 hover:bg-blue-700"
-            >
-              {isSubmitting ? "Submitting..." : "Add Skill"}
-            </Button>
-          </div>
-        </form>
+            </form>
+          </CardContent>
+        </Card>
       </main>
-
       <Footer />
     </div>
   )

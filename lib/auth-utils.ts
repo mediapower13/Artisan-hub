@@ -69,10 +69,23 @@ function base64UrlDecode(str: string): string {
   return Buffer.from(str.replace(/-/g, "+").replace(/_/g, "/"), "base64").toString()
 }
 
-// Simple HMAC-like signature
-function createSignature(data: string, secret: string): string {
-  const crypto = require("crypto")
-  return crypto.createHmac("sha256", secret).update(data).digest("base64url")
+// Web Crypto API compatible HMAC signature
+async function createSignature(data: string, secret: string): Promise<string> {
+  const encoder = new TextEncoder()
+  const keyData = encoder.encode(secret)
+  const messageData = encoder.encode(data)
+  
+  const key = await crypto.subtle.importKey(
+    'raw',
+    keyData,
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  )
+  
+  const signature = await crypto.subtle.sign('HMAC', key, messageData)
+  const base64 = btoa(String.fromCharCode(...new Uint8Array(signature)))
+  return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
 }
 
 export const authUtils = {
@@ -84,7 +97,7 @@ export const authUtils = {
     return verifyPassword(password, hashedPassword)
   },
 
-  generateToken(user: AuthUser): string {
+  async generateToken(user: AuthUser): Promise<string> {
     try {
       const header = { alg: "HS256", typ: "JWT" }
       const payload = {
@@ -97,7 +110,7 @@ export const authUtils = {
 
       const encodedHeader = base64UrlEncode(JSON.stringify(header))
       const encodedPayload = base64UrlEncode(JSON.stringify(payload))
-      const signature = createSignature(`${encodedHeader}.${encodedPayload}`, JWT_SECRET)
+      const signature = await createSignature(`${encodedHeader}.${encodedPayload}`, JWT_SECRET)
 
       return `${encodedHeader}.${encodedPayload}.${signature}`
     } catch (error) {
@@ -106,7 +119,7 @@ export const authUtils = {
     }
   },
 
-  verifyToken(token: string): AuthUser | null {
+  async verifyToken(token: string): Promise<AuthUser | null> {
     try {
       if (!token || typeof token !== "string") {
         return null
@@ -120,7 +133,7 @@ export const authUtils = {
       const [encodedHeader, encodedPayload, signature] = parts
 
       // Verify signature
-      const expectedSignature = createSignature(`${encodedHeader}.${encodedPayload}`, JWT_SECRET)
+      const expectedSignature = await createSignature(`${encodedHeader}.${encodedPayload}`, JWT_SECRET)
       if (signature !== expectedSignature) {
         console.log("[v0] Invalid token signature")
         return null

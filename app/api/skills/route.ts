@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { getAllSkills } from "@/lib/database-operations"
+import { getSkills } from "@/lib/supabase"
 
 // Force dynamic rendering for this route
 export const dynamic = 'force-dynamic'
@@ -12,34 +12,25 @@ export async function GET(request: NextRequest) {
     const difficulty = searchParams.get("difficulty")
     const maxPrice = searchParams.get("maxPrice")
 
-    // Get all skills from database
-    const allSkills = await getAllSkills()
-    
-    // Filter skills based on search parameters
-    let filteredSkills = allSkills
+    // Build filters object
+    const filters: any = {}
     
     if (category && category !== "All categories") {
-      filteredSkills = filteredSkills.filter(skill => skill.category === category)
+      filters.category = category
     }
     
     if (difficulty && difficulty !== "all") {
-      filteredSkills = filteredSkills.filter(skill => skill.difficulty === difficulty)
+      filters.difficulty = difficulty
     }
     
     if (maxPrice) {
-      filteredSkills = filteredSkills.filter(skill => skill.price <= parseInt(maxPrice))
+      filters.maxPrice = parseInt(maxPrice)
     }
 
-    if (search) {
-      const searchLower = search.toLowerCase()
-      filteredSkills = filteredSkills.filter(skill => 
-        skill.title.toLowerCase().includes(searchLower) ||
-        skill.description.toLowerCase().includes(searchLower)
-      )
-    }
+    const skillsData = await getSkills(filters)
     
-    // Transform skills to match expected format (already includes instructor info)
-    let skills = filteredSkills.map((skill: any) => ({
+    // Transform skills to include provider information
+    let skills = skillsData.map((skill: any) => ({
       id: skill.id,
       title: skill.title,
       description: skill.description,
@@ -47,15 +38,36 @@ export async function GET(request: NextRequest) {
       difficulty: skill.difficulty,
       duration: skill.duration,
       price: skill.price,
-      maxStudents: skill.maxStudents,
-      currentStudents: skill.currentStudents,
+      max_students: skill.max_students,
+      current_students: skill.current_students,
       images: skill.images || [],
       syllabus: skill.syllabus || [],
       requirements: skill.requirements || [],
-      instructor: skill.instructor,
-      createdAt: skill.createdAt,
-      updatedAt: skill.updatedAt
+      provider: {
+        id: skill.provider.id,
+        name: skill.provider.user?.full_name || skill.provider.business_name,
+        business_name: skill.provider.business_name,
+        location: skill.provider.location,
+        rating: skill.provider.rating,
+        verified: skill.provider.verified,
+        whatsapp_number: skill.provider.whatsapp_number,
+        profile_image: skill.provider.user?.profile_image
+      },
+      created_at: skill.created_at,
+      updated_at: skill.updated_at
     }))
+
+    // Apply search filter
+    if (search) {
+      const searchLower = search.toLowerCase()
+      skills = skills.filter((skill: any) =>
+        skill.title?.toLowerCase().includes(searchLower) ||
+        skill.description?.toLowerCase().includes(searchLower) ||
+        skill.category?.toLowerCase().includes(searchLower) ||
+        skill.provider?.name?.toLowerCase().includes(searchLower) ||
+        skill.provider?.business_name?.toLowerCase().includes(searchLower)
+      )
+    }
 
     return NextResponse.json({ skills })
   } catch (error) {
