@@ -308,8 +308,8 @@ export default function MarketplacePage() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative max-w-7xl">
             <div className="text-center space-y-10">
               <div className="space-y-6">
-                <div className="inline-flex items-center justify-center p-4 bg-blue-600 rounded-2xl mb-6 shadow-lg">
-                  <Users className="h-12 w-12 text-white" />
+                <div className="inline-flex items-center justify-center p-4 bg-slate-100 rounded-2xl mb-6">
+                  <Users className="h-12 w-12 text-slate-700" />
                 </div>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
                   Discover Skilled Artisans
@@ -321,40 +321,40 @@ export default function MarketplacePage() {
 
               {/* Enhanced Stats Cards */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-                <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
+                <Card className="bg-white border border-slate-200 shadow-sm hover:shadow" >
                   <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mx-auto mb-4 shadow-lg">
-                      <Users className="h-8 w-8 text-white" />
+                    <div className="flex items-center justify-center w-16 h-16 bg-slate-100 rounded-2xl mx-auto mb-4">
+                      <Users className="h-8 w-8 text-slate-700" />
                     </div>
                     <div className="text-3xl font-bold text-gray-900">{stats.totalArtisans}</div>
                     <div className="text-sm font-medium text-gray-600">Total Artisans</div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
+                <Card className="bg-white border border-slate-200 shadow-sm hover:shadow" >
                   <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-green-600 rounded-2xl mx-auto mb-4 shadow-lg">
-                      <TrendingUp className="h-8 w-8 text-white" />
+                    <div className="flex items-center justify-center w-16 h-16 bg-slate-100 rounded-2xl mx-auto mb-4">
+                      <TrendingUp className="h-8 w-8 text-slate-700" />
                     </div>
                     <div className="text-3xl font-bold text-gray-900">{stats.activeToday}</div>
                     <div className="text-sm font-medium text-gray-600">Available Now</div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
+                <Card className="bg-white border border-slate-200 shadow-sm hover:shadow" >
                   <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-yellow-600 rounded-2xl mx-auto mb-4 shadow-lg">
-                      <Star className="h-8 w-8 text-white" />
+                    <div className="flex items-center justify-center w-16 h-16 bg-slate-100 rounded-2xl mx-auto mb-4">
+                      <Star className="h-8 w-8 text-slate-700" />
                     </div>
                     <div className="text-3xl font-bold text-gray-900">{stats.avgRating.toFixed(1)}</div>
                     <div className="text-sm font-medium text-gray-600">Avg Rating</div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
+                <Card className="bg-white border border-slate-200 shadow-sm hover:shadow" >
                   <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-purple-600 rounded-2xl mx-auto mb-4 shadow-lg">
-                      <MapPin className="h-8 w-8 text-white" />
+                    <div className="flex items-center justify-center w-16 h-16 bg-slate-100 rounded-2xl mx-auto mb-4">
+                      <MapPin className="h-8 w-8 text-slate-700" />
                     </div>
                     <div className="text-3xl font-bold text-gray-900">{stats.totalSkills}</div>
                     <div className="text-sm font-medium text-gray-600">Skills Available</div>
@@ -368,16 +368,16 @@ export default function MarketplacePage() {
         {/* Enhanced Main Content */}
         <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 max-w-7xl">
           <Tabs defaultValue="artisans" className="space-y-10">
-            <TabsList className="grid w-full grid-cols-2 lg:w-[450px] mx-auto bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border-2 border-orange-200 dark:border-orange-800 rounded-2xl p-2 h-14 shadow-lg">
+            <TabsList className="grid w-full grid-cols-2 lg:w-[450px] mx-auto bg-white border border-slate-200 rounded-2xl p-2 h-14 shadow-sm">
               <TabsTrigger 
                 value="artisans" 
-                className="rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white transition-all duration-200 font-semibold text-lg"
+                className="rounded-xl data-[state=active]:bg-emerald-600 data-[state=active]:text-white transition-all duration-200 font-semibold text-lg text-slate-700"
               >
                 Browse Artisans ({filteredArtisans.length})
               </TabsTrigger>
               <TabsTrigger 
                 value="categories" 
-                className="rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white transition-all duration-200 font-semibold text-lg"
+                className="rounded-xl data-[state=active]:bg-emerald-600 data-[state=active]:text-white transition-all duration-200 font-semibold text-lg text-slate-700"
               >
                 By Category
               </TabsTrigger>
@@ -385,13 +385,13 @@ export default function MarketplacePage() {
 
             <TabsContent value="artisans" className="space-y-8">
               {/* Enhanced Search and Filters */}
-              <Card className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border-2 border-orange-200 dark:border-orange-800 shadow-xl overflow-hidden">
+              <Card className="bg-white border border-slate-200 shadow-sm overflow-hidden rounded-2xl">
                 <CardContent className="p-8">
                   <div className="space-y-6">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
-                        <div className="p-3 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl shadow-lg">
-                          <Filter className="h-6 w-6 text-white" />
+                        <div className="p-3 bg-slate-100 rounded-2xl">
+                          <Filter className="h-6 w-6 text-slate-700" />
                         </div>
                         <div>
                           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Find Artisans</h2>
@@ -403,18 +403,18 @@ export default function MarketplacePage() {
                           variant="outline"
                           size="lg"
                           onClick={() => setIsFiltersVisible(!isFiltersVisible)}
-                          className="flex items-center gap-2 bg-white/50 dark:bg-slate-800/50 border-2 border-orange-200 dark:border-orange-800 hover:border-orange-300 dark:hover:border-orange-700 rounded-xl h-12 px-6"
+                          className="flex items-center gap-2 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl h-12 px-6"
                         >
                           <Filter className="h-4 w-4" />
                           {isFiltersVisible ? 'Hide' : 'Show'} Filters
                         </Button>
                         
-                        <div className="flex items-center bg-orange-100 dark:bg-orange-900/50 rounded-xl p-1 border-2 border-orange-200 dark:border-orange-800">
+                        <div className="flex items-center bg-slate-100 rounded-xl p-1 border border-slate-200">
                           <Button
                             variant={viewMode === 'grid' ? 'default' : 'ghost'}
                             size="sm"
                             onClick={() => setViewMode('grid')}
-                            className={`h-10 w-10 p-0 rounded-lg ${viewMode === 'grid' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg' : 'hover:bg-orange-200 dark:hover:bg-orange-800'}`}
+                            className={`h-10 w-10 p-0 rounded-lg ${viewMode === 'grid' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-100'}`}
                           >
                             <LayoutGrid className="h-5 w-5" />
                           </Button>
@@ -422,7 +422,7 @@ export default function MarketplacePage() {
                             variant={viewMode === 'list' ? 'default' : 'ghost'}
                             size="sm"
                             onClick={() => setViewMode('list')}
-                            className={`h-10 w-10 p-0 rounded-lg ${viewMode === 'list' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg' : 'hover:bg-orange-200 dark:hover:bg-orange-800'}`}
+                            className={`h-10 w-10 p-0 rounded-lg ${viewMode === 'list' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-100'}`}
                           >
                             <List className="h-5 w-5" />
                           </Button>
@@ -431,7 +431,7 @@ export default function MarketplacePage() {
                     </div>
 
                     {isFiltersVisible && (
-                      <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/30 rounded-2xl p-6 border-2 border-orange-200 dark:border-orange-800">
+                      <div className="bg-white rounded-2xl p-6 border border-slate-200">
                         <SearchFilters onFiltersChange={handleFiltersChange} />
                       </div>
                     )}
@@ -442,11 +442,11 @@ export default function MarketplacePage() {
               {/* Enhanced Results */}
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
+                    <div className="flex items-center gap-4">
+                    <h3 className="text-2xl font-bold text-slate-900">
                       {filteredArtisans.length} Artisan{filteredArtisans.length !== 1 ? 's' : ''} Found
                     </h3>
-                    <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 text-sm font-semibold rounded-xl shadow-lg">
+                    <Badge className="bg-slate-100 text-slate-700 px-4 py-2 text-sm font-semibold rounded-xl">
                       From {artisans.length} total
                     </Badge>
                   </div>
@@ -465,11 +465,11 @@ export default function MarketplacePage() {
                     ))}
                   </div>
                 ) : (
-                  <Card className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border-2 border-orange-200 dark:border-orange-800 shadow-xl overflow-hidden">
+                  <Card className="bg-white border border-slate-200 shadow-sm overflow-hidden rounded-2xl">
                     <CardContent className="p-16 text-center">
                       <div className="space-y-6">
-                        <div className="w-20 h-20 bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/50 dark:to-red-900/50 rounded-2xl flex items-center justify-center mx-auto border-2 border-orange-200 dark:border-orange-800">
-                          <Users className="h-10 w-10 text-orange-500" />
+                        <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto border border-slate-200">
+                          <Users className="h-10 w-10 text-slate-700" />
                         </div>
                         <div className="space-y-3">
                           <h3 className="text-2xl font-bold text-slate-900 dark:text-white">No artisans found</h3>
@@ -480,7 +480,7 @@ export default function MarketplacePage() {
                         <Button 
                           variant="outline" 
                           onClick={() => window.location.reload()}
-                          className="mt-6 h-12 px-8 text-lg font-semibold border-2 border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/50 rounded-xl"
+                          className="mt-6 h-12 px-8 text-lg font-semibold border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-xl"
                         >
                           Clear All Filters
                         </Button>
@@ -492,16 +492,16 @@ export default function MarketplacePage() {
             </TabsContent>
 
             <TabsContent value="categories" className="space-y-8">
-              <Card className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border-2 border-orange-200 dark:border-orange-800 shadow-xl overflow-hidden">
+              <Card className="bg-white border border-slate-200 shadow-sm overflow-hidden rounded-2xl">
                 <CardContent className="p-8">
                   <div className="text-center space-y-4 mb-8">
-                    <div className="inline-flex items-center justify-center p-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-3xl mb-6 shadow-lg">
-                      <LayoutGrid className="h-8 w-8 text-white" />
+                    <div className="inline-flex items-center justify-center p-4 bg-slate-100 rounded-3xl mb-6">
+                      <LayoutGrid className="h-8 w-8 text-slate-700" />
                     </div>
                     <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Browse by Category</h2>
                     <p className="text-xl text-slate-600 dark:text-slate-400">Explore artisans organized by their specializations</p>
                   </div>
-                  <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/30 rounded-2xl p-6 border-2 border-orange-200 dark:border-orange-800">
+                  <div className="bg-white rounded-2xl p-6 border border-slate-200">
                     <CategoryGrid categories={categories} />
                   </div>
                 </CardContent>

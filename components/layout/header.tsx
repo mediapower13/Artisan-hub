@@ -41,24 +41,10 @@ export function Header() {
   }, [])
 
   const navigation = [
-    { name: "Home", href: "/", icon: Home },
-    { name: "Marketplace", href: "/marketplace", icon: ShoppingBag },
-    { name: "Skills", href: "/skills", icon: BookOpen },
+    { name: "Home", href: "/" },
+    { name: "Marketplace", href: "/marketplace" },
+    { name: "Skills", href: "/skills" },
   ]
-
-  const userNavigation = isAuthenticated
-    ? [
-        { name: "Dashboard", href: "/dashboard", icon: Award },
-        { name: "Messages", href: "/messages", icon: MessageCircle },
-        { name: "Settings", href: "/settings", icon: Settings },
-      ]
-    : []
-
-  const handleLogout = () => {
-    logout()
-    router.push("/")
-    setIsOpen(false)
-  }
 
   const isActive = (href: string) => {
     return pathname === href
@@ -66,35 +52,15 @@ export function Header() {
 
   return (
     <>
-      {/* Header */}
-      <header className={`
-        fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out
-        ${scrolled 
-          ? 'bg-white border-b border-slate-200 shadow-sm' 
-          : 'bg-white border-b border-slate-100'
-        }
-      `}>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-200 shadow-sm transition-all duration-300 ease-in-out">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            
             {/* Logo Section */}
-            <Link href="/" className="flex items-center space-x-3 group">
-              <div className="flex items-center space-x-3">
-                <Image
-                  src="/placeholder-logo.svg"
-                  alt="UNILORIN Logo"
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
-                <div className="flex flex-col">
-                  <h1 className="text-lg font-bold text-emerald-700">
-                    UNILORIN
-                  </h1>
-                  <p className="text-xs text-slate-600 font-medium leading-tight">
-                    Student Artisan Hub
-                  </p>
-                </div>
+            <Link href="/" className="flex items-center gap-3 group">
+              <Image src="/placeholder-logo.svg" alt="UNILORIN Logo" width={40} height={40} className="rounded-full" />
+              <div className="flex flex-col">
+                <span className="text-lg font-bold text-slate-900">UNILORIN</span>
+                <span className="text-xs text-slate-600 font-medium leading-tight">Student Artisan Hub</span>
               </div>
             </Link>
 
@@ -104,248 +70,145 @@ export function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`
-                    flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200
-                    ${isActive(item.href)
-                      ? 'text-emerald-700 bg-emerald-50'
-                      : 'text-slate-700 hover:text-emerald-600 hover:bg-slate-50'
-                    }
-                  `}
+                  className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${pathname === item.href ? 'text-emerald-700 bg-emerald-50' : 'text-slate-700 hover:text-emerald-600 hover:bg-slate-50'}`}
                 >
-                  <item.icon className="h-4 w-4" />
                   <span>{item.name}</span>
                 </Link>
               ))}
-              
-              {/* Teach a Skill and User Icon Side by Side */}
-              <div className="flex items-center space-x-3">
-                <Link
-                  href="/skills/add"
-                  className="flex items-center space-x-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md text-sm font-medium transition-colors duration-200 shadow-sm border border-orange-400"
-                >
-                  <Award className="h-4 w-4" />
-                  <span>Teach a Skill</span>
-                </Link>
-                
-                {/* User Menu */}
-                {isAuthenticated && (
+              {/* Teach a Skill as a separate button */}
+              <Link
+                href="/skills/add"
+                className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md text-sm font-medium transition-colors duration-200 shadow-sm border border-orange-400"
+              >
+                Teach a Skill
+              </Link>
+            </nav>
+
+            {/* Right Side Actions */}
+            <div className="flex items-center gap-3">
+              {!isAuthenticated ? (
+                <>
+                  <Button variant="ghost" onClick={() => router.push("/login")} className="text-slate-700 hover:text-emerald-600 hover:bg-slate-100">Sign In</Button>
+                  <Button onClick={() => router.push("/register")} className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm border border-emerald-500">Get Started</Button>
+                </>
+              ) : (
+                // Desktop-only avatar dropdown. Mobile still uses the sheet menu above.
+                <div className="hidden md:block">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button 
-                        variant="ghost"
-                        className="relative h-10 w-10 rounded-full ring-2 ring-transparent hover:ring-emerald-200 transition-all duration-200"
-                      >
-                        <Avatar className="h-9 w-9">
-                          <AvatarImage
-                            src="/placeholder-user.jpg"
-                            alt={user ? user.fullName : "User"}
-                          />
-                          <AvatarFallback className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold text-sm">
-                            {user ? user.fullName?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() : "U"}
-                          </AvatarFallback>
+                      <button aria-label="Open user menu" className="h-10 w-10 rounded-full overflow-hidden focus:outline-none ring-2 ring-transparent hover:ring-emerald-200 transition-all duration-200">
+                        <Avatar className="h-10 w-10">
+                          <AvatarImage src="/placeholder-user.jpg" alt={user ? user.fullName : "User"} />
+                          <AvatarFallback className="bg-slate-400 text-white font-semibold text-sm">{user ? user.fullName?.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase() : "U"}</AvatarFallback>
                         </Avatar>
-                      </Button>
+                      </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent 
-                      className="w-56 mt-2 p-2 bg-white border border-slate-200 shadow-xl rounded-lg" 
-                      align="end"
-                      sideOffset={8}
-                    >
-                      {/* User Info */}
-                      <div className="px-3 py-2 border-b border-slate-100">
-                        <p className="text-sm font-medium text-slate-900">
-                          {user ? user.fullName : "User"}
-                        </p>
-                        <p className="text-xs text-slate-500">
-                          {user?.email}
-                        </p>
+                    <DropdownMenuContent className="w-64 mt-2 p-2 bg-white border border-slate-200 shadow-xl rounded-lg" align="end" sideOffset={8}>
+                      <div className="px-3 py-3 border-b border-slate-100">
+                        <div className="flex items-center gap-3">
+                          <Avatar className="h-10 w-10">
+                            <AvatarImage src="/placeholder-user.jpg" alt={user ? user.fullName : "User"} />
+                            <AvatarFallback className="bg-slate-400 text-white font-semibold text-sm">{user ? user.fullName?.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase() : "U"}</AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-slate-900 truncate">{user ? user.fullName : "User"}</p>
+                            <p className="text-xs text-slate-500 truncate">{user?.email}</p>
+                          </div>
+                        </div>
                       </div>
-                      
-                      {/* Menu Items */}
                       <div className="py-1">
                         <DropdownMenuItem asChild>
-                          <Link href="/dashboard" className="flex items-center px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 rounded-md">
-                            <Award className="h-4 w-4 mr-2" />
+                          <Link href="/profile" className="flex items-center px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 rounded-md transition-colors">
+                            <User className="h-4 w-4 mr-3 text-slate-500" />
+                            View Profile
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link href="/dashboard" className="flex items-center px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 rounded-md transition-colors">
+                            <Award className="h-4 w-4 mr-3 text-slate-500" />
                             Dashboard
                           </Link>
                         </DropdownMenuItem>
-                        
                         <DropdownMenuItem asChild>
-                          <Link href="/settings" className="flex items-center px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 rounded-md">
-                            <Settings className="h-4 w-4 mr-2" />
-                            Settings
+                          <Link href="/settings" className="flex items-center px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 rounded-md transition-colors">
+                            <Settings className="h-4 w-4 mr-3 text-slate-500" />
+                            Account Settings
                           </Link>
                         </DropdownMenuItem>
                       </div>
-                      
-                      {/* Logout */}
                       <div className="border-t border-slate-100 pt-1">
-                        <DropdownMenuItem 
-                          onClick={handleLogout}
-                          className="flex items-center px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md cursor-pointer"
-                        >
-                          <LogOut className="h-4 w-4 mr-2" />
+                        <DropdownMenuItem onClick={logout} className="flex items-center px-3 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 rounded-md cursor-pointer transition-colors">
+                          <LogOut className="h-4 w-4 mr-3" />
                           Sign Out
                         </DropdownMenuItem>
                       </div>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                )}
-              </div>
-            </nav>
-
-            {/* Right Side Actions for Non-Authenticated Users */}
-            <div className="flex items-center space-x-3">
-              {!isAuthenticated && (
-                <div className="hidden sm:flex items-center space-x-2">
-                  <Button 
-                    variant="ghost"
-                    onClick={() => router.push("/login")}
-                    className="text-slate-700 hover:text-emerald-600 hover:bg-slate-100"
-                  >
-                    Sign In
-                  </Button>
-                  <Button 
-                    onClick={() => router.push("/register")}
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm border border-emerald-500"
-                  >
-                    Get Started
-                  </Button>
                 </div>
               )}
-
-              {/* Mobile Menu Trigger */}
-              <Sheet open={isOpen} onOpenChange={setIsOpen}>
-                <SheetTrigger asChild>
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    className="md:hidden h-9 w-9 text-slate-700 hover:text-emerald-600 hover:bg-slate-100"
-                  >
-                    <Menu className="h-5 w-5" />
-                    <span className="sr-only">Toggle menu</span>
-                  </Button>
-                </SheetTrigger>
-                <SheetContent 
-                  className="w-80 bg-white border-l border-gray-200"
-                >
-                  <SheetHeader>
-                    <SheetTitle className="text-left">
-                      <div className="flex items-center space-x-3">
-                        <Image
-                          src="/placeholder-logo.svg"
-                          alt="UNILORIN"
-                          width={32}
-                          height={32}
-                          className="rounded-full"
-                        />
-                        <div>
-                          <h2 className="text-lg font-bold text-emerald-700">UNILORIN</h2>
-                          <p className="text-xs text-slate-600">Student Artisan Hub</p>
-                        </div>
-                      </div>
-                    </SheetTitle>
-                  </SheetHeader>
-                  
-                  <div className="mt-8 space-y-6">
-                    {/* Mobile Navigation */}
-                    <nav className="space-y-2">
-                      {navigation.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          onClick={() => setIsOpen(false)}
-                          className={`
-                            flex items-center space-x-3 px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200
-                            ${isActive(item.href)
-                              ? 'text-emerald-700 bg-emerald-50 border border-emerald-200'
-                              : 'text-slate-700 hover:text-emerald-600 hover:bg-slate-50'
-                            }
-                          `}
-                        >
-                          <item.icon className="h-5 w-5" />
-                          <span>{item.name}</span>
-                        </Link>
-                      ))}
-                      <Link
-                        href="/skills/add"
-                        onClick={() => setIsOpen(false)}
-                        className="flex items-center space-x-3 px-4 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-base font-medium transition-colors duration-200 shadow-sm border border-orange-400"
-                      >
-                        <Award className="h-5 w-5" />
-                        <span>Teach a Skill</span>
-                      </Link>
-                    </nav>
-
-                    {/* Mobile User Section */}
-                    {isAuthenticated ? (
-                      <div className="space-y-4 pt-6 border-t border-gray-200/50">
-                        <div className="flex items-center space-x-3 px-4">
-                          <Avatar className="h-10 w-10">
-                            <AvatarImage
-                              src="/placeholder-user.jpg"
-                              alt={user ? user.fullName : "User"}
-                            />
-                            <AvatarFallback className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white">
-                              {user ? user.fullName?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() : "U"}
-                            </AvatarFallback>
-                          </Avatar>
+              {/* Mobile Navigation Trigger - only show on mobile */}
+              <div className="md:hidden">
+                <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="ghost" size="icon" className="h-9 w-9 text-slate-700 hover:text-emerald-600 hover:bg-slate-100">
+                      <Menu className="h-5 w-5" />
+                      <span className="sr-only">Toggle menu</span>
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent className="w-80 bg-white border-l border-gray-200">
+                    <SheetHeader>
+                      <SheetTitle className="text-left">
+                        <div className="flex items-center gap-3">
+                          <Image src="/placeholder-logo.svg" alt="UNILORIN" width={32} height={32} className="rounded-full" />
                           <div>
-                            <p className="font-medium text-gray-900">
-                              {user ? user.fullName : "User"}
-                            </p>
-                            <p className="text-sm text-gray-500">{user?.email}</p>
+                            <h2 className="text-lg font-bold text-emerald-700">UNILORIN</h2>
+                            <p className="text-xs text-slate-600">Student Artisan Hub</p>
                           </div>
                         </div>
-                        
-                        <nav className="space-y-1">
-                          {userNavigation.map((item) => (
-                            <Link
-                              key={item.name}
-                              href={item.href}
-                              onClick={() => setIsOpen(false)}
-                              className="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-gray-100 rounded-lg transition-colors duration-200"
-                            >
-                              <item.icon className="h-5 w-5" />
-                              <span>{item.name}</span>
-                            </Link>
-                          ))}
-                          <button
-                            onClick={handleLogout}
-                            className="w-full flex items-center space-x-3 px-4 py-3 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                      </SheetTitle>
+                    </SheetHeader>
+                    <div className="mt-8 space-y-6">
+                      <nav className="space-y-2">
+                        {navigation.map((item) => (
+                          <Link
+                            key={item.name}
+                            href={item.href}
+                            onClick={() => setIsOpen(false)}
+                            className={`flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 ${isActive(item.href) ? 'text-emerald-700 bg-slate-100 border border-emerald-200' : 'text-slate-700 hover:text-emerald-600 hover:bg-slate-50'}`}
                           >
-                            <LogOut className="h-5 w-5" />
-                            <span>Log out</span>
-                          </button>
-                        </nav>
-                      </div>
-                    ) : (
-                      <div className="space-y-3 pt-6 border-t border-gray-200/50">
-                        <Button 
-                          variant="outline"
-                          onClick={() => {
-                            router.push("/login")
-                            setIsOpen(false)
-                          }}
-                          className="w-full justify-start text-slate-700 border-slate-300 hover:bg-slate-50 hover:text-emerald-600"
-                        >
-                          <User className="h-4 w-4 mr-2" />
-                          Sign in
-                        </Button>
-                        <Button 
-                          onClick={() => {
-                            router.push("/register")
-                            setIsOpen(false)
-                          }}
-                          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm border border-emerald-500"
-                        >
-                          Get started
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                </SheetContent>
-              </Sheet>
+                            <span>{item.name}</span>
+                          </Link>
+                        ))}
+                      </nav>
+                      {isAuthenticated ? (
+                        <div className="space-y-4 pt-6 border-t border-gray-200/50">
+                          <div className="flex items-center gap-3 px-4">
+                            <Avatar className="h-10 w-10">
+                              <AvatarImage src="/placeholder-user.jpg" alt={user ? user.fullName : "User"} />
+                              <AvatarFallback className="bg-slate-400 text-white">{user ? user.fullName?.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase() : "U"}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <p className="font-medium text-gray-900">{user ? user.fullName : "User"}</p>
+                              <p className="text-sm text-gray-500">{user?.email}</p>
+                            </div>
+                          </div>
+                          <nav className="space-y-1">
+                            <Link href="/profile" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-gray-100 rounded-lg transition-colors duration-200"><User className="h-5 w-5" /><span>View Profile</span></Link>
+                            <Link href="/dashboard" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-gray-100 rounded-lg transition-colors duration-200"><Award className="h-5 w-5" /><span>Dashboard</span></Link>
+                            <Link href="/settings" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-gray-100 rounded-lg transition-colors duration-200"><Settings className="h-5 w-5" /><span>Account Settings</span></Link>
+                            <button onClick={logout} className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-200"><LogOut className="h-5 w-5" /><span>Log out</span></button>
+                          </nav>
+                        </div>
+                      ) : (
+                        <div className="space-y-3 pt-6 border-t border-gray-200/50">
+                          <Button variant="outline" onClick={() => { router.push("/login"); setIsOpen(false); }} className="w-full justify-start text-slate-700 border-slate-300 hover:bg-slate-50 hover:text-emerald-600"><User className="h-4 w-4 mr-2" />Sign in</Button>
+                          <Button onClick={() => { router.push("/register"); setIsOpen(false); }} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm border border-emerald-500">Get started</Button>
+                        </div>
+                      )}
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              </div>
             </div>
           </div>
         </div>
