@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { SupabaseService } from "@/lib/supabase"
+import { getAllProviders } from "@/lib/database-operations"
 
 // Force dynamic rendering for this route
 export const dynamic = 'force-dynamic'
@@ -11,23 +11,33 @@ export async function GET(request: NextRequest) {
     const location = searchParams.get("location")
     const verified = searchParams.get("verified")
 
-    // Get providers from Supabase with filters
-    const filters: any = {}
+    // Get providers from database
+    const providers = await getAllProviders()
+
+    // Filter providers based on search parameters
+    let filteredProviders = providers
     
     if (location && location !== "All locations") {
-      filters.location = location
+      filteredProviders = filteredProviders.filter(p => p.location.includes(location))
     }
     
     if (verified === "true") {
-      filters.verified = true
+      filteredProviders = filteredProviders.filter(p => p.verified)
     }
 
-    const providers = await SupabaseService.getProviders(filters)
+    if (search) {
+      const searchLower = search.toLowerCase()
+      filteredProviders = filteredProviders.filter(p => 
+        p.businessName.toLowerCase().includes(searchLower) ||
+        p.description.toLowerCase().includes(searchLower) ||
+        p.specialization.some(spec => spec.toLowerCase().includes(searchLower))
+      )
+    }
 
     // Transform providers to match expected artisan format
-    let artisans = providers.map((provider: any) => ({
+    let artisans = filteredProviders.map((provider: any) => ({
       id: provider.id,
-      name: provider.user?.full_name || provider.business_name,
+      name: provider.fullName || provider.businessName,
       business_name: provider.business_name,
       description: provider.description,
       location: provider.location,

@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server"
-import { SupabaseService } from "@/lib/supabase"
+import { getAllCategories } from "@/lib/database-operations"
 
 export async function GET() {
   try {
-    const categories = await SupabaseService.getCategories()
+    const categories = await getAllCategories()
     return NextResponse.json({ categories })
   } catch (error) {
     console.error("Categories API error:", error)

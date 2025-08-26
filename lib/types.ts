@@ -71,6 +71,13 @@ export interface Skill {
   images: string[]
   syllabus: string[]
   requirements: string[]
+  instructor: {
+    id: string
+    name: string
+    image: string
+    rating: number
+    businessName: string
+  }
   createdAt: Date
   updatedAt: Date
 }

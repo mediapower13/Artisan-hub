@@ -10,7 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { mockDatabase } from "@/lib/mock-data"
+import { getAllProviders, getAllCategories, searchProviders, checkDatabaseConnection } from "@/lib/database-operations"
+import { mockDatabase } from "@/lib/mock-data" // Fallback for development
 import type { Artisan, Category } from "@/lib/types"
 import { Grid, List, Users, Star, MapPin, Clock, TrendingUp, Filter, LayoutGrid } from "lucide-react"
 
@@ -28,6 +29,9 @@ export default function MarketplacePage() {
   const [filteredArtisans, setFilteredArtisans] = useState<Artisan[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [useDatabase, setUseDatabase] = useState(true)
   const [isLoading, setIsLoading] = useState(true)
   const [isFiltersVisible, setIsFiltersVisible] = useState(true)
   const [stats, setStats] = useState({
@@ -39,25 +43,81 @@ export default function MarketplacePage() {
 
   useEffect(() => {
     const loadData = async () => {
+      setLoading(true)
+      setError(null)
+      
       try {
-        const [artisansData, categoriesData] = await Promise.all([
-          mockDatabase.getArtisans(),
-          mockDatabase.getCategories(),
-        ])
-        setArtisans(artisansData)
-        setFilteredArtisans(artisansData)
-        setCategories(categoriesData)
+        // Check if database is available
+        const dbAvailable = await checkDatabaseConnection()
         
-        // Calculate stats
-        setStats({
-          totalArtisans: artisansData.length,
-          totalSkills: artisansData.reduce((acc, artisan) => acc + artisan.skills.length, 0),
-          avgRating: artisansData.reduce((acc, artisan) => acc + artisan.rating, 0) / artisansData.length,
-          activeToday: Math.floor(artisansData.length * 0.7) // Mock 70% active today
-        })
+        if (dbAvailable && useDatabase) {
+          // Load data from database
+          console.log('Loading data from Supabase database...')
+          const [artisansData, categoriesData] = await Promise.all([
+            getAllProviders(),
+            getAllCategories(),
+          ])
+          
+          setArtisans(artisansData)
+          setFilteredArtisans(artisansData)
+          setCategories(categoriesData)
+          
+          // Calculate stats from real data
+          setStats({
+            totalArtisans: artisansData.length,
+            totalSkills: artisansData.reduce((acc, artisan) => acc + artisan.skills.length, 0),
+            avgRating: artisansData.length > 0 
+              ? artisansData.reduce((acc, artisan) => acc + artisan.rating, 0) / artisansData.length 
+              : 0,
+            activeToday: Math.floor(artisansData.length * 0.7) // Estimate 70% active today
+          })
+          
+          console.log(`Loaded ${artisansData.length} providers and ${categoriesData.length} categories from database`)
+        } else {
+          // Fallback to mock data
+          console.log('Database not available, falling back to mock data...')
+          setUseDatabase(false)
+          
+          const [artisansData, categoriesData] = await Promise.all([
+            mockDatabase.getArtisans(),
+            mockDatabase.getCategories(),
+          ])
+          
+          setArtisans(artisansData)
+          setFilteredArtisans(artisansData)
+          setCategories(categoriesData)
+          
+          // Calculate stats from mock data
+          setStats({
+            totalArtisans: artisansData.length,
+            totalSkills: artisansData.reduce((acc, artisan) => acc + artisan.skills.length, 0),
+            avgRating: artisansData.reduce((acc, artisan) => acc + artisan.rating, 0) / artisansData.length,
+            activeToday: Math.floor(artisansData.length * 0.7)
+          })
+          
+          if (!dbAvailable) {
+            setError('Database connection failed. Using demo data.')
+          }
+        }
       } catch (error) {
         console.error("Failed to load marketplace data:", error)
+        setError('Failed to load data. Please try again.')
+        
+        // Fallback to mock data on error
+        try {
+          const [artisansData, categoriesData] = await Promise.all([
+            mockDatabase.getArtisans(),
+            mockDatabase.getCategories(),
+          ])
+          setArtisans(artisansData)
+          setFilteredArtisans(artisansData)
+          setCategories(categoriesData)
+          setUseDatabase(false)
+        } catch (fallbackError) {
+          console.error("Fallback to mock data also failed:", fallbackError)
+        }
       } finally {
+        setLoading(false)
         setIsLoading(false)
       }
     }
@@ -65,7 +125,33 @@ export default function MarketplacePage() {
     loadData()
   }, [])
 
-  const handleFiltersChange = (filters: FilterState) => {
+  const handleFiltersChange = async (filters: FilterState) => {
+    if (useDatabase) {
+      // Use database search for better performance with large datasets
+      try {
+        setLoading(true)
+        const searchResults = await searchProviders({
+          search: filters.search || undefined,
+          category: filters.category !== "All Categories" ? filters.category : undefined,
+          location: filters.location || undefined,
+          minRating: filters.minRating > 0 ? filters.minRating : undefined,
+          verified: true // Only show verified providers
+        })
+        setFilteredArtisans(searchResults)
+      } catch (error) {
+        console.error('Database search failed, falling back to client-side filtering:', error)
+        // Fallback to client-side filtering
+        clientSideFilter(filters)
+      } finally {
+        setLoading(false)
+      }
+    } else {
+      // Client-side filtering for mock data
+      clientSideFilter(filters)
+    }
+  }
+
+  const clientSideFilter = (filters: FilterState) => {
     let filtered = [...artisans]
 
     // Search filter
@@ -91,6 +177,7 @@ export default function MarketplacePage() {
           }
           if (filters.category === "Electronics & Technology") {
             return spec.toLowerCase().includes('electronics') || 
+                   spec.toLowerCase().includes('technology') ||
                    spec.toLowerCase().includes('tech') || 
                    spec.toLowerCase().includes('computer')
           }
@@ -129,6 +216,16 @@ export default function MarketplacePage() {
           default:
             return true
         }
+      })
+    }
+
+    // Availability filter
+    if (filters.availability !== "All") {
+      filtered = filtered.filter(artisan => {
+        if (filters.availability === "Available") {
+          return artisan.availability?.isAvailable
+        }
+        return true
       })
     }
 
@@ -175,6 +272,38 @@ export default function MarketplacePage() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
       <Header />
+      
+      {/* Database Status Indicator */}
+      {error && (
+        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3">
+          <div className="flex items-center justify-center">
+            <div className="text-sm text-yellow-700">
+              ⚠️ {error}
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {!useDatabase && !error && (
+        <div className="bg-blue-50 border-l-4 border-blue-400 p-3">
+          <div className="flex items-center justify-center">
+            <div className="text-sm text-blue-700">
+              📖 Currently using demo data for development
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {useDatabase && !error && (
+        <div className="bg-green-50 border-l-4 border-green-400 p-3">
+          <div className="flex items-center justify-center">
+            <div className="text-sm text-green-700">
+              🗄️ Connected to Supabase database
+            </div>
+          </div>
+        </div>
+      )}
+
       <main className="flex-1 overflow-x-hidden">
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5 py-12 lg:py-20">

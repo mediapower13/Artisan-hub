@@ -310,7 +310,9 @@ export default function AddSkillPage() {
                     />
                     {formData.requirements.length > 1 && (
                       <Button
-                        {...({ type: "button", variant: "outline", size: "icon" } as any)}
+                        type="button"
+                        variant="outline"
+                        size="icon"
                         onClick={() => removeArrayItem("requirements", index)}
                       >
                         <X className="h-4 w-4" />
@@ -319,7 +321,8 @@ export default function AddSkillPage() {
                   </div>
                 ))}
                 <Button
-                  {...({ type: "button", variant: "outline" } as any)}
+                  type="button"
+                  variant="outline"
                   onClick={() => addArrayItem("requirements")}
                   className="w-full"
                 >
@@ -352,7 +355,9 @@ export default function AddSkillPage() {
                     />
                     {formData.syllabus.length > 1 && (
                       <Button
-                        {...({ type: "button", variant: "outline", size: "icon" } as any)}
+                        type="button"
+                        variant="outline"
+                        size="icon"
                         onClick={() => removeArrayItem("syllabus", index)}
                       >
                         <X className="h-4 w-4" />
@@ -361,7 +366,8 @@ export default function AddSkillPage() {
                   </div>
                 ))}
                 <Button
-                  {...({ type: "button", variant: "outline" } as any)}
+                  type="button"
+                  variant="outline"
                   onClick={() => addArrayItem("syllabus")}
                   className="w-full"
                 >
@@ -375,7 +381,8 @@ export default function AddSkillPage() {
           {/* Submit Button */}
           <div className="flex justify-end space-x-4">
             <Button
-              {...({ type: "button", variant: "outline" } as any)}
+              type="button"
+              variant="outline"
               onClick={() => router.back()}
             >
               Cancel

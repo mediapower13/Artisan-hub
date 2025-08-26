@@ -13,8 +13,11 @@
     "setup-supabase": "node scripts/setup-supabase.js",
     "test-database": "node scripts/test-database.js",
     "setup": "npm run setup-env && npm run setup-db",
-    "db:push": "echo 'Database schema push - implement with your preferred ORM'",
-    "db:seed": "echo 'Database seeding - using mock data for now'",
+    "db:manage": "node scripts/manage-database.js",
+    "db:stats": "node scripts/manage-database.js stats",
+    "db:seed": "node scripts/manage-database.js seed",
+    "db:test": "node scripts/manage-database.js test",
+    "db:verify": "node scripts/verify-database.js",
     "type-check": "npx tsc --noEmit",
     "clean": "rm -rf .next out dist"
   },

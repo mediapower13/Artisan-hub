@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { mockDatabase } from "@/lib/mock-data"
+import { getAllProviders, getAllCategories, getAllSkills } from "@/lib/database-operations"
+import { mockDatabase } from "@/lib/mock-data" // Fallback for development
 import type { Skill, Artisan, Category } from "@/lib/types"
 import { Grid, List, BookOpen, Users, Award, Clock, TrendingUp, Star } from "lucide-react"
 
@@ -29,23 +30,47 @@ export default function SkillsPage() {
   useEffect(() => {
     const loadData = async () => {
       try {
+        // Try to load from database first
         const [skillsData, artisansData, categoriesData] = await Promise.all([
-          mockDatabase.getSkills(),
-          mockDatabase.getArtisans(),
-          mockDatabase.getCategories(),
+          getAllSkills(),
+          getAllProviders(),
+          getAllCategories(),
         ])
-        setSkills(skillsData)
-        setFilteredSkills(skillsData)
-        setArtisans(artisansData)
-        setCategories(categoriesData)
         
-        // Calculate stats
-        setStats({
-          totalSkills: skillsData.length,
-          totalCategories: categoriesData.length,
-          avgPrice: skillsData.reduce((acc, skill) => acc + skill.price, 0) / skillsData.length,
-          popularSkills: skillsData.filter(skill => skill.currentStudents > 10).length
-        })
+        // If database data is available, use it
+        if (skillsData.length > 0) {
+          setSkills(skillsData)
+          setFilteredSkills(skillsData)
+          setArtisans(artisansData)
+          setCategories(categoriesData)
+          
+          // Calculate stats from database data
+          setStats({
+            totalSkills: skillsData.length,
+            totalCategories: categoriesData.length,
+            avgPrice: skillsData.reduce((acc, skill) => acc + skill.price, 0) / skillsData.length,
+            popularSkills: skillsData.filter(skill => skill.currentStudents > 10).length
+          })
+        } else {
+          // Fallback to mock data
+          const [mockSkillsData, mockArtisansData, mockCategoriesData] = await Promise.all([
+            mockDatabase.getSkills(),
+            mockDatabase.getArtisans(),
+            mockDatabase.getCategories(),
+          ])
+          setSkills(mockSkillsData)
+          setFilteredSkills(mockSkillsData)
+          setArtisans(mockArtisansData)
+          setCategories(mockCategoriesData)
+          
+          // Calculate stats from mock data
+          setStats({
+            totalSkills: mockSkillsData.length,
+            totalCategories: mockCategoriesData.length,
+            avgPrice: mockSkillsData.reduce((acc, skill) => acc + skill.price, 0) / mockSkillsData.length,
+            popularSkills: mockSkillsData.filter(skill => skill.currentStudents > 10).length
+          })
+        }
       } catch (error) {
         console.error("Failed to load skills data:", error)
       } finally {
@@ -185,7 +210,7 @@ export default function SkillsPage() {
         <section className="container mx-auto px-4 py-12">
           <div className="space-y-8">
             <div className="bg-white/50 dark:bg-muted/50 backdrop-blur rounded-xl p-6 border border-white/20 animate-in fade-in slide-in-from-bottom duration-700">
-              <SearchFilters categories={categories} onSearch={handleSearch} onFilterChange={handleFilterChange} />
+              <SearchFilters onFiltersChange={handleFilterChange} />
             </div>
 
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/30 dark:bg-muted/30 backdrop-blur rounded-lg p-4 animate-in fade-in slide-in-from-bottom duration-700 delay-200">

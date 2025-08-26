@@ -165,6 +165,13 @@ export const mockSkills: Skill[] = [
       "Portfolio Creation",
     ],
     requirements: ["Basic sewing knowledge helpful but not required", "Notebook and pen", "Measuring tape"],
+    instructor: {
+      id: "1",
+      name: "Fatima Adebayo",
+      image: "/professional-woman-tailor.png",
+      rating: 4.8,
+      businessName: "Fatima's Fashion House"
+    },
     createdAt: new Date("2024-01-01"),
     updatedAt: new Date("2024-01-15"),
   },
@@ -189,6 +196,13 @@ export const mockSkills: Skill[] = [
       "Business Setup Tips",
     ],
     requirements: ["No prior experience needed", "Basic tools will be provided during class"],
+    instructor: {
+      id: "2",
+      name: "Ibrahim Suleiman",
+      image: "/young-man-technician.png",
+      rating: 4.6,
+      businessName: "TechFix Solutions"
+    },
     createdAt: new Date("2024-01-10"),
     updatedAt: new Date("2024-01-20"),
   },

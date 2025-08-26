@@ -10,15 +10,17 @@ import { Badge } from "@/components/ui/badge"
 import { Search, Filter, ChevronDown, X, MapPin, Star, Users, Clock } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+export interface FilterState {
+  search: string
+  category: string
+  location: string
+  minRating: number
+  experience: string
+  availability: string
+}
+
 export interface SearchFiltersProps {
-  onFiltersChange: (filters: {
-    search: string
-    category: string
-    location: string
-    minRating: number
-    experience: string
-    availability: string
-  }) => void
+  onFiltersChange: (filters: FilterState) => void
   className?: string
 }
 
@@ -85,9 +87,12 @@ export function SearchFilters({ onFiltersChange, className }: SearchFiltersProps
 
   const [activeFilters, setActiveFilters] = useState<string[]>([])
 
+  // Initial call to parent component with default filters
   useEffect(() => {
     onFiltersChange(filters)
-    
+  }, []) // Only run on mount
+
+  useEffect(() => {
     // Update active filters for badge display
     const active = []
     if (filters.search) active.push(`Search: ${filters.search}`)
@@ -98,13 +103,15 @@ export function SearchFilters({ onFiltersChange, className }: SearchFiltersProps
     if (filters.availability !== "All") active.push(`Availability: ${filters.availability}`)
     
     setActiveFilters(active)
-  }, [filters, onFiltersChange])
+  }, [filters])
 
   const handleFilterChange = (key: string, value: string | number) => {
-    setFilters(prev => ({
-      ...prev,
+    const newFilters = {
+      ...filters,
       [key]: value
-    }))
+    }
+    setFilters(newFilters)
+    onFiltersChange(newFilters)
   }
 
   const clearFilter = (filterText: string) => {
@@ -124,14 +131,16 @@ export function SearchFilters({ onFiltersChange, className }: SearchFiltersProps
   }
 
   const clearAllFilters = () => {
-    setFilters({
+    const newFilters = {
       search: "",
       category: "All Categories",
       location: "All Locations", 
       minRating: 0,
       experience: "All Experience",
       availability: "All"
-    })
+    }
+    setFilters(newFilters)
+    onFiltersChange(newFilters)
   }
 
   const hasActiveFilters = activeFilters.length > 0
