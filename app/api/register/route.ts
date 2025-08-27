@@ -1,23 +1,21 @@
-import { NextRequest, NextResponse } from "next/server";
 
-// Simple in-memory user storage for demo
-const users = new Map();
+import { NextRequest, NextResponse } from "next/server";
+import { authUtils } from "@/lib/auth-utils";
+import { createUser as dbCreateUser } from "@/lib/database";
+
 
 export async function POST(req: NextRequest) {
   try {
-    console.log("Registration endpoint hit");
-    
     const body = await req.json();
-    console.log("Registration data received:", body);
-    
-    const { 
-      email, 
-      password, 
-      fullName, 
-      firstName, 
-      lastName, 
-      phone, 
-      role, 
+    const raw = body || {};
+    let {
+      email,
+      password,
+      fullName,
+      firstName,
+      lastName,
+      phone,
+      role,
       userType,
       studentId,
       department,
@@ -26,84 +24,92 @@ export async function POST(req: NextRequest) {
       location,
       experienceYears,
       skills
-    } = body;
+    } = raw as Record<string, any>;
 
-    // Handle both formats - fullName+userType or firstName+lastName+role
+    // Normalize inputs
+    email = typeof email === 'string' ? email.trim().toLowerCase() : '';
+    password = typeof password === 'string' ? password : '';
+    fullName = typeof fullName === 'string' ? fullName.trim() : '';
+    firstName = typeof firstName === 'string' ? firstName.trim() : '';
+    lastName = typeof lastName === 'string' ? lastName.trim() : '';
+    phone = typeof phone === 'string' ? phone.trim() : '';
+    role = typeof role === 'string' ? role.trim() : '';
+
     const actualFirstName = firstName || (fullName ? fullName.split(' ')[0] : '');
     const actualLastName = lastName || (fullName ? fullName.split(' ').slice(1).join(' ') : '');
-    const actualRole = role || userType;
-    const actualFullName = fullName || `${firstName} ${lastName}`.trim();
+    const actualRole = (role || userType || '').toLowerCase();
+    const actualFullName = fullName || `${actualFirstName} ${actualLastName}`.trim();
 
-    // Basic validation
     if (!email || !password || !actualFullName || !phone || !actualRole) {
-      console.log("Missing required fields");
-      console.log("Received:", { email: !!email, password: !!password, fullName: !!actualFullName, phone: !!phone, role: !!actualRole });
-      return Response.json(
-        { error: "All fields are required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'All fields are required' }, { status: 400 });
+    }
+
+    if (password.length < 6) {
+      return NextResponse.json({ error: 'Password must be at least 6 characters' }, { status: 400 });
     }
 
     // Check if user exists
-    if (users.has(email)) {
-      console.log("User already exists:", email);
-      return Response.json(
-        { error: "User already exists" },
-        { status: 409 }
-      );
+    const existingUser = await authUtils.getUserByEmail(email);
+    if (existingUser) {
+      return NextResponse.json({ error: 'User already exists' }, { status: 409 });
     }
 
-    // Create user
-    const newUser = {
-      id: `user_${Date.now()}`,
+    // Hash password
+    const password_hash = await authUtils.hashPassword(password);
+
+    // Create user in DB
+    const dbResult = await dbCreateUser({
       email,
-      firstName: actualFirstName,
-      lastName: actualLastName,
-      fullName: actualFullName,
+      name: actualFullName,
+      password_hash,
+      role: actualRole as 'student' | 'artisan',
       phone,
-      role: actualRole,
-      // Student specific fields
-      studentId: actualRole === "student" ? studentId : undefined,
-      department: actualRole === "student" ? department : undefined,
-      level: actualRole === "student" ? level : undefined,
-      // Artisan specific fields  
-      businessName: actualRole === "artisan" ? businessName : undefined,
-      location: actualRole === "artisan" ? location : undefined,
-      experienceYears: actualRole === "artisan" ? experienceYears : undefined,
-      skills: actualRole === "artisan" ? skills : undefined,
-      createdAt: new Date().toISOString()
+      location: location || undefined,
+      bio: undefined
+    });
+
+    // dbResult.data may be an array, an object, or undefined depending on implementation
+    let user: any = null;
+    if (dbResult && dbResult.success) {
+      const d = dbResult.data;
+      if (Array.isArray(d) && d.length > 0) user = d[0];
+      else if (d && typeof d === 'object') user = d;
+    }
+
+    if (!user || !user.id) {
+      return NextResponse.json({ error: 'Failed to create user' }, { status: 500 });
+    }
+
+    const responsePayload = {
+      success: true,
+      message: 'Registration successful',
+      user: {
+        id: user.id,
+        email: user.email || email,
+        fullName: user.name || actualFullName,
+        role: user.role || actualRole
+      }
     };
 
-    users.set(email, newUser);
-    
-    console.log("User created successfully:", email);
+    const response = NextResponse.json(responsePayload, { status: 201 });
 
-    // Create response
-    const response = Response.json({
-      success: true,
-      message: "Registration successful",
-      user: {
-        id: newUser.id,
-        email: newUser.email,
-        fullName: newUser.fullName,
-        role: newUser.role
-      }
-    }, { status: 201 });
-
-    // Set session cookie
-    const sessionToken = `session_${newUser.id}_${Date.now()}`;
-    response.headers.set(
-      'Set-Cookie',
-      `auth-token=${sessionToken}; HttpOnly; Path=/; Max-Age=604800; SameSite=Lax`
-    );
+    // Try to generate JWT token and set cookie; don't fail registration if token generation fails
+    try {
+      const token = await authUtils.generateToken({
+        id: user.id,
+        email: user.email || email,
+        fullName: user.name || actualFullName,
+        userType: user.role || actualRole,
+        role: user.role || actualRole
+      } as any);
+      response.headers.set('Set-Cookie', `auth-token=${token}; HttpOnly; Path=/; Max-Age=604800; SameSite=Lax`);
+    } catch (err) {
+      console.warn('Token generation failed (non-fatal):', err);
+    }
 
     return response;
-
   } catch (error) {
     console.error("Registration error:", error);
-    return Response.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }
