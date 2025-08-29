@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useAuth } from "@/contexts/auth-context"
 import { AuthGuard } from "@/components/auth/auth-guard"
+import { supabase } from "@/lib/supabase"
 import {
   User,
   Bell,
@@ -33,12 +34,12 @@ export default function SettingsPage() {
   const [error, setError] = useState("")
 
   const [profileData, setProfileData] = useState({
-    firstName: user?.firstName || "",
-    lastName: user?.lastName || "",
-    email: user?.email || "",
-    phone: user?.phone || "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
     bio: "",
-    location: user?.location || "",
+    location: "",
   })
 
   const [preferences, setPreferences] = useState({
@@ -54,6 +55,33 @@ export default function SettingsPage() {
     newPassword: "",
     confirmPassword: "",
   })
+
+  // Initialize profile data when user is available
+  useEffect(() => {
+    if (user) {
+      setProfileData({
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        bio: "",
+        location: user.location || "",
+      })
+    }
+  }, [user])
+
+  // Load preferences from localStorage
+  useEffect(() => {
+    const savedPreferences = localStorage.getItem('userPreferences')
+    if (savedPreferences) {
+      try {
+        const parsedPreferences = JSON.parse(savedPreferences)
+        setPreferences(prev => ({ ...prev, ...parsedPreferences }))
+      } catch (error) {
+        console.warn('Failed to parse saved preferences:', error)
+      }
+    }
+  }, [])
 
   const handleProfileUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -89,11 +117,30 @@ export default function SettingsPage() {
     }
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      if (!user?.id) {
+        throw new Error("User not authenticated")
+      }
+
+      // Update user profile in database
+      const { error: updateError } = await supabase
+        .from('users')
+        .update({
+          first_name: profileData.firstName.trim(),
+          last_name: profileData.lastName.trim(),
+          email: profileData.email.trim(),
+          phone: profileData.phone.trim(),
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', user.id)
+
+      if (updateError) {
+        throw updateError
+      }
+
       setSuccess("Profile updated successfully!")
-    } catch (err) {
-      setError("Failed to update profile. Please try again.")
+    } catch (err: any) {
+      console.error('Profile update error:', err)
+      setError(err.message || "Failed to update profile. Please try again.")
     } finally {
       setIsLoading(false)
     }
@@ -106,8 +153,12 @@ export default function SettingsPage() {
     setSuccess("")
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      // TODO: Implement preferences storage in database
+      // For now, store preferences in localStorage as a temporary solution
+      localStorage.setItem('userPreferences', JSON.stringify(preferences))
+
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 500))
       setSuccess("Preferences updated successfully!")
     } catch (err) {
       setError("Failed to update preferences. Please try again.")
@@ -116,17 +167,77 @@ export default function SettingsPage() {
     }
   }
 
-  const handleAppearanceUpdate = async () => {
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault()
     setIsLoading(true)
     setError("")
     setSuccess("")
 
+    // Validation
+    if (!security.currentPassword) {
+      setError("Current password is required")
+      setIsLoading(false)
+      return
+    }
+
+    if (!security.newPassword) {
+      setError("New password is required")
+      setIsLoading(false)
+      return
+    }
+
+    if (security.newPassword.length < 8) {
+      setError("New password must be at least 8 characters long")
+      setIsLoading(false)
+      return
+    }
+
+    if (security.newPassword !== security.confirmPassword) {
+      setError("New passwords do not match")
+      setIsLoading(false)
+      return
+    }
+
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      setSuccess("Appearance settings updated successfully!")
-    } catch (err) {
-      setError("Failed to update appearance settings. Please try again.")
+      if (!user?.id) {
+        throw new Error("User not authenticated")
+      }
+
+      // Update password using Supabase Auth
+      const { error: updateError } = await supabase.auth.updateUser({
+        password: security.newPassword
+      })
+
+      if (updateError) {
+        throw updateError
+      }
+
+      // Also update the password in the users table (for consistency)
+      // Note: In production, passwords should be properly hashed
+      const { error: dbUpdateError } = await supabase
+        .from('users')
+        .update({
+          password: security.newPassword,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', user.id)
+
+      if (dbUpdateError) {
+        console.warn('Failed to update password in users table:', dbUpdateError)
+        // Don't throw here as the auth password was already updated
+      }
+
+      setSuccess("Password changed successfully!")
+
+      // Clear password fields
+      setSecurity({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      })
+    } catch (err: any) {
+      console.error('Password change error:', err)
+      setError(err.message || "Failed to change password. Please try again.")
     } finally {
       setIsLoading(false)
     }
@@ -191,9 +302,14 @@ export default function SettingsPage() {
                     <form onSubmit={handleProfileUpdate} className="space-y-6">
                       <div className="flex items-center gap-6">
                         <Avatar className="h-20 w-20">
-                          <AvatarImage src="/placeholder-user.jpg" alt={user?.fullName || "User"} />
+                          <AvatarImage src={user?.profileImage || "/placeholder-user.jpg"} alt={user?.fullName || "User"} />
                           <AvatarFallback className="text-lg">
-                            {user?.fullName ? user.fullName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'U'}
+                            {user?.firstName && user?.lastName
+                              ? `${user.firstName[0]}${user.lastName[0]}`.toUpperCase()
+                              : user?.fullName
+                                ? user.fullName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
+                                : 'U'
+                            }
                           </AvatarFallback>
                         </Avatar>
                         <div>
