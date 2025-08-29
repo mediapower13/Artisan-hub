@@ -17,6 +17,7 @@ export interface AuthUser {
   phone?: string
   location?: string
   bio?: string
+  profileImage?: string
 }
 
 async function hashPassword(password: string): Promise<string> {
