@@ -308,10 +308,10 @@ export default function MarketplacePage() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative max-w-7xl">
             <div className="text-center space-y-10">
               <div className="space-y-6">
-                <div className="inline-flex items-center justify-center p-4 bg-emerald-50 rounded-2xl mb-6">
-                  <Users className="h-12 w-12 text-emerald-600" />
+                <div className="inline-flex items-center justify-center p-4 bg-slate-100 rounded-2xl mb-6">
+                  <Users className="h-12 w-12 text-slate-700" />
                 </div>
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-gradient-to-r from-emerald-600 via-amber-400 to-rose-500 text-transparent bg-clip-text">
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
                   Discover Skilled Artisans
                 </h1>
                 <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
@@ -323,8 +323,8 @@ export default function MarketplacePage() {
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
                 <Card className="bg-white border border-slate-200 shadow-sm hover:shadow" >
                   <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-emerald-50 rounded-2xl mx-auto mb-4">
-                      <Users className="h-8 w-8 text-emerald-600" />
+                    <div className="flex items-center justify-center w-16 h-16 bg-slate-100 rounded-2xl mx-auto mb-4">
+                      <Users className="h-8 w-8 text-slate-700" />
                     </div>
                     <div className="text-3xl font-bold text-gray-900">{stats.totalArtisans}</div>
                     <div className="text-sm font-medium text-gray-600">Total Artisans</div>
@@ -333,8 +333,8 @@ export default function MarketplacePage() {
 
                 <Card className="bg-white border border-slate-200 shadow-sm hover:shadow" >
                   <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-sky-50 rounded-2xl mx-auto mb-4">
-                      <TrendingUp className="h-8 w-8 text-sky-500" />
+                    <div className="flex items-center justify-center w-16 h-16 bg-slate-100 rounded-2xl mx-auto mb-4">
+                      <TrendingUp className="h-8 w-8 text-slate-700" />
                     </div>
                     <div className="text-3xl font-bold text-gray-900">{stats.activeToday}</div>
                     <div className="text-sm font-medium text-gray-600">Available Now</div>
@@ -343,8 +343,8 @@ export default function MarketplacePage() {
 
                 <Card className="bg-white border border-slate-200 shadow-sm hover:shadow" >
                   <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-amber-50 rounded-2xl mx-auto mb-4">
-                      <Star className="h-8 w-8 text-amber-400" />
+                    <div className="flex items-center justify-center w-16 h-16 bg-slate-100 rounded-2xl mx-auto mb-4">
+                      <Star className="h-8 w-8 text-slate-700" />
                     </div>
                     <div className="text-3xl font-bold text-gray-900">{stats.avgRating.toFixed(1)}</div>
                     <div className="text-sm font-medium text-gray-600">Avg Rating</div>
@@ -353,8 +353,8 @@ export default function MarketplacePage() {
 
                 <Card className="bg-white border border-slate-200 shadow-sm hover:shadow" >
                   <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-violet-50 rounded-2xl mx-auto mb-4">
-                      <MapPin className="h-8 w-8 text-violet-500" />
+                    <div className="flex items-center justify-center w-16 h-16 bg-slate-100 rounded-2xl mx-auto mb-4">
+                      <MapPin className="h-8 w-8 text-slate-700" />
                     </div>
                     <div className="text-3xl font-bold text-gray-900">{stats.totalSkills}</div>
                     <div className="text-sm font-medium text-gray-600">Skills Available</div>

@@ -8,11 +8,9 @@ export { sql }
 // Database utility functions
 export async function executeQuery(query: string, params: any[] = []) {
   try {
-  // Mock implementation - delegate to mockSql so inserts/selects return data
-  console.log("[v0] Mock query:\n", query, params)
-  // mockSql is a template tag expecting a TemplateStringsArray; provide the query as a single-item array
-  const result = await Promise.resolve(sql([query] as unknown as TemplateStringsArray, ...params))
-  return { success: true, data: result }
+    // Mock implementation - in real app this would execute the query
+    console.log("[v0] Mock query:", query, params)
+    return { success: true, data: [] }
   } catch (error) {
     console.error("Database query error:", error)
     return { success: false, error: error instanceof Error ? error.message : "Unknown error" }
