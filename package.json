@@ -17,7 +17,7 @@
     "db:stats": "node scripts/manage-database.js stats",
     "db:seed": "node scripts/manage-database.js seed",
     "db:test": "node scripts/manage-database.js test",
-    "db:seed-live": "npx tsx scripts/seed-live-database.ts",
+    "db:verify": "node scripts/verify-database.js",
     "type-check": "npx tsc --noEmit",
     "clean": "rm -rf .next out dist"
   },
