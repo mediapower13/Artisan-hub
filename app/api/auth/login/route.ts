@@ -1,34 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Mock users for testing (in production, this would come from a database)
-const mockUsers = [
-  {
-    id: "user_1",
-    email: "test@example.com",
-    password: "password123",
-    first_name: "John",
-    last_name: "Doe",
-    full_name: "John Doe",
-    role: "student",
-    phone: "1234567890",
-    student_id: "ST001",
-    department: "Computer Science",
-    level: "400"
-  },
-  {
-    id: "user_2",
-    email: "artisan@example.com",
-    password: "password123",
-    first_name: "Jane",
-    last_name: "Smith",
-    full_name: "Jane Smith",
-    role: "artisan",
-    phone: "0987654321",
-    student_id: null,
-    department: null,
-    level: null
-  }
-];
+import { authUtils } from "@/lib/auth-utils"
 
 export async function POST(request: NextRequest) {
   try {
@@ -41,62 +13,58 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Find user in mock database
-    const user = mockUsers.find(u => u.email === email);
 
+    // Find user in Supabase
+    const user = await authUtils.getUserByEmail(email)
     if (!user) {
       return NextResponse.json(
         { error: "Invalid email or password" },
         { status: 401 }
-      );
+      )
     }
 
-    // Simple password check (in production, use proper password verification)
-    if (user.password !== password) {
+    // Verify password
+    const valid = await authUtils.verifyPassword(password, user.password)
+    if (!valid) {
       return NextResponse.json(
         { error: "Invalid email or password" },
         { status: 401 }
-      );
+      )
     }
 
-    // Create session response
+    // Generate JWT token
+    const token = await authUtils.generateToken(user)
+
+    // Prepare user response (omit password)
     const userResponse = {
       id: user.id,
       email: user.email,
-      fullName: user.full_name,
-      firstName: user.first_name,
-      lastName: user.last_name,
+      fullName: user.fullName,
       role: user.role,
       phone: user.phone,
-      studentId: user.student_id,
+      studentId: user.studentId,
       department: user.department,
       level: user.level
-    };
+    }
 
-    console.log('Mock login successful for:', email);
-
-    // Create a simple response with session token
+    // Set auth cookie
     const response = NextResponse.json({
       message: "Login successful",
       user: userResponse,
-      token: `session_${user.id}_${Date.now()}`
-    });
-
-    // Set auth cookie
-    response.cookies.set("auth-token", `session_${user.id}_${Date.now()}`, {
+      token
+    })
+    response.cookies.set("auth-token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 // 7 days
-    });
-
-    return response;
-
-  } catch (error) {
-    console.error("Login error:", error);
-    return NextResponse.json(
-      { error: "Internal server error", details: error instanceof Error ? error.message : "Unknown error" },
-      { status: 500 }
-    );
+    })
+    return response
+    } catch (error: any) {
+      console.error("Login error:", error);
+      return NextResponse.json(
+        { error: "Internal server error", details: error instanceof Error ? error.message : "Unknown error" },
+        { status: 500 }
+      );
+    }
   }
-}

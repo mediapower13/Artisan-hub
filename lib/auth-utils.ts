@@ -1,6 +1,4 @@
-import { mockSql } from "./mock-database"
-
-const sql = mockSql
+import { supabase } from "./supabase"
 const JWT_SECRET = process.env.JWT_SECRET || "unilorin-artisan-platform-jwt-secret-key-minimum-32-chars-2024"
 
 export interface AuthUser {
@@ -170,38 +168,24 @@ export const authUtils = {
 
   async getUserById(id: string): Promise<AuthUser | null> {
     try {
-      const result = await sql`
-        SELECT id, email, full_name, user_type, student_id, department, level, phone, location, bio
-        FROM users 
-        WHERE id = ${id}
-      `
-
-      if (result.length === 0) return null
-
-      const user = result[0] as {
-        id: string
-        email: string
-        full_name: string
-        user_type: "student" | "artisan"
-        student_id?: string
-        department?: string
-        level?: number
-        phone?: string
-        location?: string
-        bio?: string
-      }
+      const { data, error } = await supabase
+        .from('users')
+        .select('id, email, full_name, user_type, student_id, department, level, phone, location, bio')
+        .eq('id', id)
+        .single()
+      if (error || !data) return null
       return {
-        id: user.id,
-        email: user.email,
-        fullName: user.full_name,
-        userType: user.user_type,
-        role: user.user_type, // Map userType to role for backward compatibility
-        studentId: user.student_id,
-        department: user.department,
-        level: user.level,
-        phone: user.phone,
-        location: user.location,
-        bio: user.bio,
+        id: data.id,
+        email: data.email,
+        fullName: data.full_name,
+        userType: data.user_type,
+        role: data.user_type, // Map userType to role for backward compatibility
+        studentId: data.student_id,
+        department: data.department,
+        level: data.level,
+        phone: data.phone,
+        location: data.location,
+        bio: data.bio,
       }
     } catch (error) {
       console.error("Error fetching user:", error)
@@ -211,43 +195,79 @@ export const authUtils = {
 
   async getUserByEmail(email: string): Promise<(AuthUser & { password: string }) | null> {
     try {
-      const result = await sql`
-        SELECT id, email, full_name, user_type, password, student_id, department, level, phone, location, bio
-        FROM users 
-        WHERE email = ${email}
-      `
-
-      if (result.length === 0) return null
-
-      const user = result[0] as {
-        id: string
-        email: string
-        full_name: string
-        user_type: "student" | "artisan"
-        password: string
-        student_id?: string
-        department?: string
-        level?: number
-        phone?: string
-        location?: string
-        bio?: string
-      }
+      const { data, error } = await supabase
+        .from('users')
+        .select('id, email, full_name, user_type, password, student_id, department, level, phone, location, bio')
+        .eq('email', email)
+        .single()
+      if (error || !data) return null
       return {
-        id: user.id,
-        email: user.email,
-        fullName: user.full_name,
-        userType: user.user_type,
-        role: user.user_type, // Map userType to role for backward compatibility
-        studentId: user.student_id,
-        department: user.department,
-        level: user.level,
-        phone: user.phone,
-        location: user.location,
-        bio: user.bio,
-        password: user.password,
+        id: data.id,
+        email: data.email,
+        fullName: data.full_name,
+        userType: data.user_type,
+        role: data.user_type, // Map userType to role for backward compatibility
+        studentId: data.student_id,
+        department: data.department,
+        level: data.level,
+        phone: data.phone,
+        location: data.location,
+        bio: data.bio,
+        password: data.password,
       }
     } catch (error) {
       console.error("Error fetching user by email:", error)
+      return null
+    }
+  },
+
+  async createUser(user: {
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    fullName: string,
+    phone: string,
+    role: "student" | "artisan",
+    studentId?: string,
+    department?: string,
+    level?: string,
+  }): Promise<AuthUser | null> {
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .insert([
+          {
+            email: user.email,
+            password: user.password,
+            first_name: user.firstName,
+            last_name: user.lastName,
+            full_name: user.fullName,
+            phone: user.phone,
+            role: user.role,
+            student_id: user.studentId || null,
+            department: user.department || null,
+            level: user.level || null,
+          }
+        ])
+        .select('id, email, full_name, user_type, student_id, department, level, phone, location, bio')
+        .single()
+      if (error || !data) return null
+      return {
+        id: data.id,
+        email: data.email,
+        fullName: data.full_name,
+        userType: data.user_type,
+        role: data.user_type,
+        studentId: data.student_id,
+        department: data.department,
+        level: data.level,
+        phone: data.phone,
+        location: data.location,
+        bio: data.bio,
+      }
+    } catch (error) {
+      console.error("Error creating user:", error)
       return null
     }
   },
