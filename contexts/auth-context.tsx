@@ -75,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const login = async (email: string, password: string) => {
     setIsLoading(true)
     try {
-      const response = await fetch("/api/login", {
+  const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -114,7 +114,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }): Promise<boolean> => {
     setIsLoading(true)
     try {
-      const response = await fetch("/api/register", {
+  const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
