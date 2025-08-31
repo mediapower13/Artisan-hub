@@ -1,4 +1,4 @@
-import { supabase } from "./supabase"
+import { supabase, supabaseAdmin } from "./supabase"
 const JWT_SECRET = process.env.JWT_SECRET || "unilorin-artisan-platform-jwt-secret-key-minimum-32-chars-2024"
 
 export interface AuthUser {
@@ -13,9 +13,6 @@ export interface AuthUser {
   department?: string
   level?: number
   phone?: string
-  location?: string
-  bio?: string
-  profileImage?: string
 }
 
 async function hashPassword(password: string): Promise<string> {
@@ -102,7 +99,7 @@ export const authUtils = {
       const payload = {
         id: user.id,
         email: user.email,
-        userType: user.userType,
+        userType: user.role,
         iat: Math.floor(Date.now() / 1000),
         exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60, // 7 days
       }
@@ -157,8 +154,6 @@ export const authUtils = {
         department: payload.department,
         level: payload.level,
         phone: payload.phone,
-        location: payload.location,
-        bio: payload.bio,
       }
     } catch (error) {
       console.log("[v0] JWT verification failed:", error)
@@ -168,9 +163,14 @@ export const authUtils = {
 
   async getUserById(id: string): Promise<AuthUser | null> {
     try {
-      const { data, error } = await supabase
+      if (!supabaseAdmin) {
+        console.error("Supabase admin client not available")
+        return null
+      }
+
+      const { data, error } = await supabaseAdmin
         .from('users')
-        .select('id, email, full_name, user_type, student_id, department, level, phone, location, bio')
+        .select('id, email, full_name, role, student_id, department, level, phone')
         .eq('id', id)
         .single()
       if (error || !data) return null
@@ -178,14 +178,12 @@ export const authUtils = {
         id: data.id,
         email: data.email,
         fullName: data.full_name,
-        userType: data.user_type,
-        role: data.user_type, // Map userType to role for backward compatibility
+        userType: data.role,
+        role: data.role,
         studentId: data.student_id,
         department: data.department,
         level: data.level,
         phone: data.phone,
-        location: data.location,
-        bio: data.bio,
       }
     } catch (error) {
       console.error("Error fetching user:", error)
@@ -195,9 +193,14 @@ export const authUtils = {
 
   async getUserByEmail(email: string): Promise<(AuthUser & { password: string }) | null> {
     try {
-      const { data, error } = await supabase
+      if (!supabaseAdmin) {
+        console.error("Supabase admin client not available")
+        return null
+      }
+
+      const { data, error } = await supabaseAdmin
         .from('users')
-        .select('id, email, full_name, user_type, password, student_id, department, level, phone, location, bio')
+        .select('id, email, full_name, role, password, student_id, department, level, phone')
         .eq('email', email)
         .single()
       if (error || !data) return null
@@ -205,14 +208,12 @@ export const authUtils = {
         id: data.id,
         email: data.email,
         fullName: data.full_name,
-        userType: data.user_type,
-        role: data.user_type, // Map userType to role for backward compatibility
+        userType: data.role,
+        role: data.role,
         studentId: data.student_id,
         department: data.department,
         level: data.level,
         phone: data.phone,
-        location: data.location,
-        bio: data.bio,
         password: data.password,
       }
     } catch (error) {
@@ -221,7 +222,7 @@ export const authUtils = {
     }
   },
 
-  async createUser(user: {
+    async createUser(user: {
     email: string,
     password: string,
     firstName: string,
@@ -234,7 +235,24 @@ export const authUtils = {
     level?: string,
   }): Promise<AuthUser | null> {
     try {
-      const { data, error } = await supabase
+      if (!supabaseAdmin) {
+        console.error("Supabase admin client not available")
+        return null
+      }
+
+      console.log("Inserting user into Supabase:", {
+        email: user.email,
+        first_name: user.firstName,
+        last_name: user.lastName,
+        full_name: user.fullName,
+        phone: user.phone,
+        role: user.role,
+        student_id: user.studentId,
+        department: user.department,
+        level: user.level,
+      })
+
+      const { data, error } = await supabaseAdmin
         .from('users')
         .insert([
           {
@@ -250,21 +268,30 @@ export const authUtils = {
             level: user.level || null,
           }
         ])
-        .select('id, email, full_name, user_type, student_id, department, level, phone, location, bio')
+        .select('id, email, full_name, role, student_id, department, level, phone')
         .single()
-      if (error || !data) return null
+
+      if (error) {
+        console.error("Supabase insert error:", error)
+        return null
+      }
+
+      if (!data) {
+        console.error("No data returned from Supabase insert")
+        return null
+      }
+
+      console.log("User created successfully in Supabase:", data.id)
       return {
         id: data.id,
         email: data.email,
         fullName: data.full_name,
-        userType: data.user_type,
-        role: data.user_type,
+        userType: data.role,
+        role: data.role,
         studentId: data.student_id,
         department: data.department,
         level: data.level,
         phone: data.phone,
-        location: data.location,
-        bio: data.bio,
       }
     } catch (error) {
       console.error("Error creating user:", error)

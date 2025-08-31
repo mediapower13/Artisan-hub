@@ -104,14 +104,15 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     const userData = {
       email: formData.email,
       password: formData.password,
-      fullName: `${formData.firstName} ${formData.lastName}`.trim(),
-      userType: formData.role as "student" | "artisan",
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      role: formData.role as "student" | "artisan",
       phone: formData.phone,
       // Student specific data
       studentId: formData.role === "student" ? formData.studentId : undefined,
       department: formData.role === "student" ? (formData.department === "Other" ? formData.customDepartment : formData.department) : undefined,
       level: formData.role === "student" ? formData.level : undefined,
-      // Artisan specific data
+      // Artisan specific data (not used by backend, but kept for future)
       businessName: formData.role === "artisan" ? formData.businessName : undefined,
       location: formData.role === "artisan" ? formData.location : undefined,
       experienceYears: formData.role === "artisan" && formData.experience ? parseInt(formData.experience) : undefined,

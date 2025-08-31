@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
       maxAge: 7 * 24 * 60 * 60 // 7 days
     })
     return response
-    } catch (error: any) {
+  } catch (error: any) {
       console.error("Login error:", error);
       return NextResponse.json(
         { error: "Internal server error", details: error instanceof Error ? error.message : "Unknown error" },
