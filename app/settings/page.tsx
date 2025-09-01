@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
@@ -29,11 +29,21 @@ import {
 } from "lucide-react"
 
 export default function SettingsPage() {
-  const { user, isAuthenticated } = useAuth()
+  const { user, isAuthenticated, refreshUser } = useAuth()
   const { toast } = useToast()
   const { theme, setTheme } = useTheme()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+
+  // Refresh user data on component mount
+  useEffect(() => {
+    const loadUserData = async () => {
+      if (isAuthenticated && !user?.firstName) {
+        await refreshUser()
+      }
+    }
+    loadUserData()
+  }, [isAuthenticated]) // Remove refreshUser from dependencies to prevent loop
 
   if (!isAuthenticated) {
     return (
@@ -63,6 +73,19 @@ export default function SettingsPage() {
     department: user?.department || "",
     studentId: user?.studentId || ""
   })
+
+  // Update profile data when user data changes
+  useEffect(() => {
+    if (user) {
+      setProfileData({
+        fullName: user.fullName || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        department: user.department || "",
+        studentId: user.studentId || ""
+      })
+    }
+  }, [user])
 
   const [notifications, setNotifications] = useState({
     emailNotifications: true,
@@ -196,36 +219,36 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-slate-900">
       <Header />
       <main className="flex-1 py-16">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2">Settings</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-4xl font-bold mb-3 text-gray-900 dark:text-white">Account Settings</h1>
+            <p className="text-lg text-gray-700 dark:text-gray-300">
               Manage your account settings and preferences
             </p>
           </div>
 
           <Tabs defaultValue="profile" className="w-full">
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="profile" className="flex items-center space-x-2">
+            <TabsList className="grid w-full grid-cols-5 bg-white dark:bg-slate-800 border shadow-sm">
+              <TabsTrigger value="profile" className="flex items-center space-x-2 font-semibold text-gray-700 dark:text-gray-300 data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
                 <User className="h-4 w-4" />
                 <span>Profile</span>
               </TabsTrigger>
-              <TabsTrigger value="notifications" className="flex items-center space-x-2">
+              <TabsTrigger value="notifications" className="flex items-center space-x-2 font-semibold text-gray-700 dark:text-gray-300 data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
                 <Bell className="h-4 w-4" />
                 <span>Notifications</span>
               </TabsTrigger>
-              <TabsTrigger value="privacy" className="flex items-center space-x-2">
+              <TabsTrigger value="privacy" className="flex items-center space-x-2 font-semibold text-gray-700 dark:text-gray-300 data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
                 <Shield className="h-4 w-4" />
                 <span>Privacy</span>
               </TabsTrigger>
-              <TabsTrigger value="api" className="flex items-center space-x-2">
+              <TabsTrigger value="api" className="flex items-center space-x-2 font-semibold text-gray-700 dark:text-gray-300 data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
                 <Code className="h-4 w-4" />
                 <span>API</span>
               </TabsTrigger>
-              <TabsTrigger value="appearance" className="flex items-center space-x-2">
+              <TabsTrigger value="appearance" className="flex items-center space-x-2 font-semibold text-gray-700 dark:text-gray-300 data-[state=active]:bg-emerald-500 data-[state=active]:text-white">
                 <Palette className="h-4 w-4" />
                 <span>Appearance</span>
               </TabsTrigger>
@@ -233,25 +256,25 @@ export default function SettingsPage() {
 
             {/* Profile Tab */}
             <TabsContent value="profile" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Profile Information</CardTitle>
+              <Card className="bg-white dark:bg-slate-800 shadow-lg border-0">
+                <CardHeader className="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-slate-700 dark:to-slate-800 border-b">
+                  <CardTitle className="text-xl font-bold text-gray-900 dark:text-white">Profile Information</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-6 p-6">
                   {/* Profile Picture */}
                   <div className="flex items-center space-x-4">
-                    <Avatar className="h-20 w-20">
+                    <Avatar className="h-20 w-20 ring-2 ring-emerald-200">
                       <AvatarImage src={"/default-avatar.png"} />
-                      <AvatarFallback>
+                      <AvatarFallback className="bg-emerald-100 text-emerald-700 font-semibold text-lg">
                         {user?.fullName?.split(' ').map(n => n[0]).join('') || 'U'}
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50">
                         <Camera className="h-4 w-4 mr-2" />
                         Change Photo
                       </Button>
-                      <p className="text-sm text-muted-foreground mt-2">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
                         JPG, PNG or GIF. Max size 2MB.
                       </p>
                     </div>
@@ -260,51 +283,56 @@ export default function SettingsPage() {
                   {/* Profile Form */}
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="fullName">Full Name</Label>
+                      <Label htmlFor="fullName" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Full Name</Label>
                       <Input
                         id="fullName"
                         value={profileData.fullName}
                         onChange={(e) => setProfileData(prev => ({ ...prev, fullName: e.target.value }))}
+                        className="mt-1 bg-white dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-gray-900 dark:text-white focus:ring-emerald-500 focus:border-emerald-500"
                       />
                     </div>
                     <div>
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="email" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Email</Label>
                       <Input
                         id="email"
                         type="email"
                         value={profileData.email}
                         onChange={(e) => setProfileData(prev => ({ ...prev, email: e.target.value }))}
+                        className="mt-1 bg-white dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-gray-900 dark:text-white focus:ring-emerald-500 focus:border-emerald-500"
                       />
                     </div>
                     <div>
-                      <Label htmlFor="phone">Phone</Label>
+                      <Label htmlFor="phone" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Phone</Label>
                       <Input
                         id="phone"
                         value={profileData.phone}
                         onChange={(e) => setProfileData(prev => ({ ...prev, phone: e.target.value }))}
+                        className="mt-1 bg-white dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-gray-900 dark:text-white focus:ring-emerald-500 focus:border-emerald-500"
                       />
                     </div>
                     <div>
-                      <Label htmlFor="department">Department</Label>
+                      <Label htmlFor="department" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Department</Label>
                       <Input
                         id="department"
                         value={profileData.department}
                         onChange={(e) => setProfileData(prev => ({ ...prev, department: e.target.value }))}
+                        className="mt-1 bg-white dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-gray-900 dark:text-white focus:ring-emerald-500 focus:border-emerald-500"
                       />
                     </div>
                     {user?.role === 'student' && (
                       <div>
-                        <Label htmlFor="studentId">Student ID</Label>
+                        <Label htmlFor="studentId" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Student ID</Label>
                         <Input
                           id="studentId"
                           value={profileData.studentId}
                           onChange={(e) => setProfileData(prev => ({ ...prev, studentId: e.target.value }))}
+                          className="mt-1 bg-white dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-gray-900 dark:text-white focus:ring-emerald-500 focus:border-emerald-500"
                         />
                       </div>
                     )}
                   </div>
 
-                  <Button onClick={handleProfileUpdate} disabled={isLoading}>
+                  <Button onClick={handleProfileUpdate} disabled={isLoading} className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6">
                     <Save className="h-4 w-4 mr-2" />
                     {isLoading ? "Saving..." : "Save Changes"}
                   </Button>
@@ -314,15 +342,15 @@ export default function SettingsPage() {
 
             {/* Notifications Tab */}
             <TabsContent value="notifications" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Notification Preferences</CardTitle>
+              <Card className="bg-white dark:bg-slate-800 shadow-lg border-0">
+                <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-700 dark:to-slate-800 border-b">
+                  <CardTitle className="text-xl font-bold text-gray-900 dark:text-white">Notification Preferences</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-6 p-6">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label htmlFor="email-notifications">Email Notifications</Label>
+                        <Label htmlFor="email-notifications" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Email Notifications</Label>
                         <p className="text-sm text-muted-foreground">
                           Receive notifications via email
                         </p>

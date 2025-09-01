@@ -20,6 +20,7 @@ interface AuthContextType {
     level?: string
   }) => Promise<boolean>
   logout: () => void
+  refreshUser: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -41,7 +42,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           // Verify JWT token
           const verifiedUser = await authUtils.verifyToken(token)
           if (verifiedUser) {
-            setUser(verifiedUser)
+            // If token doesn't have complete data, fetch from database
+            if (!verifiedUser.firstName || !verifiedUser.department) {
+              const fullUser = await authUtils.getUserById(verifiedUser.id)
+              if (fullUser) {
+                setUser(fullUser)
+              } else {
+                setUser(verifiedUser)
+              }
+            } else {
+              setUser(verifiedUser)
+            }
           } else {
             // Clear invalid token
             document.cookie = "auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT"
@@ -130,6 +141,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Clear cookie
     document.cookie = "auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT"
     setUser(null)
+    
+    // Redirect to login page
+    window.location.href = "/login"
+  }
+
+  const refreshUser = async () => {
+    try {
+      const response = await fetch("/api/auth/me")
+      if (response.ok) {
+        const data = await response.json()
+        if (data.user) {
+          setUser(data.user)
+        }
+      }
+    } catch (error) {
+      console.error("Failed to refresh user data:", error)
+    }
   }
 
   const value = {
@@ -139,6 +167,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     login,
     register,
     logout,
+    refreshUser,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

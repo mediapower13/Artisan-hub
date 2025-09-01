@@ -118,26 +118,26 @@ export function Header() {
                       </div>
                       <div className="py-1">
                         <DropdownMenuItem asChild>
-                          <Link href="/profile" className="flex items-center px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 rounded-md transition-colors">
-                            <User className="h-4 w-4 mr-3 text-slate-500" />
+                          <Link href="/profile" className="flex items-center px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-emerald-50 hover:text-emerald-700 rounded-md transition-colors">
+                            <User className="h-4 w-4 mr-3 text-emerald-600" />
                             View Profile
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                          <Link href="/dashboard" className="flex items-center px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 rounded-md transition-colors">
-                            <Award className="h-4 w-4 mr-3 text-slate-500" />
+                          <Link href="/dashboard" className="flex items-center px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-emerald-50 hover:text-emerald-700 rounded-md transition-colors">
+                            <Award className="h-4 w-4 mr-3 text-emerald-600" />
                             Dashboard
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                          <Link href="/settings" className="flex items-center px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900 rounded-md transition-colors">
-                            <Settings className="h-4 w-4 mr-3 text-slate-500" />
+                          <Link href="/settings" className="flex items-center px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-emerald-50 hover:text-emerald-700 rounded-md transition-colors">
+                            <Settings className="h-4 w-4 mr-3 text-emerald-600" />
                             Account Settings
                           </Link>
                         </DropdownMenuItem>
                       </div>
                       <div className="border-t border-slate-100 pt-1">
-                        <DropdownMenuItem onClick={logout} className="flex items-center px-3 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 rounded-md cursor-pointer transition-colors">
+                        <DropdownMenuItem onClick={logout} className="flex items-center px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50 hover:text-red-800 rounded-md cursor-pointer transition-colors">
                           <LogOut className="h-4 w-4 mr-3" />
                           Sign Out
                         </DropdownMenuItem>
@@ -193,10 +193,10 @@ export function Header() {
                             </div>
                           </div>
                           <nav className="space-y-1">
-                            <Link href="/profile" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-gray-100 rounded-lg transition-colors duration-200"><User className="h-5 w-5" /><span>View Profile</span></Link>
-                            <Link href="/dashboard" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-gray-100 rounded-lg transition-colors duration-200"><Award className="h-5 w-5" /><span>Dashboard</span></Link>
-                            <Link href="/settings" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-gray-100 rounded-lg transition-colors duration-200"><Settings className="h-5 w-5" /><span>Account Settings</span></Link>
-                            <button onClick={logout} className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors duration-200"><LogOut className="h-5 w-5" /><span>Log out</span></button>
+                            <Link href="/profile" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-3 text-slate-900 font-semibold hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors duration-200"><User className="h-5 w-5 text-emerald-600" /><span>View Profile</span></Link>
+                            <Link href="/dashboard" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-3 text-slate-900 font-semibold hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors duration-200"><Award className="h-5 w-5 text-emerald-600" /><span>Dashboard</span></Link>
+                            <Link href="/settings" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-3 text-slate-900 font-semibold hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors duration-200"><Settings className="h-5 w-5 text-emerald-600" /><span>Account Settings</span></Link>
+                            <button onClick={() => { logout(); setIsOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 text-red-700 font-semibold hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors duration-200"><LogOut className="h-5 w-5" /><span>Log out</span></button>
                           </nav>
                         </div>
                       ) : (

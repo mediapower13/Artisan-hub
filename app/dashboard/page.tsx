@@ -9,7 +9,7 @@ import { mockDatabase } from "@/lib/mock-data"
 import type { Enrollment, Skill, Artisan } from "@/lib/types"
 
 export default function DashboardPage() {
-  const { user } = useAuth()
+  const { user, refreshUser } = useAuth()
   const [enrollments, setEnrollments] = useState<Enrollment[]>([])
   const [skills, setSkills] = useState<Skill[]>([])
   const [artisans, setArtisans] = useState<Artisan[]>([])
@@ -18,6 +18,11 @@ export default function DashboardPage() {
   useEffect(() => {
     const loadDashboardData = async () => {
       try {
+        // Refresh user data first only if needed
+        if (!user?.firstName) {
+          await refreshUser()
+        }
+        
         const [skillsData, artisansData] = await Promise.all([mockDatabase.getSkills(), mockDatabase.getArtisans()])
 
         // Mock enrollments for demo - use actual user ID
@@ -54,7 +59,7 @@ export default function DashboardPage() {
     }
 
     loadDashboardData()
-  }, [])
+  }, [user?.id]) // Remove refreshUser from dependencies
 
   if (isLoading) {
     return (
@@ -76,7 +81,9 @@ export default function DashboardPage() {
       <AuthGuard requireAuth={true} allowedRoles={["student", "artisan"]}>
         <main className="flex-1 container mx-auto px-4 py-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2">Learning Dashboard</h1>
+            <h1 className="text-3xl font-bold mb-2">
+              Welcome back, {user?.firstName || user?.fullName || 'Student'}!
+            </h1>
             <p className="text-muted-foreground">Track your progress and manage your enrolled skills</p>
           </div>
 

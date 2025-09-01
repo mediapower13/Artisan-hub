@@ -1,30 +1,6 @@
 import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
-
-// Mock user database - in production, this would be from your database
-const mockUsers = [
-  {
-    id: "user_1",
-    email: "test@example.com",
-    firstName: "John",
-    lastName: "Doe",
-    fullName: "John Doe",
-    role: "student",
-    phone: "1234567890",
-    studentId: "ST001",
-    department: "Computer Science",
-    level: "400"
-  },
-  {
-    id: "user_2",
-    email: "artisan@example.com",
-    firstName: "Jane",
-    lastName: "Smith",
-    fullName: "Jane Smith",
-    role: "artisan",
-    phone: "0987654321"
-  }
-]
+import { authUtils } from "@/lib/auth-utils"
 
 export async function GET() {
   try {
@@ -38,32 +14,25 @@ export async function GET() {
       )
     }
 
-    // In a real app, you'd verify the token and get user from database
-    // For now, return mock user data
-    const user = mockUsers.find(u => u.email === "test@example.com") // Default to first user
+    // Verify the JWT token
+    const verifiedUser = await authUtils.verifyToken(authToken)
+    if (!verifiedUser) {
+      return NextResponse.json(
+        { error: "Invalid token" },
+        { status: 401 }
+      )
+    }
 
-    if (!user) {
+    // Get complete user data from database
+    const fullUser = await authUtils.getUserById(verifiedUser.id)
+    if (!fullUser) {
       return NextResponse.json(
         { error: "User not found" },
         { status: 404 }
       )
     }
 
-    // Return user data (excluding sensitive information)
-    const userData = {
-      id: user.id,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      fullName: user.fullName,
-      role: user.role,
-      phone: user.phone,
-      studentId: user.studentId,
-      department: user.department,
-      level: user.level
-    }
-
-    return NextResponse.json({ user: userData })
+    return NextResponse.json({ user: fullUser })
   } catch (error) {
     console.error("Auth me error:", error)
     return NextResponse.json(

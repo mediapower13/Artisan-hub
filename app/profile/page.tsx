@@ -25,7 +25,7 @@ import {
 } from "lucide-react"
 
 export default function ProfilePage() {
-  const { user, isAuthenticated } = useAuth()
+  const { user, isAuthenticated, refreshUser } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
   const [isEditing, setIsEditing] = useState(false)
@@ -37,6 +37,16 @@ export default function ProfilePage() {
     studentId: user?.studentId || "",
     level: user?.level || ""
   })
+
+  // Refresh user data on component mount
+  useEffect(() => {
+    const loadUserData = async () => {
+      if (isAuthenticated && !user?.firstName) {
+        await refreshUser()
+      }
+    }
+    loadUserData()
+  }, [isAuthenticated]) // Remove refreshUser from dependencies to prevent loop
 
   // Update form data when user data changes
   useEffect(() => {

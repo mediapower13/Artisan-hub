@@ -99,7 +99,15 @@ export const authUtils = {
       const payload = {
         id: user.id,
         email: user.email,
+        fullName: user.fullName,
+        firstName: user.firstName,
+        lastName: user.lastName,
         userType: user.role,
+        role: user.role,
+        studentId: user.studentId,
+        department: user.department,
+        level: user.level,
+        phone: user.phone,
         iat: Math.floor(Date.now() / 1000),
         exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60, // 7 days
       }
@@ -148,8 +156,10 @@ export const authUtils = {
         id: payload.id,
         email: payload.email,
         fullName: payload.fullName || "",
+        firstName: payload.firstName,
+        lastName: payload.lastName,
         userType: payload.userType,
-        role: payload.userType, // Map userType to role for backward compatibility
+        role: payload.role || payload.userType, // Support both fields
         studentId: payload.studentId,
         department: payload.department,
         level: payload.level,
@@ -170,7 +180,7 @@ export const authUtils = {
 
       const { data, error } = await supabaseAdmin
         .from('users')
-        .select('id, email, full_name, role, student_id, department, level, phone')
+        .select('id, email, full_name, first_name, last_name, role, student_id, department, level, phone')
         .eq('id', id)
         .single()
       if (error || !data) return null
@@ -178,6 +188,8 @@ export const authUtils = {
         id: data.id,
         email: data.email,
         fullName: data.full_name,
+        firstName: data.first_name,
+        lastName: data.last_name,
         userType: data.role,
         role: data.role,
         studentId: data.student_id,
@@ -200,7 +212,7 @@ export const authUtils = {
 
       const { data, error } = await supabaseAdmin
         .from('users')
-        .select('id, email, full_name, role, password, student_id, department, level, phone')
+        .select('id, email, full_name, first_name, last_name, role, password, student_id, department, level, phone')
         .eq('email', email)
         .single()
       if (error || !data) return null
@@ -208,6 +220,8 @@ export const authUtils = {
         id: data.id,
         email: data.email,
         fullName: data.full_name,
+        firstName: data.first_name,
+        lastName: data.last_name,
         userType: data.role,
         role: data.role,
         studentId: data.student_id,
@@ -268,7 +282,7 @@ export const authUtils = {
             level: user.level || null,
           }
         ])
-        .select('id, email, full_name, role, student_id, department, level, phone')
+        .select('id, email, full_name, first_name, last_name, role, student_id, department, level, phone')
         .single()
 
       if (error) {
@@ -286,6 +300,8 @@ export const authUtils = {
         id: data.id,
         email: data.email,
         fullName: data.full_name,
+        firstName: data.first_name,
+        lastName: data.last_name,
         userType: data.role,
         role: data.role,
         studentId: data.student_id,
