@@ -246,7 +246,6 @@ export async function getSkills(filters?: {
           user:users(first_name, last_name, profile_image)
         )
       `)
-      .eq('is_active', true)
     
     if (filters?.category) {
       query = query.eq('category', filters.category)
@@ -464,7 +463,6 @@ export async function getCategories() {
     const { data, error } = await client
       .from('skills')
       .select('category')
-      .eq('is_active', true)
     
     if (error) throw new Error(handleSupabaseError(error))
     

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
@@ -34,8 +34,23 @@ export default function ProfilePage() {
     email: user?.email || "",
     phone: user?.phone || "",
     department: user?.department || "",
-    studentId: user?.studentId || ""
+    studentId: user?.studentId || "",
+    level: user?.level || ""
   })
+
+  // Update form data when user data changes
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        fullName: user.fullName || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        department: user.department || "",
+        studentId: user.studentId || "",
+        level: user.level || ""
+      })
+    }
+  }, [user])
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -65,7 +80,8 @@ export default function ProfilePage() {
       email: user?.email || "",
       phone: user?.phone || "",
       department: user?.department || "",
-      studentId: user?.studentId || ""
+      studentId: user?.studentId || "",
+      level: user?.level || ""
     })
     setIsEditing(false)
   }
@@ -273,6 +289,26 @@ export default function ProfilePage() {
                         <div className="flex items-center space-x-2 py-2">
                           <GraduationCap className="h-4 w-4 text-gray-500" />
                           <span className="text-gray-900">{formData.department || "Not provided"}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <Label htmlFor="level" className="text-sm font-medium text-gray-700 mb-2 block">
+                        Level
+                      </Label>
+                      {isEditing ? (
+                        <Input
+                          id="level"
+                          value={formData.level}
+                          onChange={(e) => handleInputChange("level", e.target.value)}
+                          placeholder="e.g., 400"
+                          className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                        />
+                      ) : (
+                        <div className="flex items-center space-x-2 py-2">
+                          <GraduationCap className="h-4 w-4 text-gray-500" />
+                          <span className="text-gray-900">{formData.level || "Not provided"}</span>
                         </div>
                       )}
                     </div>

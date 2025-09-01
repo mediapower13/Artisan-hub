@@ -4,10 +4,12 @@ import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { LearningDashboard } from "@/components/skills/learning-dashboard"
 import { AuthGuard } from "@/components/auth/auth-guard"
+import { useAuth } from "@/contexts/auth-context"
 import { mockDatabase } from "@/lib/mock-data"
 import type { Enrollment, Skill, Artisan } from "@/lib/types"
 
 export default function DashboardPage() {
+  const { user } = useAuth()
   const [enrollments, setEnrollments] = useState<Enrollment[]>([])
   const [skills, setSkills] = useState<Skill[]>([])
   const [artisans, setArtisans] = useState<Artisan[]>([])
@@ -18,11 +20,11 @@ export default function DashboardPage() {
       try {
         const [skillsData, artisansData] = await Promise.all([mockDatabase.getSkills(), mockDatabase.getArtisans()])
 
-        // Mock enrollments for demo
+        // Mock enrollments for demo - use actual user ID
         const mockEnrollments: Enrollment[] = [
           {
             id: "1",
-            studentId: "student1",
+            studentId: user?.id || "student1",
             skillId: "1",
             providerId: "1",
             status: "active",
@@ -31,7 +33,7 @@ export default function DashboardPage() {
           },
           {
             id: "2",
-            studentId: "student1",
+            studentId: user?.id || "student1",
             skillId: "2",
             providerId: "2",
             status: "completed",
@@ -71,7 +73,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <AuthGuard requireAuth={true} allowedRoles={["student"]}>
+      <AuthGuard requireAuth={true} allowedRoles={["student", "artisan"]}>
         <main className="flex-1 container mx-auto px-4 py-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2">Learning Dashboard</h1>

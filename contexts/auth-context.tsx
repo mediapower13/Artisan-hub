@@ -1,19 +1,7 @@
 "use client"
 import type React from "react"
 import { createContext, useContext, useEffect, useState } from "react"
-
-interface AuthUser {
-  id: string
-  email: string
-  fullName: string
-  firstName?: string
-  lastName?: string
-  role: "student" | "artisan" | "admin"
-  phone?: string
-  studentId?: string
-  department?: string
-  level?: string
-}
+import { authUtils, type AuthUser } from "@/lib/auth-utils"
 
 interface AuthContextType {
   user: AuthUser | null
@@ -49,17 +37,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           .find((row) => row.startsWith("auth-token="))
           ?.split("=")[1]
 
-        if (token && token.startsWith('session_')) {
-          // Simple token validation - in production you'd verify against a database
-          const parts = token.split('_')
-          if (parts.length === 3 && parts[0] === 'session') {
-            // For demo purposes, set a mock user
-            setUser({
-              id: parts[1],
-              email: "demo@example.com",
-              fullName: "Demo User",
-              role: "student"
-            })
+        if (token) {
+          // Verify JWT token
+          const verifiedUser = await authUtils.verifyToken(token)
+          if (verifiedUser) {
+            setUser(verifiedUser)
+          } else {
+            // Clear invalid token
+            document.cookie = "auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT"
           }
         }
       } catch (error) {

@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -31,7 +32,29 @@ export default function SettingsPage() {
   const { user, isAuthenticated } = useAuth()
   const { toast } = useToast()
   const { theme, setTheme } = useTheme()
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="max-w-md mx-auto px-4 py-20">
+          <Card className="text-center p-8 bg-white border shadow-lg">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <User className="h-8 w-8 text-blue-600" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Restricted</h1>
+            <p className="text-gray-600 mb-6">Please log in to access your settings.</p>
+            <Button onClick={() => router.push("/login")} className="w-full">
+              Log In
+            </Button>
+          </Card>
+        </div>
+        <Footer />
+      </div>
+    )
+  }
 
   const [profileData, setProfileData] = useState({
     fullName: user?.fullName || "",
