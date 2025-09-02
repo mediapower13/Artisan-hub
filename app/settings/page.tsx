@@ -351,7 +351,7 @@ export default function SettingsPage() {
                     <div className="flex items-center justify-between">
                       <div>
                         <Label htmlFor="email-notifications" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Email Notifications</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                           Receive notifications via email
                         </p>
                       </div>
@@ -366,8 +366,8 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label htmlFor="sms-notifications">SMS Notifications</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <Label htmlFor="sms-notifications" className="text-sm font-semibold text-gray-700 dark:text-gray-300">SMS Notifications</Label>
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                           Receive notifications via SMS
                         </p>
                       </div>
@@ -382,8 +382,8 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label htmlFor="skill-updates">Skill Updates</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <Label htmlFor="skill-updates" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Skill Updates</Label>
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                           Get notified about skill progress and deadlines
                         </p>
                       </div>
@@ -398,8 +398,8 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label htmlFor="marketing-emails">Marketing Emails</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <Label htmlFor="marketing-emails" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Marketing Emails</Label>
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                           Receive promotional emails and newsletters
                         </p>
                       </div>
@@ -414,8 +414,8 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label htmlFor="security-alerts">Security Alerts</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <Label htmlFor="security-alerts" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Security Alerts</Label>
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                           Important security notifications
                         </p>
                       </div>
@@ -429,7 +429,7 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  <Button onClick={handleNotificationUpdate} disabled={isLoading}>
+                  <Button onClick={handleNotificationUpdate} disabled={isLoading} className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6">
                     <Save className="h-4 w-4 mr-2" />
                     {isLoading ? "Saving..." : "Save Preferences"}
                   </Button>
@@ -439,19 +439,19 @@ export default function SettingsPage() {
 
             {/* Privacy Tab */}
             <TabsContent value="privacy" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Privacy Settings</CardTitle>
+              <Card className="bg-white dark:bg-slate-800 shadow-lg border-0">
+                <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-slate-700 dark:to-slate-800 border-b">
+                  <CardTitle className="text-xl font-bold text-gray-900 dark:text-white">Privacy Settings</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-6 p-6">
                   <div className="space-y-4">
                     <div>
-                      <Label htmlFor="profile-visibility">Profile Visibility</Label>
+                      <Label htmlFor="profile-visibility" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Profile Visibility</Label>
                       <select
                         id="profile-visibility"
                         value={privacy.profileVisibility}
                         onChange={(e) => setPrivacy(prev => ({ ...prev, profileVisibility: e.target.value }))}
-                        className="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                        className="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700 text-gray-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500"
                         aria-label="Profile visibility setting"
                       >
                         <option value="public">Public - Visible to everyone</option>
@@ -462,8 +462,8 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label htmlFor="show-email">Show Email</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <Label htmlFor="show-email" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Show Email</Label>
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                           Display your email on your public profile
                         </p>
                       </div>
@@ -478,8 +478,8 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label htmlFor="show-phone">Show Phone</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <Label htmlFor="show-phone" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Show Phone</Label>
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                           Display your phone number on your public profile
                         </p>
                       </div>
@@ -494,8 +494,8 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label htmlFor="allow-messages">Allow Messages</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <Label htmlFor="allow-messages" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Allow Messages</Label>
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                           Allow other users to send you messages
                         </p>
                       </div>
@@ -509,7 +509,7 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  <Button onClick={handlePrivacyUpdate} disabled={isLoading}>
+                  <Button onClick={handlePrivacyUpdate} disabled={isLoading} className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6">
                     <Save className="h-4 w-4 mr-2" />
                     {isLoading ? "Saving..." : "Save Settings"}
                   </Button>
@@ -519,19 +519,19 @@ export default function SettingsPage() {
 
             {/* API Settings Tab */}
             <TabsContent value="api" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>API Settings</CardTitle>
-                  <p className="text-sm text-muted-foreground">
+              <Card className="bg-white dark:bg-slate-800 shadow-lg border-0">
+                <CardHeader className="bg-gradient-to-r from-orange-50 to-yellow-50 dark:from-slate-700 dark:to-slate-800 border-b">
+                  <CardTitle className="text-xl font-bold text-gray-900 dark:text-white">API Settings</CardTitle>
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     Manage your API keys and integration settings
                   </p>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-6 p-6">
                   {/* API Key Section */}
                   <div className="space-y-4">
                     <div>
-                      <Label htmlFor="api-key">API Key</Label>
-                      <p className="text-sm text-muted-foreground mb-2">
+                      <Label htmlFor="api-key" className="text-sm font-semibold text-gray-700 dark:text-gray-300">API Key</Label>
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
                         Your personal API key for accessing platform APIs
                       </p>
                       <div className="flex space-x-2">
@@ -542,18 +542,19 @@ export default function SettingsPage() {
                             value={apiSettings.apiKey}
                             onChange={(e) => setApiSettings(prev => ({ ...prev, apiKey: e.target.value }))}
                             placeholder="Generate an API key to get started"
+                            className="bg-white dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-gray-900 dark:text-white focus:ring-emerald-500 focus:border-emerald-500"
                           />
                           <Button
                             type="button"
                             variant="ghost"
                             size="sm"
-                            className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                             onClick={() => setShowApiKey(!showApiKey)}
                           >
                             {showApiKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                           </Button>
                         </div>
-                        <Button onClick={generateApiKey} variant="outline">
+                        <Button onClick={generateApiKey} variant="outline" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50">
                           <RefreshCw className="h-4 w-4 mr-2" />
                           Generate
                         </Button>
@@ -562,8 +563,8 @@ export default function SettingsPage() {
 
                     {/* Webhook URL */}
                     <div>
-                      <Label htmlFor="webhook-url">Webhook URL</Label>
-                      <p className="text-sm text-muted-foreground mb-2">
+                      <Label htmlFor="webhook-url" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Webhook URL</Label>
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
                         URL to receive webhook notifications for events
                       </p>
                       <Input
@@ -572,14 +573,15 @@ export default function SettingsPage() {
                         value={apiSettings.webhookUrl}
                         onChange={(e) => setApiSettings(prev => ({ ...prev, webhookUrl: e.target.value }))}
                         placeholder="https://your-app.com/webhook"
+                        className="bg-white dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-gray-900 dark:text-white focus:ring-emerald-500 focus:border-emerald-500"
                       />
                     </div>
 
                     {/* API Access Toggle */}
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label htmlFor="enable-api-access">Enable API Access</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <Label htmlFor="enable-api-access" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Enable API Access</Label>
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                           Allow API access using your API key
                         </p>
                       </div>
@@ -595,8 +597,8 @@ export default function SettingsPage() {
                     {/* Webhooks Toggle */}
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label htmlFor="enable-webhooks">Enable Webhooks</Label>
-                        <p className="text-sm text-muted-foreground">
+                        <Label htmlFor="enable-webhooks" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Enable Webhooks</Label>
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                           Receive webhook notifications for important events
                         </p>
                       </div>
@@ -611,15 +613,15 @@ export default function SettingsPage() {
 
                     {/* Rate Limit */}
                     <div>
-                      <Label htmlFor="rate-limit">Rate Limit (requests per hour)</Label>
-                      <p className="text-sm text-muted-foreground mb-2">
+                      <Label htmlFor="rate-limit" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Rate Limit (requests per hour)</Label>
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
                         Maximum number of API requests allowed per hour
                       </p>
                       <select
                         id="rate-limit"
                         value={apiSettings.rateLimit}
                         onChange={(e) => setApiSettings(prev => ({ ...prev, rateLimit: parseInt(e.target.value) }))}
-                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md"
+                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-slate-700 text-gray-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500"
                         aria-label="API rate limit setting"
                       >
                         <option value={100}>100 requests/hour</option>
@@ -631,7 +633,7 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  <Button onClick={handleApiSettingsUpdate} disabled={isLoading}>
+                  <Button onClick={handleApiSettingsUpdate} disabled={isLoading} className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6">
                     <Save className="h-4 w-4 mr-2" />
                     {isLoading ? "Saving..." : "Save API Settings"}
                   </Button>
@@ -639,31 +641,31 @@ export default function SettingsPage() {
               </Card>
 
               {/* API Documentation */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>API Documentation</CardTitle>
+              <Card className="bg-white dark:bg-slate-800 shadow-lg border-0">
+                <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-slate-700 dark:to-slate-800 border-b">
+                  <CardTitle className="text-xl font-bold text-gray-900 dark:text-white">API Documentation</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-6">
                   <div className="space-y-4">
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Learn how to use our APIs to integrate with your applications.
                     </p>
                     <div className="grid md:grid-cols-2 gap-4">
-                      <div className="p-4 border rounded-lg">
-                        <h4 className="font-semibold mb-2">Authentication</h4>
-                        <p className="text-sm text-muted-foreground mb-2">
+                      <div className="p-4 border border-gray-200 dark:border-slate-600 rounded-lg bg-gray-50 dark:bg-slate-700">
+                        <h4 className="font-bold text-gray-900 dark:text-white mb-2">Authentication</h4>
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-3">
                           How to authenticate API requests using your API key.
                         </p>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50">
                           View Docs
                         </Button>
                       </div>
-                      <div className="p-4 border rounded-lg">
-                        <h4 className="font-semibold mb-2">Webhooks</h4>
-                        <p className="text-sm text-muted-foreground mb-2">
+                      <div className="p-4 border border-gray-200 dark:border-slate-600 rounded-lg bg-gray-50 dark:bg-slate-700">
+                        <h4 className="font-bold text-gray-900 dark:text-white mb-2">Webhooks</h4>
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-3">
                           Set up webhooks to receive real-time notifications.
                         </p>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50">
                           View Docs
                         </Button>
                       </div>
@@ -675,32 +677,35 @@ export default function SettingsPage() {
 
             {/* Appearance Tab */}
             <TabsContent value="appearance" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Appearance</CardTitle>
+              <Card className="bg-white dark:bg-slate-800 shadow-lg border-0">
+                <CardHeader className="bg-gradient-to-r from-pink-50 to-purple-50 dark:from-slate-700 dark:to-slate-800 border-b">
+                  <CardTitle className="text-xl font-bold text-gray-900 dark:text-white">Appearance</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-6 p-6">
                   <div>
-                    <Label>Theme</Label>
-                    <p className="text-sm text-muted-foreground mb-4">
+                    <Label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Theme</Label>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-4">
                       Choose your preferred theme
                     </p>
                     <div className="flex space-x-4">
                       <Button
                         variant={theme === 'light' ? 'default' : 'outline'}
                         onClick={() => setTheme('light')}
+                        className={theme === 'light' ? 'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold' : 'border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold'}
                       >
                         Light
                       </Button>
                       <Button
                         variant={theme === 'dark' ? 'default' : 'outline'}
                         onClick={() => setTheme('dark')}
+                        className={theme === 'dark' ? 'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold' : 'border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold'}
                       >
                         Dark
                       </Button>
                       <Button
                         variant={theme === 'system' ? 'default' : 'outline'}
                         onClick={() => setTheme('system')}
+                        className={theme === 'system' ? 'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold' : 'border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold'}
                       >
                         System
                       </Button>
@@ -710,19 +715,19 @@ export default function SettingsPage() {
               </Card>
 
               {/* Danger Zone */}
-              <Card className="border-red-200 dark:border-red-800">
-                <CardHeader>
-                  <CardTitle className="text-red-600 dark:text-red-400">Danger Zone</CardTitle>
+              <Card className="border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/20">
+                <CardHeader className="bg-gradient-to-r from-red-500 to-red-600 text-white">
+                  <CardTitle className="text-white font-bold">⚠️ Danger Zone</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 pt-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-semibold">Delete Account</h3>
-                      <p className="text-sm text-muted-foreground">
+                      <h3 className="font-bold text-gray-900 dark:text-white text-lg">Delete Account</h3>
+                      <p className="text-sm text-gray-700 dark:text-gray-300 font-medium mt-1">
                         Permanently delete your account and all associated data
                       </p>
                     </div>
-                    <Button variant="destructive" size="sm">
+                    <Button variant="destructive" size="sm" className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2">
                       <Trash2 className="h-4 w-4 mr-2" />
                       Delete Account
                     </Button>
