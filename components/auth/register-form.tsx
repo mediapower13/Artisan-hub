@@ -146,47 +146,51 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           {/* Basic Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="firstName">First Name *</Label>
+              <Label htmlFor="firstName" className="text-sm font-medium text-gray-900 dark:text-gray-100">First Name *</Label>
               <Input
                 id="firstName"
                 placeholder="Enter your first name"
                 value={formData.firstName}
                 onChange={(e) => handleInputChange("firstName", e.target.value)}
+                className="w-full h-12 border-2 border-gray-300 hover:border-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 rounded-lg"
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="lastName">Last Name *</Label>
+              <Label htmlFor="lastName" className="text-sm font-medium text-gray-900 dark:text-gray-100">Last Name *</Label>
               <Input
                 id="lastName"
                 placeholder="Enter your last name"
                 value={formData.lastName}
                 onChange={(e) => handleInputChange("lastName", e.target.value)}
+                className="w-full h-12 border-2 border-gray-300 hover:border-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 rounded-lg"
                 required
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email">Email *</Label>
+            <Label htmlFor="email" className="text-sm font-medium text-gray-900 dark:text-gray-100">Email *</Label>
             <Input
               id="email"
               type="email"
               placeholder="your.email@unilorin.edu.ng"
               value={formData.email}
               onChange={(e) => handleInputChange("email", e.target.value)}
+              className="w-full h-12 border-2 border-gray-300 hover:border-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 rounded-lg"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phone">Phone Number *</Label>
+            <Label htmlFor="phone" className="text-sm font-medium text-gray-900 dark:text-gray-100">Phone Number *</Label>
             <Input
               id="phone"
               type="tel"
               placeholder="+234 xxx xxx xxxx"
               value={formData.phone}
               onChange={(e) => handleInputChange("phone", e.target.value)}
+              className="w-full h-12 border-2 border-gray-300 hover:border-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 rounded-lg"
               required
             />
           </div>
@@ -194,7 +198,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           {/* Password Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="password">Password *</Label>
+              <Label htmlFor="password" className="text-sm font-medium text-gray-900 dark:text-gray-100">Password *</Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -202,11 +206,12 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   placeholder="Create a password"
                   value={formData.password}
                   onChange={(e) => handleInputChange("password", e.target.value)}
+                  className="w-full h-12 pr-12 border-2 border-gray-300 hover:border-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 rounded-lg"
                   required
                 />
                 <Button
                   {...({ type: "button", variant: "ghost", size: "sm" } as any)}
-                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                  className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 rounded-r-lg"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -214,7 +219,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password *</Label>
+              <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-900 dark:text-gray-100">Confirm Password *</Label>
               <div className="relative">
                 <Input
                   id="confirmPassword"
@@ -222,11 +227,12 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   placeholder="Confirm your password"
                   value={formData.confirmPassword}
                   onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                  className="w-full h-12 pr-12 border-2 border-gray-300 hover:border-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 rounded-lg"
                   required
                 />
                 <Button
                   {...({ type: "button", variant: "ghost", size: "sm" } as any)}
-                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                  className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 rounded-r-lg"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -242,10 +248,10 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
               value={formData.role}
               onValueChange={(value: "student" | "artisan") => handleInputChange("role", value)}
             >
-              <SelectTrigger className="h-12 border-2 border-purple-300 bg-white dark:bg-gray-800 hover:border-purple-500 focus:border-purple-600 focus:ring-2 focus:ring-purple-500/20 text-gray-900 dark:text-gray-100 font-medium">
+              <SelectTrigger className="w-full h-12 border-2 border-purple-300 bg-white dark:bg-gray-800 hover:border-purple-500 focus:border-purple-600 focus:ring-2 focus:ring-purple-500/20 text-gray-900 dark:text-gray-100 font-medium">
                 <SelectValue placeholder="Select your role" className="text-gray-900 dark:text-gray-100" />
               </SelectTrigger>
-              <SelectContent className="bg-white dark:bg-gray-800 border-2 border-purple-200 dark:border-purple-700 shadow-xl">
+              <SelectContent className="w-full bg-white dark:bg-gray-800 border-2 border-purple-200 dark:border-purple-700 shadow-xl">
                 <SelectItem value="student" className="hover:bg-purple-50 dark:hover:bg-purple-900/50 text-gray-900 dark:text-gray-100 py-4">
                   <div className="flex items-center space-x-3">
                     <div className="h-3 w-3 bg-blue-500 rounded-full shadow-sm"></div>
@@ -283,13 +289,13 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                     placeholder="e.g., 19/55HA001"
                     value={formData.studentId}
                     onChange={(e) => handleInputChange("studentId", e.target.value)}
-                    className="border-blue-200 focus:border-blue-500 focus:ring-blue-500"
+                    className="w-full h-12 border-blue-200 focus:border-blue-500 focus:ring-blue-500"
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="department" className="text-sm font-medium text-gray-900 dark:text-gray-100">Department *</Label>
                   <Select value={formData.department} onValueChange={(value) => handleInputChange("department", value)}>
-                    <SelectTrigger className="h-12 border-2 border-blue-300 bg-white dark:bg-gray-800 hover:border-blue-500 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 text-gray-900 dark:text-gray-100 font-medium">
+                    <SelectTrigger className="w-full h-12 border-2 border-blue-300 bg-white dark:bg-gray-800 hover:border-blue-500 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 text-gray-900 dark:text-gray-100 font-medium">
                       <SelectValue placeholder="Select your department" className="text-gray-900 dark:text-gray-100" />
                     </SelectTrigger>
                     <SelectContent className="max-h-60 overflow-auto bg-white dark:bg-gray-800 border-2 border-blue-200 dark:border-blue-700 shadow-xl">
@@ -339,7 +345,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 <div className="space-y-2">
                   <Label htmlFor="level" className="text-sm font-medium text-gray-900 dark:text-gray-100">Academic Level *</Label>
                   <Select value={formData.level} onValueChange={(value) => handleInputChange("level", value)}>
-                    <SelectTrigger className="h-12 border-2 border-blue-300 bg-white dark:bg-gray-800 hover:border-blue-500 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 text-gray-900 dark:text-gray-100 font-medium">
+                    <SelectTrigger className="w-full h-12 border-2 border-blue-300 bg-white dark:bg-gray-800 hover:border-blue-500 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 text-gray-900 dark:text-gray-100 font-medium">
                       <SelectValue placeholder="Choose your level" className="text-gray-900 dark:text-gray-100" />
                     </SelectTrigger>
                     <SelectContent className="w-full bg-white dark:bg-gray-800 border-2 border-blue-200 dark:border-blue-700 shadow-xl">
@@ -434,13 +440,13 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                     placeholder="e.g., Fatima's Fashion House"
                     value={formData.businessName}
                     onChange={(e) => handleInputChange("businessName", e.target.value)}
-                    className="border-orange-200 focus:border-orange-500 focus:ring-orange-500"
+                    className="w-full h-12 border-orange-200 focus:border-orange-500 focus:ring-orange-500"
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="specialization" className="text-sm font-medium text-gray-900 dark:text-gray-100">Specialization *</Label>
                   <Select value={formData.specialization} onValueChange={(value) => handleInputChange("specialization", value)}>
-                    <SelectTrigger className="h-12 border-2 border-orange-300 bg-white dark:bg-gray-800 hover:border-orange-500 focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20 text-gray-900 dark:text-gray-100 font-medium">
+                    <SelectTrigger className="w-full h-12 border-2 border-orange-300 bg-white dark:bg-gray-800 hover:border-orange-500 focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20 text-gray-900 dark:text-gray-100 font-medium">
                       <SelectValue placeholder="Select your specialization" className="text-gray-900 dark:text-gray-100" />
                     </SelectTrigger>
                     <SelectContent className="max-h-60 overflow-auto bg-white dark:bg-gray-800 border-2 border-orange-200 dark:border-orange-700 shadow-xl">
@@ -506,10 +512,10 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 <div className="space-y-2">
                   <Label htmlFor="experience" className="text-sm font-medium text-gray-900 dark:text-gray-100">Years of Experience *</Label>
                   <Select value={formData.experience} onValueChange={(value) => handleInputChange("experience", value)}>
-                    <SelectTrigger className="h-12 border-2 border-orange-300 bg-white dark:bg-gray-800 hover:border-orange-500 focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20 text-gray-900 dark:text-gray-100 font-medium">
+                    <SelectTrigger className="w-full h-12 border-2 border-orange-300 bg-white dark:bg-gray-800 hover:border-orange-500 focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20 text-gray-900 dark:text-gray-100 font-medium">
                       <SelectValue placeholder="Select experience level" className="text-gray-900 dark:text-gray-100" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white dark:bg-gray-800 border-2 border-orange-200 dark:border-orange-700 shadow-xl">
+                    <SelectContent className="w-full bg-white dark:bg-gray-800 border-2 border-orange-200 dark:border-orange-700 shadow-xl">
                       <SelectItem value="1" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">
                         <div className="flex items-center space-x-3">
                           <div className="h-3 w-3 bg-green-500 rounded-full shadow-sm"></div>

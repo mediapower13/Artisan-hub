@@ -54,19 +54,20 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-sm font-medium text-gray-900 dark:text-gray-100">Email</Label>
             <Input
               id="email"
               type="email"
               placeholder="your.email@unilorin.edu.ng"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="w-full h-12 border-2 border-gray-300 hover:border-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-lg"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="text-sm font-medium text-gray-900 dark:text-gray-100">Password</Label>
             <div className="relative">
               <Input
                 id="password"
@@ -74,13 +75,14 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="w-full h-12 pr-12 border-2 border-gray-300 hover:border-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-lg"
                 required
               />
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 rounded-r-lg"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
