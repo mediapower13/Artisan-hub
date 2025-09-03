@@ -248,8 +248,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
               value={formData.role}
               onValueChange={(value: "student" | "artisan") => handleInputChange("role", value)}
             >
-              <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-foreground [&>span]:text-foreground">
-                <SelectValue placeholder="Select your role" className="text-foreground" />
+              <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-white [&>span]:text-white">
+                <SelectValue placeholder="Select your role" className="text-white" />
               </SelectTrigger>
               <SelectContent className="glass-card border-border min-w-[320px]">
                 <SelectItem value="student" className="h-16 p-4 cursor-pointer hover:bg-accent focus:bg-accent data-[state=checked]:bg-accent">
@@ -295,8 +295,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 <div className="space-y-2">
                   <Label htmlFor="department">Department *</Label>
                   <Select value={formData.department} onValueChange={(value) => handleInputChange("department", value)}>
-                    <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-foreground [&>span]:text-foreground">
-                      <SelectValue placeholder="Select your department" className="text-foreground" />
+                    <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-white [&>span]:text-white">
+                      <SelectValue placeholder="Select your department" className="text-white" />
                     </SelectTrigger>
                     <SelectContent className="glass-card border-border max-h-60 overflow-auto">
                       <SelectItem value="Computer Science" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Computer Science</SelectItem>
@@ -345,8 +345,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 <div className="space-y-2">
                   <Label htmlFor="level">Academic Level *</Label>
                   <Select value={formData.level} onValueChange={(value) => handleInputChange("level", value)}>
-                    <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-foreground [&>span]:text-foreground">
-                      <SelectValue placeholder="Choose your level" className="text-foreground" />
+                    <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-white [&>span]:text-white">
+                      <SelectValue placeholder="Choose your level" className="text-white" />
                     </SelectTrigger>
                     <SelectContent className="glass-card border-border max-h-80 overflow-auto min-w-[350px]">
                       <div className="px-3 py-2 text-sm font-semibold text-primary uppercase tracking-wide bg-accent/50 sticky top-0">
@@ -446,8 +446,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 <div className="space-y-2">
                   <Label htmlFor="specialization">Specialization *</Label>
                   <Select value={formData.specialization} onValueChange={(value) => handleInputChange("specialization", value)}>
-                    <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-foreground [&>span]:text-foreground">
-                      <SelectValue placeholder="Select your specialization" className="text-foreground" />
+                    <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-white [&>span]:text-white">
+                      <SelectValue placeholder="Select your specialization" className="text-white" />
                     </SelectTrigger>
                     <SelectContent className="glass-card border-border max-h-80 overflow-auto min-w-[350px]">
                       <div className="px-3 py-2 text-sm font-semibold text-primary uppercase tracking-wide bg-accent/50 sticky top-0">
@@ -512,8 +512,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 <div className="space-y-2">
                   <Label htmlFor="experience">Years of Experience *</Label>
                   <Select value={formData.experience} onValueChange={(value) => handleInputChange("experience", value)}>
-                    <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-foreground [&>span]:text-foreground">
-                      <SelectValue placeholder="Select experience level" className="text-foreground" />
+                    <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-white [&>span]:text-white">
+                      <SelectValue placeholder="Select experience level" className="text-white" />
                     </SelectTrigger>
                     <SelectContent className="glass-card border-border min-w-[320px]">
                       <SelectItem value="1" className="h-16 p-4 cursor-pointer hover:bg-accent focus:bg-accent">
@@ -567,8 +567,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 <div className="space-y-2">
                   <Label htmlFor="location">Location *</Label>
                   <Select value={formData.location} onValueChange={(value) => handleInputChange("location", value)}>
-                    <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-foreground [&>span]:text-foreground">
-                      <SelectValue placeholder="Select your location" className="text-foreground" />
+                    <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-white [&>span]:text-white">
+                      <SelectValue placeholder="Select your location" className="text-white" />
                     </SelectTrigger>
                     <SelectContent className="glass-card border-border max-h-80 overflow-auto">
                       <div className="px-3 py-2 text-sm font-semibold text-primary uppercase tracking-wide bg-accent/50 sticky top-0">
