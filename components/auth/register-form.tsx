@@ -5,7 +5,6 @@ import type React from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Eye, EyeOff, Loader2, GraduationCap, Wrench } from "lucide-react"
@@ -119,47 +118,44 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      <Card className="bg-white dark:bg-gray-800 shadow-2xl border-0 rounded-2xl overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-purple-600 to-blue-600 text-white py-8">
-          <div className="text-center space-y-2">
-            <CardTitle className="text-3xl font-bold">Create Your Account</CardTitle>
-            <CardDescription className="text-purple-100 text-lg">
-              Join the UNILORIN Artisan Community today
-            </CardDescription>
-          </div>
-        </CardHeader>
+    <div className="w-full space-y-6">
+      {/* Form Header */}
+      <div className="text-center space-y-4">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Create Your Account</h2>
+        <p className="text-gray-600 dark:text-gray-400 text-lg">
+          Join the UNILORIN Artisan Community today
+        </p>
         
-        <form onSubmit={handleSubmit}>
-          <CardContent className="p-8 space-y-6">
-            {error && (
-              <Alert className="border-red-200 bg-red-50 text-red-800 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400 rounded-lg">
-                <AlertDescription className="font-medium">{error}</AlertDescription>
-              </Alert>
-            )}
+        {/* Progress Indicator */}
+        <div className="flex items-center justify-between max-w-md mx-auto">
+          <div className="flex space-x-2">
+            <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+            <div className={`w-3 h-3 rounded-full ${getProgressStep() >= 2 ? 'bg-purple-500' : 'bg-gray-300'}`}></div>
+            <div className={`w-3 h-3 rounded-full ${getProgressStep() >= 3 ? 'bg-purple-500' : 'bg-gray-300'}`}></div>
+          </div>
+          <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+            Step {getProgressStep()} of 3
+          </span>
+        </div>
+      </div>
+        
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {error && (
+          <Alert className="border-red-200 bg-red-50 text-red-800 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400 rounded-lg">
+            <AlertDescription className="font-medium">{error}</AlertDescription>
+          </Alert>
+        )}
 
-            {/* Progress Indicator */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex space-x-2">
-                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                <div className={`w-3 h-3 rounded-full ${getProgressStep() >= 2 ? 'bg-purple-500' : 'bg-gray-300'}`}></div>
-                <div className={`w-3 h-3 rounded-full ${getProgressStep() >= 3 ? 'bg-purple-500' : 'bg-gray-300'}`}></div>
-              </div>
-              <span className="text-sm text-gray-600 dark:text-gray-400">
-                Step {getProgressStep()} of 3
-              </span>
-            </div>
-
-            {/* Basic Information Section */}
-            <div className="space-y-6">
-              <div className="border-l-4 border-purple-500 pl-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  Personal Information
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Let's start with your basic details
-                </p>
-              </div>
+        {/* Basic Information Section */}
+        <div className="space-y-6">
+          <div className="border-l-4 border-purple-500 pl-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              Personal Information
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Let's start with your basic details
+            </p>
+          </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
@@ -233,7 +229,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                       className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center hover:bg-purple-100 dark:hover:bg-purple-900/50 rounded-r-lg transition-colors"
                       onClick={() => setShowPassword(!showPassword)}
                     >
-                      {showPassword ? <EyeOff className="h-4 w-4 text-gray-600" /> : <Eye className="h-4 w-4 text-gray-600" />}
+                      {showPassword ? <EyeOff className="h-4 w-4 text-gray-700 dark:text-gray-300" /> : <Eye className="h-4 w-4 text-gray-700 dark:text-gray-300" />}
                     </Button>
                   </div>
                 </div>
@@ -256,7 +252,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                       className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center hover:bg-purple-100 dark:hover:bg-purple-900/50 rounded-r-lg transition-colors"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     >
-                      {showConfirmPassword ? <EyeOff className="h-4 w-4 text-gray-600" /> : <Eye className="h-4 w-4 text-gray-600" />}
+                      {showConfirmPassword ? <EyeOff className="h-4 w-4 text-gray-700 dark:text-gray-300" /> : <Eye className="h-4 w-4 text-gray-700 dark:text-gray-300" />}
                     </Button>
                   </div>
                 </div>
@@ -286,19 +282,19 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   <SelectContent className="w-full bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 shadow-2xl rounded-lg">
                     <SelectItem value="student" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-4 cursor-pointer transition-colors">
                       <div className="flex items-center space-x-3">
-                        <GraduationCap className="h-5 w-5 text-blue-600" />
+                        <GraduationCap className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                         <div>
                           <div className="font-semibold text-gray-900 dark:text-gray-100">Student</div>
-                          <div className="text-sm text-gray-600 dark:text-gray-400">I want to learn new skills and connect with artisans</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">I want to learn new skills and connect with artisans</div>
                         </div>
                       </div>
                     </SelectItem>
                     <SelectItem value="artisan" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-4 cursor-pointer transition-colors">
                       <div className="flex items-center space-x-3">
-                        <Wrench className="h-5 w-5 text-orange-600" />
+                        <Wrench className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                         <div>
                           <div className="font-semibold text-gray-900 dark:text-gray-100">Artisan</div>
-                          <div className="text-sm text-gray-600 dark:text-gray-400">I want to teach my skills and grow my business</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">I want to teach my skills and grow my business</div>
                         </div>
                       </div>
                     </SelectItem>
@@ -312,10 +308,10 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
               <div className="space-y-6 animate-in slide-in-from-top-2 duration-300">
                 <div className="border-l-4 border-green-500 pl-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
-                    <GraduationCap className="h-5 w-5 mr-2 text-green-600" />
+                    <GraduationCap className="h-5 w-5 mr-2 text-green-600 dark:text-green-400" />
                     Student Information
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
                     Tell us about your academic details
                   </p>
                 </div>
@@ -329,40 +325,40 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                         placeholder="e.g., 19/55HA001"
                         value={formData.studentId}
                         onChange={(e) => handleInputChange("studentId", e.target.value)}
-                        className="w-full h-12 border-2 border-blue-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-lg transition-all duration-200"
+                        className="w-full h-12 border-2 border-blue-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-lg transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
                       />
                     </div>
                     
                     <div className="space-y-2">
                       <Label htmlFor="department" className="text-sm font-semibold text-gray-900 dark:text-gray-100">Department *</Label>
                       <Select value={formData.department} onValueChange={(value) => handleInputChange("department", value)}>
-                        <SelectTrigger className="w-full h-12 border-2 border-blue-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-gray-900 dark:text-gray-100 font-medium rounded-lg transition-all duration-200">
-                          <SelectValue placeholder="Select your department" />
+                        <SelectTrigger className="w-full h-12 border-2 border-blue-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-gray-900 dark:text-gray-100 font-medium rounded-lg transition-all duration-200 bg-white dark:bg-gray-800">
+                          <SelectValue placeholder="Select your department" className="text-gray-900 dark:text-gray-100" />
                         </SelectTrigger>
                         <SelectContent className="max-h-60 overflow-auto bg-white dark:bg-gray-800 border-2 border-blue-200 dark:border-blue-700 shadow-2xl rounded-lg">
-                          <SelectItem value="Computer Science">Computer Science</SelectItem>
-                          <SelectItem value="Electrical Engineering">Electrical Engineering</SelectItem>
-                          <SelectItem value="Mechanical Engineering">Mechanical Engineering</SelectItem>
-                          <SelectItem value="Civil Engineering">Civil Engineering</SelectItem>
-                          <SelectItem value="Chemical Engineering">Chemical Engineering</SelectItem>
-                          <SelectItem value="Business Administration">Business Administration</SelectItem>
-                          <SelectItem value="Economics">Economics</SelectItem>
-                          <SelectItem value="Accounting">Accounting</SelectItem>
-                          <SelectItem value="Mass Communication">Mass Communication</SelectItem>
-                          <SelectItem value="English Language">English Language</SelectItem>
-                          <SelectItem value="Mathematics">Mathematics</SelectItem>
-                          <SelectItem value="Physics">Physics</SelectItem>
-                          <SelectItem value="Chemistry">Chemistry</SelectItem>
-                          <SelectItem value="Biology">Biology</SelectItem>
-                          <SelectItem value="Medicine">Medicine</SelectItem>
-                          <SelectItem value="Law">Law</SelectItem>
-                          <SelectItem value="Agriculture">Agriculture</SelectItem>
-                          <SelectItem value="Veterinary Medicine">Veterinary Medicine</SelectItem>
-                          <SelectItem value="Pharmacy">Pharmacy</SelectItem>
-                          <SelectItem value="Education">Education</SelectItem>
-                          <SelectItem value="Arts">Arts</SelectItem>
-                          <SelectItem value="Social Sciences">Social Sciences</SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
+                          <SelectItem value="Computer Science" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Computer Science</SelectItem>
+                          <SelectItem value="Electrical Engineering" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Electrical Engineering</SelectItem>
+                          <SelectItem value="Mechanical Engineering" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Mechanical Engineering</SelectItem>
+                          <SelectItem value="Civil Engineering" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Civil Engineering</SelectItem>
+                          <SelectItem value="Chemical Engineering" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Chemical Engineering</SelectItem>
+                          <SelectItem value="Business Administration" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Business Administration</SelectItem>
+                          <SelectItem value="Economics" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Economics</SelectItem>
+                          <SelectItem value="Accounting" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Accounting</SelectItem>
+                          <SelectItem value="Mass Communication" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Mass Communication</SelectItem>
+                          <SelectItem value="English Language" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">English Language</SelectItem>
+                          <SelectItem value="Mathematics" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Mathematics</SelectItem>
+                          <SelectItem value="Physics" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Physics</SelectItem>
+                          <SelectItem value="Chemistry" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Chemistry</SelectItem>
+                          <SelectItem value="Biology" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Biology</SelectItem>
+                          <SelectItem value="Medicine" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Medicine</SelectItem>
+                          <SelectItem value="Law" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Law</SelectItem>
+                          <SelectItem value="Agriculture" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Agriculture</SelectItem>
+                          <SelectItem value="Veterinary Medicine" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Veterinary Medicine</SelectItem>
+                          <SelectItem value="Pharmacy" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Pharmacy</SelectItem>
+                          <SelectItem value="Education" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Education</SelectItem>
+                          <SelectItem value="Arts" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Arts</SelectItem>
+                          <SelectItem value="Social Sciences" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Social Sciences</SelectItem>
+                          <SelectItem value="Other" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Other</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -375,7 +371,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                           placeholder="Enter your department name"
                           value={formData.customDepartment || ""}
                           onChange={(e) => handleInputChange("customDepartment", e.target.value)}
-                          className="w-full h-12 border-2 border-blue-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-lg"
+                          className="w-full h-12 border-2 border-blue-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
                           required
                         />
                       </div>
@@ -384,23 +380,23 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                     <div className="space-y-2">
                       <Label htmlFor="level" className="text-sm font-semibold text-gray-900 dark:text-gray-100">Academic Level *</Label>
                       <Select value={formData.level} onValueChange={(value) => handleInputChange("level", value)}>
-                        <SelectTrigger className="w-full h-12 border-2 border-blue-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-gray-900 dark:text-gray-100 font-medium rounded-lg">
-                          <SelectValue placeholder="Choose your level" />
+                        <SelectTrigger className="w-full h-12 border-2 border-blue-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-gray-900 dark:text-gray-100 font-medium rounded-lg bg-white dark:bg-gray-800">
+                          <SelectValue placeholder="Choose your level" className="text-gray-900 dark:text-gray-100" />
                         </SelectTrigger>
                         <SelectContent className="bg-white dark:bg-gray-800 border-2 border-blue-200 dark:border-blue-700 shadow-2xl">
                           <div className="px-3 py-2 text-sm font-semibold text-blue-700 dark:text-blue-300 uppercase tracking-wide bg-blue-50 dark:bg-blue-900/30">
                             Undergraduate
                           </div>
-                          <SelectItem value="100">100 Level - First Year</SelectItem>
-                          <SelectItem value="200">200 Level - Second Year</SelectItem>
-                          <SelectItem value="300">300 Level - Third Year</SelectItem>
-                          <SelectItem value="400">400 Level - Fourth Year</SelectItem>
-                          <SelectItem value="500">500 Level - Fifth Year</SelectItem>
+                          <SelectItem value="100" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">100 Level - First Year</SelectItem>
+                          <SelectItem value="200" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">200 Level - Second Year</SelectItem>
+                          <SelectItem value="300" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">300 Level - Third Year</SelectItem>
+                          <SelectItem value="400" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">400 Level - Fourth Year</SelectItem>
+                          <SelectItem value="500" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">500 Level - Fifth Year</SelectItem>
                           <div className="px-3 py-2 text-sm font-semibold text-blue-700 dark:text-blue-300 uppercase tracking-wide bg-blue-50 dark:bg-blue-900/30 border-t border-gray-200 dark:border-gray-600 mt-1">
                             Postgraduate
                           </div>
-                          <SelectItem value="masters">Masters Degree</SelectItem>
-                          <SelectItem value="phd">PhD/Doctorate</SelectItem>
+                          <SelectItem value="masters" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">Masters Degree</SelectItem>
+                          <SelectItem value="phd" className="text-gray-900 dark:text-gray-100 hover:bg-blue-50 dark:hover:bg-blue-900/50">PhD/Doctorate</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -414,10 +410,10 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
               <div className="space-y-6 animate-in slide-in-from-top-2 duration-300">
                 <div className="border-l-4 border-orange-500 pl-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
-                    <Wrench className="h-5 w-5 mr-2 text-orange-600" />
+                    <Wrench className="h-5 w-5 mr-2 text-orange-600 dark:text-orange-400" />
                     Artisan Information
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
                     Tell us about your craft and business
                   </p>
                 </div>
@@ -431,7 +427,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                         placeholder="e.g., Fatima's Fashion House"
                         value={formData.businessName}
                         onChange={(e) => handleInputChange("businessName", e.target.value)}
-                        className="w-full h-12 border-2 border-orange-300 hover:border-orange-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 rounded-lg transition-all duration-200"
+                        className="w-full h-12 border-2 border-orange-300 hover:border-orange-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 rounded-lg transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
                       />
                     </div>
 
@@ -442,56 +438,56 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                         placeholder="e.g., UNILORIN Campus, Ilorin"
                         value={formData.location}
                         onChange={(e) => handleInputChange("location", e.target.value)}
-                        className="w-full h-12 border-2 border-orange-300 hover:border-orange-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 rounded-lg transition-all duration-200"
+                        className="w-full h-12 border-2 border-orange-300 hover:border-orange-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 rounded-lg transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
                       />
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="specialization" className="text-sm font-semibold text-gray-900 dark:text-gray-100">Specialization *</Label>
                       <Select value={formData.specialization} onValueChange={(value) => handleInputChange("specialization", value)}>
-                        <SelectTrigger className="w-full h-12 border-2 border-orange-300 hover:border-orange-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 text-gray-900 dark:text-gray-100 font-medium rounded-lg">
-                          <SelectValue placeholder="Select your specialization" />
+                        <SelectTrigger className="w-full h-12 border-2 border-orange-300 hover:border-orange-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 text-gray-900 dark:text-gray-100 font-medium rounded-lg bg-white dark:bg-gray-800">
+                          <SelectValue placeholder="Select your specialization" className="text-gray-900 dark:text-gray-100" />
                         </SelectTrigger>
                         <SelectContent className="max-h-60 overflow-auto bg-white dark:bg-gray-800 border-2 border-orange-200 dark:border-orange-700 shadow-2xl">
                           <div className="px-3 py-2 text-sm font-semibold text-orange-700 dark:text-orange-300 uppercase tracking-wide bg-orange-50 dark:bg-orange-900/30">
                             Fashion & Textiles
                           </div>
-                          <SelectItem value="Fashion Design">Fashion Design</SelectItem>
-                          <SelectItem value="Tailoring">Tailoring & Alterations</SelectItem>
-                          <SelectItem value="Embroidery">Embroidery & Decoration</SelectItem>
-                          <SelectItem value="Textile Design">Textile Design</SelectItem>
+                          <SelectItem value="Fashion Design" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Fashion Design</SelectItem>
+                          <SelectItem value="Tailoring" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Tailoring & Alterations</SelectItem>
+                          <SelectItem value="Embroidery" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Embroidery & Decoration</SelectItem>
+                          <SelectItem value="Textile Design" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Textile Design</SelectItem>
                           
                           <div className="px-3 py-2 text-sm font-semibold text-orange-700 dark:text-orange-300 uppercase tracking-wide bg-orange-50 dark:bg-orange-900/30 border-t border-gray-200 dark:border-gray-600 mt-1">
                             Crafts & Arts
                           </div>
-                          <SelectItem value="Jewelry Making">Jewelry Making</SelectItem>
-                          <SelectItem value="Pottery">Pottery & Ceramics</SelectItem>
-                          <SelectItem value="Woodworking">Woodworking & Carpentry</SelectItem>
-                          <SelectItem value="Leather Work">Leather Work</SelectItem>
-                          <SelectItem value="Beadwork">Beadwork & Accessories</SelectItem>
+                          <SelectItem value="Jewelry Making" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Jewelry Making</SelectItem>
+                          <SelectItem value="Pottery" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Pottery & Ceramics</SelectItem>
+                          <SelectItem value="Woodworking" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Woodworking & Carpentry</SelectItem>
+                          <SelectItem value="Leather Work" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Leather Work</SelectItem>
+                          <SelectItem value="Beadwork" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Beadwork & Accessories</SelectItem>
                           
                           <div className="px-3 py-2 text-sm font-semibold text-orange-700 dark:text-orange-300 uppercase tracking-wide bg-orange-50 dark:bg-orange-900/30 border-t border-gray-200 dark:border-gray-600 mt-1">
                             Technology & Digital
                           </div>
-                          <SelectItem value="Web Development">Web Development</SelectItem>
-                          <SelectItem value="Graphic Design">Graphic Design</SelectItem>
-                          <SelectItem value="Photography">Photography</SelectItem>
-                          <SelectItem value="Digital Marketing">Digital Marketing</SelectItem>
+                          <SelectItem value="Web Development" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Web Development</SelectItem>
+                          <SelectItem value="Graphic Design" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Graphic Design</SelectItem>
+                          <SelectItem value="Photography" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Photography</SelectItem>
+                          <SelectItem value="Digital Marketing" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Digital Marketing</SelectItem>
                           
                           <div className="px-3 py-2 text-sm font-semibold text-orange-700 dark:text-orange-300 uppercase tracking-wide bg-orange-50 dark:bg-orange-900/30 border-t border-gray-200 dark:border-gray-600 mt-1">
                             Food & Culinary
                           </div>
-                          <SelectItem value="Catering">Catering & Event Planning</SelectItem>
-                          <SelectItem value="Baking">Baking & Pastry</SelectItem>
-                          <SelectItem value="Traditional Cooking">Traditional Cooking</SelectItem>
+                          <SelectItem value="Catering" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Catering & Event Planning</SelectItem>
+                          <SelectItem value="Baking" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Baking & Pastry</SelectItem>
+                          <SelectItem value="Traditional Cooking" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Traditional Cooking</SelectItem>
                           
                           <div className="px-3 py-2 text-sm font-semibold text-orange-700 dark:text-orange-300 uppercase tracking-wide bg-orange-50 dark:bg-orange-900/30 border-t border-gray-200 dark:border-gray-600 mt-1">
                             Services
                           </div>
-                          <SelectItem value="Hair Styling">Hair Styling & Beauty</SelectItem>
-                          <SelectItem value="Makeup Artistry">Makeup Artistry</SelectItem>
-                          <SelectItem value="Event Planning">Event Planning</SelectItem>
-                          <SelectItem value="Other">Other Specialization</SelectItem>
+                          <SelectItem value="Hair Styling" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Hair Styling & Beauty</SelectItem>
+                          <SelectItem value="Makeup Artistry" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Makeup Artistry</SelectItem>
+                          <SelectItem value="Event Planning" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Event Planning</SelectItem>
+                          <SelectItem value="Other" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">Other Specialization</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -504,7 +500,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                           placeholder="Enter your specialization"
                           value={formData.customSpecialization || ""}
                           onChange={(e) => handleInputChange("customSpecialization", e.target.value)}
-                          className="w-full h-12 border-2 border-orange-300 hover:border-orange-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 rounded-lg"
+                          className="w-full h-12 border-2 border-orange-300 hover:border-orange-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
                           required
                         />
                       </div>
@@ -513,15 +509,15 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                     <div className="space-y-2">
                       <Label htmlFor="experience" className="text-sm font-semibold text-gray-900 dark:text-gray-100">Years of Experience *</Label>
                       <Select value={formData.experience} onValueChange={(value) => handleInputChange("experience", value)}>
-                        <SelectTrigger className="w-full h-12 border-2 border-orange-300 hover:border-orange-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 text-gray-900 dark:text-gray-100 font-medium rounded-lg">
-                          <SelectValue placeholder="Select experience level" />
+                        <SelectTrigger className="w-full h-12 border-2 border-orange-300 hover:border-orange-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 text-gray-900 dark:text-gray-100 font-medium rounded-lg bg-white dark:bg-gray-800">
+                          <SelectValue placeholder="Select experience level" className="text-gray-900 dark:text-gray-100" />
                         </SelectTrigger>
                         <SelectContent className="bg-white dark:bg-gray-800 border-2 border-orange-200 dark:border-orange-700 shadow-2xl">
-                          <SelectItem value="1">1 Year - Beginner</SelectItem>
-                          <SelectItem value="2">2-3 Years - Developing Skills</SelectItem>
-                          <SelectItem value="4">4-5 Years - Intermediate</SelectItem>
-                          <SelectItem value="6">6-10 Years - Advanced</SelectItem>
-                          <SelectItem value="11">11+ Years - Expert</SelectItem>
+                          <SelectItem value="1" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">1 Year - Beginner</SelectItem>
+                          <SelectItem value="2" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">2-3 Years - Developing Skills</SelectItem>
+                          <SelectItem value="4" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">4-5 Years - Intermediate</SelectItem>
+                          <SelectItem value="6" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">6-10 Years - Advanced</SelectItem>
+                          <SelectItem value="11" className="text-gray-900 dark:text-gray-100 hover:bg-orange-50 dark:hover:bg-orange-900/50">11+ Years - Expert</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -529,32 +525,31 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 </div>
               </div>
             )}
-          </CardContent>
-
-          <CardFooter className="bg-gray-50 dark:bg-gray-900/50 p-8 space-y-4">
-            <Button 
-              type="submit" 
-              className="w-full h-12 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold text-lg rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl" 
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Creating Account...
-                </>
-              ) : (
-                "Create Account"
-              )}
-            </Button>
-            <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-              Already have an account?{" "}
-              <Link href="/login" className="text-purple-600 hover:text-purple-700 font-medium hover:underline transition-colors">
-                Sign in here
-              </Link>
-            </div>
-          </CardFooter>
-        </form>
-      </Card>
+        {/* Submit Button and Footer */}
+        <div className="space-y-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <Button 
+            type="submit" 
+            className="w-full h-12 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-lg rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl" 
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                Creating Account...
+              </>
+            ) : (
+              "Create Account"
+            )}
+          </Button>
+          
+          <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+            Already have an account?{" "}
+            <Link href="/login" className="text-purple-600 hover:text-purple-700 font-medium hover:underline transition-colors">
+              Sign in here
+            </Link>
+          </div>
+        </div>
+      </form>
     </div>
   )
 }

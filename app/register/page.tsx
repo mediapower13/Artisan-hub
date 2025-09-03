@@ -14,39 +14,41 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-purple-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 via-gray-50 to-stone-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <Header />
       
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-purple-600 to-blue-600 text-white py-12">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 text-center">
-          <div className="flex items-center justify-center mb-6">
+      <div className="relative bg-gradient-to-r from-purple-600 to-blue-600 text-white py-16">
+        <div className="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
+        <div className="relative max-w-7xl mx-auto px-6 text-center">
+          <div className="flex items-center justify-center mb-8">
             <Image
               src="/placeholder-logo.png"
               alt="University of Ilorin Logo"
-              width={80}
-              height={80}
-              className="mr-4 bg-white rounded-full p-2"
+              width={96}
+              height={96}
+              className="mr-6 bg-white rounded-full p-3 shadow-lg"
             />
             <div className="text-left">
-              <h1 className="text-3xl font-bold">UNIVERSITY OF ILORIN</h1>
-              <p className="text-purple-100 text-lg">Artisan Community Platform</p>
+              <h1 className="text-4xl font-bold tracking-tight">UNIVERSITY OF ILORIN</h1>
+              <p className="text-purple-100 text-xl font-medium">Artisan Community Platform</p>
             </div>
           </div>
-          <p className="text-xl text-purple-100 max-w-2xl mx-auto">
+          <p className="text-xl text-purple-100 max-w-3xl mx-auto leading-relaxed">
             Join Nigeria's premier university artisan community and unlock your potential
           </p>
         </div>
       </div>
 
-      <main className="flex-1 py-12 px-4">
+      <main className="flex-1 py-16 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             
             {/* Registration Form */}
             <div className="order-2 lg:order-1">
-              <RegisterForm onSuccess={handleRegisterSuccess} />
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
+                <RegisterForm onSuccess={handleRegisterSuccess} />
+              </div>
             </div>
 
             {/* Benefits Section */}
