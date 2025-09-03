@@ -228,57 +228,57 @@ export function ProviderProfileForm({
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="businessName" className="text-sm font-medium text-gray-900 dark:text-gray-100">Business/Service Name *</Label>
+                <Label htmlFor="businessName">Business/Service Name *</Label>
                 <Input
                   id="businessName"
                   value={formData.businessName || ""}
                   onChange={(e) => setFormData(prev => ({ ...prev, businessName: e.target.value }))}
                   placeholder="e.g., Creative Designs Studio"
-                  className={`w-full h-12 border-2 rounded-lg ${errors.businessName ? "border-red-500 focus:border-red-500" : "border-gray-300 hover:border-gray-400 focus:border-blue-500"} focus:ring-2 focus:ring-blue-500/20`}
+                  className={errors.businessName ? "border-red-500" : ""}
                 />
                 {errors.businessName && (
-                  <p className="text-sm text-red-500 font-medium">{errors.businessName}</p>
+                  <p className="text-sm text-red-500">{errors.businessName}</p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="location" className="text-sm font-medium text-gray-900 dark:text-gray-100">Location *</Label>
+                <Label htmlFor="location">Location *</Label>
                 <div className="relative">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
+                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="location"
                     value={formData.location || ""}
                     onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
                     placeholder="e.g., UNILORIN Campus, Ilorin"
-                    className={`w-full h-12 pl-10 border-2 rounded-lg ${errors.location ? "border-red-500 focus:border-red-500" : "border-gray-300 hover:border-gray-400 focus:border-blue-500"} focus:ring-2 focus:ring-blue-500/20`}
+                    className={`pl-10 ${errors.location ? "border-red-500" : ""}`}
                   />
                 </div>
                 {errors.location && (
-                  <p className="text-sm text-red-500 font-medium">{errors.location}</p>
+                  <p className="text-sm text-red-500">{errors.location}</p>
                 )}
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description" className="text-sm font-medium text-gray-900 dark:text-gray-100">Description *</Label>
+              <Label htmlFor="description">Description *</Label>
               <Textarea
                 id="description"
                 value={formData.description || ""}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                 placeholder="Describe your services, experience, and what makes you unique..."
                 rows={4}
-                className={`w-full min-h-[120px] border-2 rounded-lg resize-vertical ${errors.description ? "border-red-500 focus:border-red-500" : "border-gray-300 hover:border-gray-400 focus:border-blue-500"} focus:ring-2 focus:ring-blue-500/20`}
+                className={errors.description ? "border-red-500" : ""}
               />
               {errors.description && (
-                <p className="text-sm text-red-500 font-medium">{errors.description}</p>
+                <p className="text-sm text-red-500">{errors.description}</p>
               )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="whatsappNumber" className="text-sm font-medium text-gray-900 dark:text-gray-100">WhatsApp Number *</Label>
+                <Label htmlFor="whatsappNumber">WhatsApp Number *</Label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground z-10" />
+                  <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="whatsappNumber"
                     value={formData.whatsappNumber || ""}
@@ -287,19 +287,19 @@ export function ProviderProfileForm({
                       whatsappNumber: WhatsAppService.formatPhoneNumber(e.target.value)
                     }))}
                     placeholder="+234..."
-                    className={`w-full h-12 pl-10 border-2 rounded-lg ${errors.whatsappNumber ? "border-red-500 focus:border-red-500" : "border-gray-300 hover:border-gray-400 focus:border-blue-500"} focus:ring-2 focus:ring-blue-500/20`}
+                    className={`pl-10 ${errors.whatsappNumber ? "border-red-500" : ""}`}
                   />
                 </div>
                 {errors.whatsappNumber && (
-                  <p className="text-sm text-red-500 font-medium">{errors.whatsappNumber}</p>
+                  <p className="text-sm text-red-500">{errors.whatsappNumber}</p>
                 )}
-                <p className="text-xs text-gray-600 dark:text-gray-400">
+                <p className="text-xs text-muted-foreground">
                   This will be used for the WhatsApp contact button
                 </p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="experience" className="text-sm font-medium text-gray-900 dark:text-gray-100">Years of Experience</Label>
+                <Label htmlFor="experience">Years of Experience</Label>
                 <Input
                   id="experience"
                   type="number"
@@ -311,7 +311,6 @@ export function ProviderProfileForm({
                     experience: parseInt(e.target.value) || 0 
                   }))}
                   placeholder="0"
-                  className="w-full h-12 border-2 border-gray-300 hover:border-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-lg"
                 />
               </div>
             </div>
@@ -330,7 +329,6 @@ export function ProviderProfileForm({
                 onChange={(e) => setNewSkill(e.target.value)}
                 placeholder="Add a skill or specialization"
                 onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), handleAddSkill())}
-                className="w-full h-12"
               />
               <Button type="button" onClick={handleAddSkill} size="sm">
                 <Plus className="h-4 w-4" />
