@@ -40,10 +40,10 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto glass-card shadow-2xl animate-in fade-in slide-in-from-bottom delay-200">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold text-center">Welcome Back</CardTitle>
-        <CardDescription className="text-center">Sign in to your UNILORIN Artisan Community account</CardDescription>
+        <CardDescription className="text-center text-muted-foreground">Sign in to your UNILORIN Artisan Community account</CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
@@ -62,6 +62,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className="border-input bg-background/50 backdrop-blur-sm"
             />
           </div>
 
@@ -75,6 +76,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                className="border-input bg-background/50 backdrop-blur-sm"
               />
               <Button
                 type="button"
@@ -86,6 +88,12 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </Button>
             </div>
+          </div>
+
+          <div className="text-right">
+            <Link href="/forgot-password" className="text-sm text-primary hover:underline transition-colors">
+              Forgot your password?
+            </Link>
           </div>
         </CardContent>
 
@@ -102,8 +110,8 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           </Button>
 
           <div className="text-center text-sm">
-            Don't have an account?{" "}
-            <Link href="/register" className="text-primary hover:underline">
+            <span className="text-muted-foreground">Don't have an account?</span>{" "}
+            <Link href="/register" className="text-primary hover:underline transition-colors">
               Sign up here
             </Link>
           </div>

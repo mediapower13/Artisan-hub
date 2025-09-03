@@ -128,10 +128,10 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-2xl mx-auto glass-card shadow-2xl animate-in fade-in slide-in-from-bottom delay-200">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold text-center">Join UNILORIN Community</CardTitle>
-        <CardDescription className="text-center">
+        <CardDescription className="text-center text-muted-foreground">
           Create your account to connect with artisans and learn new skills
         </CardDescription>
       </CardHeader>
@@ -153,6 +153,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 value={formData.firstName}
                 onChange={(e) => handleInputChange("firstName", e.target.value)}
                 required
+                className="border-input bg-background/50 backdrop-blur-sm"
               />
             </div>
             <div className="space-y-2">
@@ -163,6 +164,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 value={formData.lastName}
                 onChange={(e) => handleInputChange("lastName", e.target.value)}
                 required
+                className="border-input bg-background/50 backdrop-blur-sm"
               />
             </div>
           </div>
@@ -176,6 +178,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
               value={formData.email}
               onChange={(e) => handleInputChange("email", e.target.value)}
               required
+              className="border-input bg-background/50 backdrop-blur-sm"
             />
           </div>
 
@@ -188,6 +191,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
               value={formData.phone}
               onChange={(e) => handleInputChange("phone", e.target.value)}
               required
+              className="border-input bg-background/50 backdrop-blur-sm"
             />
           </div>
 
@@ -203,6 +207,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   value={formData.password}
                   onChange={(e) => handleInputChange("password", e.target.value)}
                   required
+                  className="border-input bg-background/50 backdrop-blur-sm"
                 />
                 <Button
                   {...({ type: "button", variant: "ghost", size: "sm" } as any)}
@@ -223,6 +228,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   value={formData.confirmPassword}
                   onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
                   required
+                  className="border-input bg-background/50 backdrop-blur-sm"
                 />
                 <Button
                   {...({ type: "button", variant: "ghost", size: "sm" } as any)}
@@ -237,30 +243,30 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
           {/* Role Selection */}
           <div className="space-y-2">
-            <Label htmlFor="role" className="text-sm font-medium text-gray-900 dark:text-gray-100">I am a *</Label>
+            <Label htmlFor="role">I am a *</Label>
             <Select
               value={formData.role}
               onValueChange={(value: "student" | "artisan") => handleInputChange("role", value)}
             >
-              <SelectTrigger className="h-12 border-2 border-purple-300 bg-white dark:bg-gray-800 hover:border-purple-500 focus:border-purple-600 focus:ring-2 focus:ring-purple-500/20 text-gray-900 dark:text-gray-100 font-medium">
-                <SelectValue placeholder="Select your role" className="text-gray-900 dark:text-gray-100" />
+              <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-foreground [&>span]:text-foreground">
+                <SelectValue placeholder="Select your role" className="text-foreground" />
               </SelectTrigger>
-              <SelectContent className="bg-white dark:bg-gray-800 border-2 border-purple-200 dark:border-purple-700 shadow-xl">
-                <SelectItem value="student" className="hover:bg-purple-50 dark:hover:bg-purple-900/50 text-gray-900 dark:text-gray-100 py-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="h-3 w-3 bg-blue-500 rounded-full shadow-sm"></div>
-                    <div>
-                      <div className="font-semibold text-gray-900 dark:text-gray-100">Student</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">I want to learn new skills</div>
+              <SelectContent className="glass-card border-border min-w-[320px]">
+                <SelectItem value="student" className="h-16 p-4 cursor-pointer hover:bg-accent focus:bg-accent data-[state=checked]:bg-accent">
+                  <div className="flex items-center space-x-3 w-full">
+                    <div className="h-3 w-3 bg-blue-500 rounded-full shadow-sm flex-shrink-0"></div>
+                    <div className="flex-1 text-left">
+                      <div className="font-semibold text-foreground">Student</div>
+                      <div className="text-sm text-muted-foreground">I want to learn new skills</div>
                     </div>
                   </div>
                 </SelectItem>
-                <SelectItem value="artisan" className="hover:bg-purple-50 dark:hover:bg-purple-900/50 text-gray-900 dark:text-gray-100 py-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="h-3 w-3 bg-orange-500 rounded-full shadow-sm"></div>
-                    <div>
-                      <div className="font-semibold text-gray-900 dark:text-gray-100">Artisan</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">I want to teach my skills</div>
+                <SelectItem value="artisan" className="h-16 p-4 cursor-pointer hover:bg-accent focus:bg-accent data-[state=checked]:bg-accent">
+                  <div className="flex items-center space-x-3 w-full">
+                    <div className="h-3 w-3 bg-orange-500 rounded-full shadow-sm flex-shrink-0"></div>
+                    <div className="flex-1 text-left">
+                      <div className="font-semibold text-foreground">Artisan</div>
+                      <div className="text-sm text-muted-foreground">I want to teach my skills</div>
                     </div>
                   </div>
                 </SelectItem>
@@ -270,14 +276,14 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
           {/* Student-specific fields */}
           {formData.role === "student" && (
-            <div className="space-y-4 p-6 border rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 border-blue-200 dark:border-blue-800">
+            <div className="space-y-4 p-6 border rounded-lg glass-card">
               <div className="flex items-center space-x-2">
                 <div className="h-2 w-2 bg-blue-600 rounded-full"></div>
-                <h3 className="font-semibold text-blue-900 dark:text-blue-100">Student Information</h3>
+                <h3 className="font-semibold text-primary">Student Information</h3>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="studentId" className="text-sm font-medium text-gray-700 dark:text-gray-300">Student ID *</Label>
+                  <Label htmlFor="studentId">Student ID *</Label>
                   <Input
                     id="studentId"
                     placeholder="e.g., 19/55HA001"
@@ -287,35 +293,35 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="department" className="text-sm font-medium text-gray-900 dark:text-gray-100">Department *</Label>
+                  <Label htmlFor="department">Department *</Label>
                   <Select value={formData.department} onValueChange={(value) => handleInputChange("department", value)}>
-                    <SelectTrigger className="h-12 border-2 border-blue-300 bg-white dark:bg-gray-800 hover:border-blue-500 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 text-gray-900 dark:text-gray-100 font-medium">
-                      <SelectValue placeholder="Select your department" className="text-gray-900 dark:text-gray-100" />
+                    <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-foreground [&>span]:text-foreground">
+                      <SelectValue placeholder="Select your department" className="text-foreground" />
                     </SelectTrigger>
-                    <SelectContent className="max-h-60 overflow-auto bg-white dark:bg-gray-800 border-2 border-blue-200 dark:border-blue-700 shadow-xl">
-                      <SelectItem value="Computer Science" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Computer Science</SelectItem>
-                      <SelectItem value="Electrical Engineering" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Electrical Engineering</SelectItem>
-                      <SelectItem value="Mechanical Engineering" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Mechanical Engineering</SelectItem>
-                      <SelectItem value="Civil Engineering" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Civil Engineering</SelectItem>
-                      <SelectItem value="Chemical Engineering" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Chemical Engineering</SelectItem>
-                      <SelectItem value="Business Administration" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Business Administration</SelectItem>
-                      <SelectItem value="Economics" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Economics</SelectItem>
-                      <SelectItem value="Accounting" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Accounting</SelectItem>
-                      <SelectItem value="Mass Communication" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Mass Communication</SelectItem>
-                      <SelectItem value="English Language" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">English Language</SelectItem>
-                      <SelectItem value="Mathematics" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Mathematics</SelectItem>
-                      <SelectItem value="Physics" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Physics</SelectItem>
-                      <SelectItem value="Chemistry" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Chemistry</SelectItem>
-                      <SelectItem value="Biology" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Biology</SelectItem>
-                      <SelectItem value="Medicine" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Medicine</SelectItem>
-                      <SelectItem value="Law" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Law</SelectItem>
-                      <SelectItem value="Agriculture" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Agriculture</SelectItem>
-                      <SelectItem value="Veterinary Medicine" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Veterinary Medicine</SelectItem>
-                      <SelectItem value="Pharmacy" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Pharmacy</SelectItem>
-                      <SelectItem value="Education" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Education</SelectItem>
-                      <SelectItem value="Arts" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Arts</SelectItem>
-                      <SelectItem value="Social Sciences" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Social Sciences</SelectItem>
-                      <SelectItem value="Other" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">Other</SelectItem>
+                    <SelectContent className="glass-card border-border max-h-60 overflow-auto">
+                      <SelectItem value="Computer Science" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Computer Science</SelectItem>
+                      <SelectItem value="Electrical Engineering" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Electrical Engineering</SelectItem>
+                      <SelectItem value="Mechanical Engineering" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Mechanical Engineering</SelectItem>
+                      <SelectItem value="Civil Engineering" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Civil Engineering</SelectItem>
+                      <SelectItem value="Chemical Engineering" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Chemical Engineering</SelectItem>
+                      <SelectItem value="Business Administration" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Business Administration</SelectItem>
+                      <SelectItem value="Economics" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Economics</SelectItem>
+                      <SelectItem value="Accounting" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Accounting</SelectItem>
+                      <SelectItem value="Mass Communication" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Mass Communication</SelectItem>
+                      <SelectItem value="English Language" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">English Language</SelectItem>
+                      <SelectItem value="Mathematics" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Mathematics</SelectItem>
+                      <SelectItem value="Physics" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Physics</SelectItem>
+                      <SelectItem value="Chemistry" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Chemistry</SelectItem>
+                      <SelectItem value="Biology" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Biology</SelectItem>
+                      <SelectItem value="Medicine" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Medicine</SelectItem>
+                      <SelectItem value="Law" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Law</SelectItem>
+                      <SelectItem value="Agriculture" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Agriculture</SelectItem>
+                      <SelectItem value="Veterinary Medicine" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Veterinary Medicine</SelectItem>
+                      <SelectItem value="Pharmacy" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Pharmacy</SelectItem>
+                      <SelectItem value="Education" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Education</SelectItem>
+                      <SelectItem value="Arts" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Arts</SelectItem>
+                      <SelectItem value="Social Sciences" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Social Sciences</SelectItem>
+                      <SelectItem value="Other" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -323,7 +329,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 {/* Custom Department Input - Shows when "Other" is selected */}
                 {formData.department === "Other" && (
                   <div className="space-y-2">
-                    <Label htmlFor="customDepartment" className="text-sm font-medium text-gray-900 dark:text-gray-100">Specify Your Department *</Label>
+                    <Label htmlFor="customDepartment" className="text-blue-200">Specify Your Department *</Label>
                     <Input
                       id="customDepartment"
                       placeholder="Enter your department name"
@@ -337,78 +343,78 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 )}
                 
                 <div className="space-y-2">
-                  <Label htmlFor="level" className="text-sm font-medium text-gray-900 dark:text-gray-100">Academic Level *</Label>
+                  <Label htmlFor="level">Academic Level *</Label>
                   <Select value={formData.level} onValueChange={(value) => handleInputChange("level", value)}>
-                    <SelectTrigger className="h-12 border-2 border-blue-300 bg-white dark:bg-gray-800 hover:border-blue-500 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 text-gray-900 dark:text-gray-100 font-medium">
-                      <SelectValue placeholder="Choose your level" className="text-gray-900 dark:text-gray-100" />
+                    <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-foreground [&>span]:text-foreground">
+                      <SelectValue placeholder="Choose your level" className="text-foreground" />
                     </SelectTrigger>
-                    <SelectContent className="w-full bg-white dark:bg-gray-800 border-2 border-blue-200 dark:border-blue-700 shadow-xl">
-                      <div className="px-3 py-2 text-sm font-semibold text-blue-700 dark:text-blue-300 uppercase tracking-wide bg-blue-50 dark:bg-blue-900/30">
+                    <SelectContent className="glass-card border-border max-h-80 overflow-auto min-w-[350px]">
+                      <div className="px-3 py-2 text-sm font-semibold text-primary uppercase tracking-wide bg-accent/50 sticky top-0">
                         Undergraduate Levels
                       </div>
-                      <SelectItem value="100" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">
-                        <div className="flex items-center space-x-3">
-                          <div className="h-3 w-3 bg-green-500 rounded-full shadow-sm"></div>
-                          <div>
-                            <div className="font-semibold text-gray-900 dark:text-gray-100">100 Level</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">First Year Undergraduate</div>
+                      <SelectItem value="100" className="h-14 p-3 cursor-pointer hover:bg-accent focus:bg-accent">
+                        <div className="flex items-center space-x-3 w-full">
+                          <div className="h-3 w-3 bg-green-500 rounded-full shadow-sm flex-shrink-0"></div>
+                          <div className="flex-1 text-left">
+                            <div className="font-semibold text-foreground">100 Level</div>
+                            <div className="text-sm text-muted-foreground">First Year Undergraduate</div>
                           </div>
                         </div>
                       </SelectItem>
-                      <SelectItem value="200" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">
-                        <div className="flex items-center space-x-3">
-                          <div className="h-3 w-3 bg-blue-500 rounded-full shadow-sm"></div>
-                          <div>
-                            <div className="font-semibold text-gray-900 dark:text-gray-100">200 Level</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">Second Year Undergraduate</div>
+                      <SelectItem value="200" className="h-14 p-3 cursor-pointer hover:bg-accent focus:bg-accent">
+                        <div className="flex items-center space-x-3 w-full">
+                          <div className="h-3 w-3 bg-blue-500 rounded-full shadow-sm flex-shrink-0"></div>
+                          <div className="flex-1 text-left">
+                            <div className="font-semibold text-foreground">200 Level</div>
+                            <div className="text-sm text-muted-foreground">Second Year Undergraduate</div>
                           </div>
                         </div>
                       </SelectItem>
-                      <SelectItem value="300" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">
-                        <div className="flex items-center space-x-3">
-                          <div className="h-3 w-3 bg-yellow-500 rounded-full shadow-sm"></div>
-                          <div>
-                            <div className="font-semibold text-gray-900 dark:text-gray-100">300 Level</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">Third Year Undergraduate</div>
+                      <SelectItem value="300" className="h-14 p-3 cursor-pointer hover:bg-accent focus:bg-accent">
+                        <div className="flex items-center space-x-3 w-full">
+                          <div className="h-3 w-3 bg-yellow-500 rounded-full shadow-sm flex-shrink-0"></div>
+                          <div className="flex-1 text-left">
+                            <div className="font-semibold text-foreground">300 Level</div>
+                            <div className="text-sm text-muted-foreground">Third Year Undergraduate</div>
                           </div>
                         </div>
                       </SelectItem>
-                      <SelectItem value="400" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">
-                        <div className="flex items-center space-x-3">
-                          <div className="h-3 w-3 bg-orange-500 rounded-full shadow-sm"></div>
-                          <div>
-                            <div className="font-semibold text-gray-900 dark:text-gray-100">400 Level</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">Fourth Year Undergraduate</div>
+                      <SelectItem value="400" className="h-14 p-3 cursor-pointer hover:bg-accent focus:bg-accent">
+                        <div className="flex items-center space-x-3 w-full">
+                          <div className="h-3 w-3 bg-orange-500 rounded-full shadow-sm flex-shrink-0"></div>
+                          <div className="flex-1 text-left">
+                            <div className="font-semibold text-foreground">400 Level</div>
+                            <div className="text-sm text-muted-foreground">Fourth Year Undergraduate</div>
                           </div>
                         </div>
                       </SelectItem>
-                      <SelectItem value="500" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">
-                        <div className="flex items-center space-x-3">
-                          <div className="h-3 w-3 bg-purple-500 rounded-full shadow-sm"></div>
-                          <div>
-                            <div className="font-semibold text-gray-900 dark:text-gray-100">500 Level</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">Fifth Year Undergraduate</div>
+                      <SelectItem value="500" className="h-14 p-3 cursor-pointer hover:bg-accent focus:bg-accent">
+                        <div className="flex items-center space-x-3 w-full">
+                          <div className="h-3 w-3 bg-purple-500 rounded-full shadow-sm flex-shrink-0"></div>
+                          <div className="flex-1 text-left">
+                            <div className="font-semibold text-foreground">500 Level</div>
+                            <div className="text-sm text-muted-foreground">Fifth Year Undergraduate</div>
                           </div>
                         </div>
                       </SelectItem>
-                      <div className="px-3 py-2 text-sm font-semibold text-blue-700 dark:text-blue-300 uppercase tracking-wide bg-blue-50 dark:bg-blue-900/30 border-t border-gray-200 dark:border-gray-600 mt-1">
+                      <div className="px-3 py-2 text-sm font-semibold text-primary uppercase tracking-wide bg-accent/50 border-t border-border mt-1 sticky top-8">
                         Postgraduate Levels
                       </div>
-                      <SelectItem value="masters" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">
-                        <div className="flex items-center space-x-3">
-                          <div className="h-3 w-3 bg-indigo-500 rounded-full shadow-sm"></div>
-                          <div>
-                            <div className="font-semibold text-gray-900 dark:text-gray-100">Masters Degree</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">Postgraduate (MSc/MA)</div>
+                      <SelectItem value="masters" className="h-14 p-3 cursor-pointer hover:bg-accent focus:bg-accent">
+                        <div className="flex items-center space-x-3 w-full">
+                          <div className="h-3 w-3 bg-indigo-500 rounded-full shadow-sm flex-shrink-0"></div>
+                          <div className="flex-1 text-left">
+                            <div className="font-semibold text-foreground">Masters Degree</div>
+                            <div className="text-sm text-muted-foreground">Postgraduate (MSc/MA)</div>
                           </div>
                         </div>
                       </SelectItem>
-                      <SelectItem value="phd" className="hover:bg-blue-50 dark:hover:bg-blue-900/50 text-gray-900 dark:text-gray-100 py-3">
-                        <div className="flex items-center space-x-3">
-                          <div className="h-3 w-3 bg-red-500 rounded-full shadow-sm"></div>
-                          <div>
-                            <div className="font-semibold text-gray-900 dark:text-gray-100">PhD/Doctorate</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">Doctoral Studies</div>
+                      <SelectItem value="phd" className="h-14 p-3 cursor-pointer hover:bg-accent focus:bg-accent">
+                        <div className="flex items-center space-x-3 w-full">
+                          <div className="h-3 w-3 bg-red-500 rounded-full shadow-sm flex-shrink-0"></div>
+                          <div className="flex-1 text-left">
+                            <div className="font-semibold text-foreground">PhD/Doctorate</div>
+                            <div className="text-sm text-muted-foreground">Doctoral Studies</div>
                           </div>
                         </div>
                       </SelectItem>
@@ -428,7 +434,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="businessName" className="text-sm font-medium text-gray-700 dark:text-gray-300">Business/Workshop Name *</Label>
+                  <Label htmlFor="businessName" className="text-blue-200">Business/Workshop Name *</Label>
                   <Input
                     id="businessName"
                     placeholder="e.g., Fatima's Fashion House"
@@ -438,51 +444,51 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="specialization" className="text-sm font-medium text-gray-900 dark:text-gray-100">Specialization *</Label>
+                  <Label htmlFor="specialization">Specialization *</Label>
                   <Select value={formData.specialization} onValueChange={(value) => handleInputChange("specialization", value)}>
-                    <SelectTrigger className="h-12 border-2 border-orange-300 bg-white dark:bg-gray-800 hover:border-orange-500 focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20 text-gray-900 dark:text-gray-100 font-medium">
-                      <SelectValue placeholder="Select your specialization" className="text-gray-900 dark:text-gray-100" />
+                    <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-foreground [&>span]:text-foreground">
+                      <SelectValue placeholder="Select your specialization" className="text-foreground" />
                     </SelectTrigger>
-                    <SelectContent className="max-h-60 overflow-auto bg-white dark:bg-gray-800 border-2 border-orange-200 dark:border-orange-700 shadow-xl">
-                      <div className="px-3 py-2 text-sm font-semibold text-orange-700 dark:text-orange-300 uppercase tracking-wide bg-orange-50 dark:bg-orange-900/30">
+                    <SelectContent className="glass-card border-border max-h-80 overflow-auto min-w-[350px]">
+                      <div className="px-3 py-2 text-sm font-semibold text-primary uppercase tracking-wide bg-accent/50 sticky top-0">
                         Fashion & Textiles
                       </div>
-                      <SelectItem value="Fashion Design" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Fashion Design</SelectItem>
-                      <SelectItem value="Tailoring" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Tailoring & Alterations</SelectItem>
-                      <SelectItem value="Embroidery" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Embroidery & Decoration</SelectItem>
-                      <SelectItem value="Textile Design" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Textile Design</SelectItem>
+                      <SelectItem value="Fashion Design" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Fashion Design</SelectItem>
+                      <SelectItem value="Tailoring" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Tailoring & Alterations</SelectItem>
+                      <SelectItem value="Embroidery" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Embroidery & Decoration</SelectItem>
+                      <SelectItem value="Textile Design" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Textile Design</SelectItem>
                       
-                      <div className="px-3 py-2 text-sm font-semibold text-orange-700 dark:text-orange-300 uppercase tracking-wide bg-orange-50 dark:bg-orange-900/30 border-t border-gray-200 dark:border-gray-600 mt-1">
+                      <div className="px-3 py-2 text-sm font-semibold text-primary uppercase tracking-wide bg-accent/50 border-t border-border mt-1 sticky top-8">
                         Crafts & Arts
                       </div>
-                      <SelectItem value="Jewelry Making" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Jewelry Making</SelectItem>
-                      <SelectItem value="Pottery" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Pottery & Ceramics</SelectItem>
-                      <SelectItem value="Woodworking" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Woodworking & Carpentry</SelectItem>
-                      <SelectItem value="Leather Work" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Leather Work</SelectItem>
-                      <SelectItem value="Beadwork" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Beadwork & Accessories</SelectItem>
+                      <SelectItem value="Jewelry Making" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Jewelry Making</SelectItem>
+                      <SelectItem value="Pottery" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Pottery & Ceramics</SelectItem>
+                      <SelectItem value="Woodworking" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Woodworking & Carpentry</SelectItem>
+                      <SelectItem value="Leather Work" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Leather Work</SelectItem>
+                      <SelectItem value="Beadwork" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Beadwork & Accessories</SelectItem>
                       
-                      <div className="px-3 py-2 text-sm font-semibold text-orange-700 dark:text-orange-300 uppercase tracking-wide bg-orange-50 dark:bg-orange-900/30 border-t border-gray-200 dark:border-gray-600 mt-1">
+                      <div className="px-3 py-2 text-sm font-semibold text-primary uppercase tracking-wide bg-accent/50 border-t border-border mt-1 sticky top-16">
                         Technology & Digital
                       </div>
-                      <SelectItem value="Web Development" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Web Development</SelectItem>
-                      <SelectItem value="Graphic Design" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Graphic Design</SelectItem>
-                      <SelectItem value="Photography" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Photography</SelectItem>
-                      <SelectItem value="Digital Marketing" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Digital Marketing</SelectItem>
+                      <SelectItem value="Web Development" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Web Development</SelectItem>
+                      <SelectItem value="Graphic Design" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Graphic Design</SelectItem>
+                      <SelectItem value="Photography" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Photography</SelectItem>
+                      <SelectItem value="Digital Marketing" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Digital Marketing</SelectItem>
                       
-                      <div className="px-3 py-2 text-sm font-semibold text-orange-700 dark:text-orange-300 uppercase tracking-wide bg-orange-50 dark:bg-orange-900/30 border-t border-gray-200 dark:border-gray-600 mt-1">
+                      <div className="px-3 py-2 text-sm font-semibold text-primary uppercase tracking-wide bg-accent/50 border-t border-border mt-1 sticky top-24">
                         Food & Culinary
                       </div>
-                      <SelectItem value="Catering" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Catering & Event Planning</SelectItem>
-                      <SelectItem value="Baking" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Baking & Pastry</SelectItem>
-                      <SelectItem value="Traditional Cooking" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Traditional Cooking</SelectItem>
+                      <SelectItem value="Catering" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Catering & Event Planning</SelectItem>
+                      <SelectItem value="Baking" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Baking & Pastry</SelectItem>
+                      <SelectItem value="Traditional Cooking" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Traditional Cooking</SelectItem>
                       
-                      <div className="px-3 py-2 text-sm font-semibold text-orange-700 dark:text-orange-300 uppercase tracking-wide bg-orange-50 dark:bg-orange-900/30 border-t border-gray-200 dark:border-gray-600 mt-1">
+                      <div className="px-3 py-2 text-sm font-semibold text-primary uppercase tracking-wide bg-accent/50 border-t border-border mt-1 sticky top-32">
                         Services
                       </div>
-                      <SelectItem value="Hair Styling" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Hair Styling & Beauty</SelectItem>
-                      <SelectItem value="Makeup Artistry" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Makeup Artistry</SelectItem>
-                      <SelectItem value="Event Planning" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Event Planning</SelectItem>
-                      <SelectItem value="Other" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Other Specialization</SelectItem>
+                      <SelectItem value="Hair Styling" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Hair Styling & Beauty</SelectItem>
+                      <SelectItem value="Makeup Artistry" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Makeup Artistry</SelectItem>
+                      <SelectItem value="Event Planning" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Event Planning</SelectItem>
+                      <SelectItem value="Other" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Other Specialization</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -490,7 +496,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 {/* Custom Specialization Input - Shows when "Other" is selected */}
                 {formData.specialization === "Other" && (
                   <div className="space-y-2">
-                    <Label htmlFor="customSpecialization" className="text-sm font-medium text-gray-900 dark:text-gray-100">Specify Your Specialization *</Label>
+                    <Label htmlFor="customSpecialization" className="text-blue-200">Specify Your Specialization *</Label>
                     <Input
                       id="customSpecialization"
                       placeholder="Enter your specialization"
@@ -504,54 +510,54 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                 )}
                 
                 <div className="space-y-2">
-                  <Label htmlFor="experience" className="text-sm font-medium text-gray-900 dark:text-gray-100">Years of Experience *</Label>
+                  <Label htmlFor="experience">Years of Experience *</Label>
                   <Select value={formData.experience} onValueChange={(value) => handleInputChange("experience", value)}>
-                    <SelectTrigger className="h-12 border-2 border-orange-300 bg-white dark:bg-gray-800 hover:border-orange-500 focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20 text-gray-900 dark:text-gray-100 font-medium">
-                      <SelectValue placeholder="Select experience level" className="text-gray-900 dark:text-gray-100" />
+                    <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-foreground [&>span]:text-foreground">
+                      <SelectValue placeholder="Select experience level" className="text-foreground" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white dark:bg-gray-800 border-2 border-orange-200 dark:border-orange-700 shadow-xl">
-                      <SelectItem value="1" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">
-                        <div className="flex items-center space-x-3">
-                          <div className="h-3 w-3 bg-green-500 rounded-full shadow-sm"></div>
-                          <div>
-                            <div className="font-semibold text-gray-900 dark:text-gray-100">1 Year</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">Beginner</div>
+                    <SelectContent className="glass-card border-border min-w-[320px]">
+                      <SelectItem value="1" className="h-16 p-4 cursor-pointer hover:bg-accent focus:bg-accent">
+                        <div className="flex items-center space-x-3 w-full">
+                          <div className="h-3 w-3 bg-green-500 rounded-full shadow-sm flex-shrink-0"></div>
+                          <div className="flex-1 text-left">
+                            <div className="font-semibold text-foreground">1 Year</div>
+                            <div className="text-sm text-muted-foreground">Beginner</div>
                           </div>
                         </div>
                       </SelectItem>
-                      <SelectItem value="2" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">
-                        <div className="flex items-center space-x-3">
-                          <div className="h-3 w-3 bg-blue-500 rounded-full shadow-sm"></div>
-                          <div>
-                            <div className="font-semibold text-gray-900 dark:text-gray-100">2-3 Years</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">Developing Skills</div>
+                      <SelectItem value="2" className="h-16 p-4 cursor-pointer hover:bg-accent focus:bg-accent">
+                        <div className="flex items-center space-x-3 w-full">
+                          <div className="h-3 w-3 bg-blue-500 rounded-full shadow-sm flex-shrink-0"></div>
+                          <div className="flex-1 text-left">
+                            <div className="font-semibold text-foreground">2-3 Years</div>
+                            <div className="text-sm text-muted-foreground">Developing Skills</div>
                           </div>
                         </div>
                       </SelectItem>
-                      <SelectItem value="4" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">
-                        <div className="flex items-center space-x-3">
-                          <div className="h-3 w-3 bg-yellow-500 rounded-full shadow-sm"></div>
-                          <div>
-                            <div className="font-semibold text-gray-900 dark:text-gray-100">4-5 Years</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">Intermediate</div>
+                      <SelectItem value="4" className="h-16 p-4 cursor-pointer hover:bg-accent focus:bg-accent">
+                        <div className="flex items-center space-x-3 w-full">
+                          <div className="h-3 w-3 bg-yellow-500 rounded-full shadow-sm flex-shrink-0"></div>
+                          <div className="flex-1 text-left">
+                            <div className="font-semibold text-foreground">4-5 Years</div>
+                            <div className="text-sm text-muted-foreground">Intermediate</div>
                           </div>
                         </div>
                       </SelectItem>
-                      <SelectItem value="6" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">
-                        <div className="flex items-center space-x-3">
-                          <div className="h-3 w-3 bg-orange-500 rounded-full shadow-sm"></div>
-                          <div>
-                            <div className="font-semibold text-gray-900 dark:text-gray-100">6-10 Years</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">Advanced</div>
+                      <SelectItem value="6" className="h-16 p-4 cursor-pointer hover:bg-accent focus:bg-accent">
+                        <div className="flex items-center space-x-3 w-full">
+                          <div className="h-3 w-3 bg-orange-500 rounded-full shadow-sm flex-shrink-0"></div>
+                          <div className="flex-1 text-left">
+                            <div className="font-semibold text-foreground">6-10 Years</div>
+                            <div className="text-sm text-muted-foreground">Advanced</div>
                           </div>
                         </div>
                       </SelectItem>
-                      <SelectItem value="11" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">
-                        <div className="flex items-center space-x-3">
-                          <div className="h-3 w-3 bg-purple-500 rounded-full shadow-sm"></div>
-                          <div>
-                            <div className="font-semibold text-gray-900 dark:text-gray-100">10+ Years</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">Expert/Master</div>
+                      <SelectItem value="11" className="h-16 p-4 cursor-pointer hover:bg-accent focus:bg-accent">
+                        <div className="flex items-center space-x-3 w-full">
+                          <div className="h-3 w-3 bg-purple-500 rounded-full shadow-sm flex-shrink-0"></div>
+                          <div className="flex-1 text-left">
+                            <div className="font-semibold text-foreground">10+ Years</div>
+                            <div className="text-sm text-muted-foreground">Expert/Master</div>
                           </div>
                         </div>
                       </SelectItem>
@@ -559,36 +565,36 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="location" className="text-sm font-medium text-gray-900 dark:text-gray-100">Location *</Label>
+                  <Label htmlFor="location">Location *</Label>
                   <Select value={formData.location} onValueChange={(value) => handleInputChange("location", value)}>
-                    <SelectTrigger className="h-12 border-2 border-orange-300 bg-white dark:bg-gray-800 hover:border-orange-500 focus:border-orange-600 focus:ring-2 focus:ring-orange-500/20 text-gray-900 dark:text-gray-100 font-medium">
-                      <SelectValue placeholder="Select your location" className="text-gray-900 dark:text-gray-100" />
+                    <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all text-foreground [&>span]:text-foreground">
+                      <SelectValue placeholder="Select your location" className="text-foreground" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white dark:bg-gray-800 border-2 border-orange-200 dark:border-orange-700 shadow-xl">
-                      <div className="px-3 py-2 text-sm font-semibold text-orange-700 dark:text-orange-300 uppercase tracking-wide bg-orange-50 dark:bg-orange-900/30">
+                    <SelectContent className="glass-card border-border max-h-80 overflow-auto">
+                      <div className="px-3 py-2 text-sm font-semibold text-primary uppercase tracking-wide bg-accent/50 sticky top-0">
                         Ilorin Areas
                       </div>
-                      <SelectItem value="Ilorin Central" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Ilorin Central</SelectItem>
-                      <SelectItem value="Ilorin East" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Ilorin East</SelectItem>
-                      <SelectItem value="Ilorin West" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Ilorin West</SelectItem>
-                      <SelectItem value="Ilorin South" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Ilorin South</SelectItem>
-                      <SelectItem value="University Area" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">University Area (UNILORIN)</SelectItem>
+                      <SelectItem value="Ilorin Central" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Ilorin Central</SelectItem>
+                      <SelectItem value="Ilorin East" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Ilorin East</SelectItem>
+                      <SelectItem value="Ilorin West" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Ilorin West</SelectItem>
+                      <SelectItem value="Ilorin South" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Ilorin South</SelectItem>
+                      <SelectItem value="University Area" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">University Area (UNILORIN)</SelectItem>
                       
-                      <div className="px-3 py-2 text-sm font-semibold text-orange-700 dark:text-orange-300 uppercase tracking-wide bg-orange-50 dark:bg-orange-900/30 border-t border-gray-200 dark:border-gray-600 mt-1">
+                      <div className="px-3 py-2 text-sm font-semibold text-primary uppercase tracking-wide bg-accent/50 border-t border-border mt-1 sticky top-8">
                         Kwara State
                       </div>
-                      <SelectItem value="Offa" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Offa</SelectItem>
-                      <SelectItem value="Omu-Aran" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Omu-Aran</SelectItem>
-                      <SelectItem value="Lafiagi" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Lafiagi</SelectItem>
-                      <SelectItem value="Patigi" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Patigi</SelectItem>
-                      <SelectItem value="Kaiama" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Kaiama</SelectItem>
-                      <SelectItem value="Other Kwara" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Other Areas in Kwara</SelectItem>
+                      <SelectItem value="Offa" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Offa</SelectItem>
+                      <SelectItem value="Omu-Aran" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Omu-Aran</SelectItem>
+                      <SelectItem value="Lafiagi" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Lafiagi</SelectItem>
+                      <SelectItem value="Patigi" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Patigi</SelectItem>
+                      <SelectItem value="Kaiama" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Kaiama</SelectItem>
+                      <SelectItem value="Other Kwara" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Other Areas in Kwara</SelectItem>
                       
-                      <div className="px-3 py-2 text-sm font-semibold text-orange-700 dark:text-orange-300 uppercase tracking-wide bg-orange-50 dark:bg-orange-900/30 border-t border-gray-200 dark:border-gray-600 mt-1">
+                      <div className="px-3 py-2 text-sm font-semibold text-primary uppercase tracking-wide bg-accent/50 border-t border-border mt-1 sticky top-16">
                         Online Services
                       </div>
-                      <SelectItem value="Online Only" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Online Services Only</SelectItem>
-                      <SelectItem value="Hybrid" className="hover:bg-orange-50 dark:hover:bg-orange-900/50 text-gray-900 dark:text-gray-100 py-3">Hybrid (Online + Physical)</SelectItem>
+                      <SelectItem value="Online Only" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Online Services Only</SelectItem>
+                      <SelectItem value="Hybrid" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Hybrid (Online + Physical)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -610,8 +616,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           </Button>
 
           <div className="text-center text-sm">
-            Already have an account?{" "}
-            <Link href="/login" className="text-primary hover:underline">
+            <span className="text-muted-foreground">Already have an account?</span>{" "}
+            <Link href="/login" className="text-primary hover:underline transition-colors">
               Sign in here
             </Link>
           </div>

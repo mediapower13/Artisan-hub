@@ -13,10 +13,15 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-muted/20">
       <Header />
-      <main className="flex-1 flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
-        <div className="w-full max-w-2xl space-y-8">
+      <main className="flex-1 flex items-center justify-center p-4 py-8">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5"></div>
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        
+        {/* Content */}
+        <div className="relative w-full max-w-2xl space-y-8 animate-in slide-in-from-bottom duration-1000">
           <div className="text-center">
             <Image
               src="/images/unilorin-logo.png"
@@ -25,8 +30,11 @@ export default function RegisterPage() {
               height={80}
               className="mx-auto mb-4"
             />
-            <h1 className="text-3xl font-bold text-unilorin-purple">UNILORIN</h1>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              UNILORIN
+            </h1>
             <p className="text-sm text-muted-foreground">Artisan Community Platform</p>
+            <p className="text-xs text-muted-foreground mt-2">Create your account to get started</p>
           </div>
           <RegisterForm onSuccess={handleRegisterSuccess} />
         </div>
