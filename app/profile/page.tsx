@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { AuthGuard } from "@/components/auth/auth-guard"
@@ -29,6 +29,24 @@ export default function ProfilePage() {
   )
 }
 
+type FormData = {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  department: string
+  studentId: string
+  level: string
+  bio: string
+  address: string
+  dateOfBirth: string
+  gender: string
+  nationality: string
+  stateOfOrigin: string
+  emergencyContact: string
+  emergencyPhone: string
+}
+
 function ProfileContent() {
   const { user } = useAuth()
   const { toast } = useToast()
@@ -37,7 +55,7 @@ function ProfileContent() {
   const [activeTab, setActiveTab] = useState("overview")
   
   // Comprehensive form data
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
     email: "",
@@ -78,9 +96,9 @@ function ProfileContent() {
     }
   }, [user])
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = useCallback((field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
-  }
+  }, [])
 
   const handleSave = async () => {
     setIsLoading(true)
@@ -112,7 +130,7 @@ function ProfileContent() {
     }
   }
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     if (user) {
       setFormData({
         firstName: user.firstName || user.fullName?.split(' ')[0] || "",
@@ -133,14 +151,14 @@ function ProfileContent() {
       })
     }
     setIsEditing(false)
-  }
+  }, [user])
 
-  const profileCompleteness = () => {
-    const fields = Object.values(formData).filter(value => 
+  const profileCompleteness = useCallback(() => {
+    const fields = Object.values(formData).filter(value =>
       value && value.toString().trim() !== ""
     )
     return Math.round((fields.length / Object.keys(formData).length) * 100)
-  }
+  }, [formData])
 
   const mockEnrollments = [
     { id: 1, skill: "Fashion Design", progress: 75, status: "Active", instructor: "Mrs. Adebayo", nextClass: "Dec 18, 2024" },
@@ -192,9 +210,19 @@ function ProfileContent() {
               <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
                 <div className="relative">
                   <Avatar className="h-24 w-24 border-4 border-white/20">
-                    <AvatarImage src="/placeholder-user.jpg" alt={user?.fullName} />
+                    <AvatarImage src="/placeholder-user.jpg" alt={user?.fullName ?? "User avatar"} />
                     <AvatarFallback className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xl font-bold">
-                      {user?.fullName?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
+                      {(() => {
+                        const name = user?.fullName ?? ""
+                        const initials = name
+                          .split(/\s+/)
+                          .filter(Boolean)
+                          .map(n => n[0])
+                          .join('')
+                          .slice(0, 2)
+                          .toUpperCase()
+                        return initials || "U"
+                      })()}
                     </AvatarFallback>
                   </Avatar>
                   <Button
