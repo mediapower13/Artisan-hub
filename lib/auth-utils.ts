@@ -13,13 +13,6 @@ export interface AuthUser {
   department?: string
   level?: number
   phone?: string
-  bio?: string | null
-  location?: string | null
-  dateOfBirth?: string | null
-  nationality?: string | null
-  stateOfOrigin?: string | null
-  emergencyContact?: string | null
-  emergencyPhone?: string | null
 }
 
 async function hashPassword(password: string): Promise<string> {
@@ -118,15 +111,8 @@ export const authUtils = {
         role: user.role,
         studentId: user.studentId,
         department: user.department,
-  level: user.level,
-  phone: user.phone,
-  bio: user.bio,
-  location: user.location,
-  dateOfBirth: user.dateOfBirth,
-  nationality: user.nationality,
-  stateOfOrigin: user.stateOfOrigin,
-  emergencyContact: user.emergencyContact,
-  emergencyPhone: user.emergencyPhone,
+        level: user.level,
+        phone: user.phone,
         iat: Math.floor(Date.now() / 1000),
         exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60, // 7 days
       }
@@ -178,18 +164,11 @@ export const authUtils = {
         firstName: payload.firstName,
         lastName: payload.lastName,
         userType: payload.userType,
-  role: payload.role || payload.userType, // Support both fields
-  studentId: payload.studentId,
-  department: payload.department,
-  level: payload.level,
-  phone: payload.phone,
-  bio: payload.bio,
-  location: payload.location,
-  dateOfBirth: payload.dateOfBirth,
-  nationality: payload.nationality,
-  stateOfOrigin: payload.stateOfOrigin,
-  emergencyContact: payload.emergencyContact,
-  emergencyPhone: payload.emergencyPhone,
+        role: payload.role || payload.userType, // Support both fields
+        studentId: payload.studentId,
+        department: payload.department,
+        level: payload.level,
+        phone: payload.phone,
       }
     } catch (error) {
       console.log("[v0] JWT verification failed:", error)
@@ -206,7 +185,7 @@ export const authUtils = {
 
       const { data, error } = await supabaseAdmin
         .from('users')
-        .select('id, email, full_name, first_name, last_name, role, student_id, department, level, phone, bio, location')
+        .select('id, email, full_name, first_name, last_name, role, student_id, department, level, phone')
         .eq('id', id)
         .single()
       
@@ -229,8 +208,6 @@ export const authUtils = {
         department: data.department,
         level: data.level,
         phone: data.phone,
-        bio: data.bio,
-        location: data.location,
       }
     } catch (error) {
       console.error("Error fetching user:", error)
@@ -248,7 +225,7 @@ export const authUtils = {
       console.log("Searching for user with email:", email)
       const { data, error } = await supabaseAdmin
         .from('users')
-        .select('id, email, full_name, first_name, last_name, role, password, student_id, department, level, phone, bio, location')
+        .select('id, email, full_name, first_name, last_name, role, password, student_id, department, level, phone')
         .eq('email', email)
         .single()
       
@@ -275,8 +252,6 @@ export const authUtils = {
         department: data.department,
         level: data.level,
         phone: data.phone,
-        bio: data.bio,
-        location: data.location,
         password: data.password,
       }
     } catch (error) {
@@ -293,14 +268,6 @@ export const authUtils = {
     fullName: string,
     phone: string,
     role: "student" | "artisan",
-    // profile fields
-    bio?: string | null,
-    location?: string | null,
-    dateOfBirth?: string | null,
-    nationality?: string | null,
-    stateOfOrigin?: string | null,
-    emergencyContact?: string | null,
-    emergencyPhone?: string | null,
     studentId?: string,
     department?: string,
     level?: string,
@@ -321,8 +288,6 @@ export const authUtils = {
         student_id: user.studentId,
         department: user.department,
         level: user.level,
-        bio: user.bio,
-        location: user.location,
       })
 
       const { data, error } = await supabaseAdmin
@@ -339,11 +304,9 @@ export const authUtils = {
             student_id: user.studentId || null,
             department: user.department || null,
             level: user.level || null,
-            bio: user.bio || null,
-            location: user.location || null,
           }
         ])
-        .select('id, email, full_name, first_name, last_name, role, student_id, department, level, phone, bio, location')
+        .select('id, email, full_name, first_name, last_name, role, student_id, department, level, phone')
         .single()
 
       if (error) {
@@ -369,8 +332,6 @@ export const authUtils = {
         department: data.department,
         level: data.level,
         phone: data.phone,
-        bio: data.bio,
-        location: data.location,
       }
     } catch (error) {
       console.error("Error creating user:", error)

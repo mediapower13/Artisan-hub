@@ -54,9 +54,7 @@ export async function POST(request: NextRequest) {
       phone: user.phone,
       studentId: user.studentId,
       department: user.department,
-      level: user.level,
-      bio: user.bio,
-      location: user.location
+      level: user.level
     }
 
     // Set auth cookie
