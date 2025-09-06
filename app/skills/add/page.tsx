@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
@@ -47,7 +47,16 @@ export default function AddSkillPage() {
   const { toast } = useToast()
   
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [formData, setFormData] = useState({
+  type FormData = {
+    title: string
+    category: string
+    description: string
+    difficulty: string
+    duration: string
+    price: string
+    maxStudents: string
+  }
+  const [formData, setFormData] = useState<FormData>({
     title: "",
     category: "",
     description: "",
@@ -56,14 +65,27 @@ export default function AddSkillPage() {
     price: "",
     maxStudents: ""
   })
+  const [formErrors, setFormErrors] = useState<Partial<FormData>>({})
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = useCallback((field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
-  }
+    setFormErrors(prev => ({ ...prev, [field]: undefined }))
+  }, [])
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const validate = useCallback((data: FormData) => {
+    const errors: Partial<FormData> = {}
+    if (!data.title.trim()) errors.title = "Title is required"
+    if (!data.category) errors.category = "Category is required"
+    if (!data.description.trim()) errors.description = "Description is required"
+    if (!data.difficulty) errors.difficulty = "Difficulty is required"
+    if (!data.duration.trim()) errors.duration = "Duration is required"
+    if (!data.price.trim() || isNaN(Number(data.price)) || Number(data.price) <= 0) errors.price = "Valid price required"
+    if (!data.maxStudents.trim() || isNaN(Number(data.maxStudents)) || Number(data.maxStudents) < 1) errors.maxStudents = "Valid max students required"
+    return errors
+  }, [])
+
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
-    
     if (!isAuthenticated) {
       toast({
         title: "Authentication Required",
@@ -72,7 +94,16 @@ export default function AddSkillPage() {
       router.push("/login")
       return
     }
-
+    const errors = validate(formData)
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors)
+      toast({
+        title: "Please fix the errors",
+        description: "Check the form for missing or invalid fields.",
+        variant: "destructive"
+      })
+      return
+    }
     setIsSubmitting(true)
     try {
       const cleanedData = {
@@ -80,12 +111,11 @@ export default function AddSkillPage() {
         price: parseFloat(formData.price),
         maxStudents: parseInt(formData.maxStudents)
       }
-      
+      // TODO: send cleanedData to API
       toast({
         title: "Skill Added Successfully!",
         description: "Your skill has been submitted for review and will be live soon.",
       })
-      
       router.push("/dashboard")
     } catch (error) {
       toast({
@@ -95,7 +125,7 @@ export default function AddSkillPage() {
     } finally {
       setIsSubmitting(false)
     }
-  }
+  }, [formData, isAuthenticated, router, toast, validate])
 
   if (!isAuthenticated) {
     return (
@@ -177,9 +207,12 @@ export default function AddSkillPage() {
                       value={formData.title}
                       onChange={(e) => handleInputChange("title", e.target.value)}
                       placeholder="e.g., Professional Fashion Design Masterclass"
+                      aria-invalid={!!formErrors.title}
+                      aria-describedby="title-error"
                       required
-                      className="h-11 border border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md bg-white"
+                      className={`h-11 border ${formErrors.title ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 focus:ring-blue-500 rounded-md bg-white`}
                     />
+                    {formErrors.title && <div id="title-error" className="text-red-600 text-xs mt-1">{formErrors.title}</div>}
                   </div>
                   
                   <div>
@@ -187,7 +220,7 @@ export default function AddSkillPage() {
                       Category *
                     </Label>
                     <Select value={formData.category} onValueChange={(value) => handleInputChange("category", value)}>
-                      <SelectTrigger className="h-11 border border-gray-300 focus:border-blue-500 rounded-md bg-white">
+                      <SelectTrigger className={`h-11 border ${formErrors.category ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 rounded-md bg-white`} aria-invalid={!!formErrors.category} aria-describedby="category-error">
                         <SelectValue placeholder="Select a category" />
                       </SelectTrigger>
                       <SelectContent className="bg-white border border-gray-200 shadow-lg rounded-md">
@@ -198,6 +231,7 @@ export default function AddSkillPage() {
                         ))}
                       </SelectContent>
                     </Select>
+                    {formErrors.category && <div id="category-error" className="text-red-600 text-xs mt-1">{formErrors.category}</div>}
                   </div>
 
                   <div>
@@ -205,7 +239,7 @@ export default function AddSkillPage() {
                       Difficulty Level *
                     </Label>
                     <Select value={formData.difficulty} onValueChange={(value) => handleInputChange("difficulty", value)}>
-                      <SelectTrigger className="h-11 border border-gray-300 focus:border-blue-500 rounded-md bg-white">
+                      <SelectTrigger className={`h-11 border ${formErrors.difficulty ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 rounded-md bg-white`} aria-invalid={!!formErrors.difficulty} aria-describedby="difficulty-error">
                         <SelectValue placeholder="Select difficulty" />
                       </SelectTrigger>
                       <SelectContent className="bg-white border border-gray-200 shadow-lg rounded-md">
@@ -219,6 +253,7 @@ export default function AddSkillPage() {
                         ))}
                       </SelectContent>
                     </Select>
+                    {formErrors.difficulty && <div id="difficulty-error" className="text-red-600 text-xs mt-1">{formErrors.difficulty}</div>}
                   </div>
 
                   <div className="md:col-span-2">
@@ -231,9 +266,12 @@ export default function AddSkillPage() {
                       onChange={(e) => handleInputChange("description", e.target.value)}
                       placeholder="Describe what students will learn, your teaching approach, and why they should choose your skill..."
                       rows={4}
+                      aria-invalid={!!formErrors.description}
+                      aria-describedby="description-error"
                       required
-                      className="border border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md resize-none bg-white"
+                      className={`border ${formErrors.description ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 focus:ring-blue-500 rounded-md resize-none bg-white`}
                     />
+                    {formErrors.description && <div id="description-error" className="text-red-600 text-xs mt-1">{formErrors.description}</div>}
                   </div>
                 </div>
               </div>
@@ -254,9 +292,12 @@ export default function AddSkillPage() {
                       value={formData.duration}
                       onChange={(e) => handleInputChange("duration", e.target.value)}
                       placeholder="e.g., 4 weeks, 10 hours"
+                      aria-invalid={!!formErrors.duration}
+                      aria-describedby="duration-error"
                       required
-                      className="h-11 border border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md bg-white"
+                      className={`h-11 border ${formErrors.duration ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 focus:ring-blue-500 rounded-md bg-white`}
                     />
+                    {formErrors.duration && <div id="duration-error" className="text-red-600 text-xs mt-1">{formErrors.duration}</div>}
                   </div>
 
                   <div>
@@ -269,9 +310,12 @@ export default function AddSkillPage() {
                       value={formData.price}
                       onChange={(e) => handleInputChange("price", e.target.value)}
                       placeholder="15000"
+                      aria-invalid={!!formErrors.price}
+                      aria-describedby="price-error"
                       required
-                      className="h-11 border border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md bg-white"
+                      className={`h-11 border ${formErrors.price ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 focus:ring-blue-500 rounded-md bg-white`}
                     />
+                    {formErrors.price && <div id="price-error" className="text-red-600 text-xs mt-1">{formErrors.price}</div>}
                   </div>
 
                   <div>
@@ -284,9 +328,12 @@ export default function AddSkillPage() {
                       value={formData.maxStudents}
                       onChange={(e) => handleInputChange("maxStudents", e.target.value)}
                       placeholder="20"
+                      aria-invalid={!!formErrors.maxStudents}
+                      aria-describedby="maxStudents-error"
                       required
-                      className="h-11 border border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md bg-white"
+                      className={`h-11 border ${formErrors.maxStudents ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 focus:ring-blue-500 rounded-md bg-white`}
                     />
+                    {formErrors.maxStudents && <div id="maxStudents-error" className="text-red-600 text-xs mt-1">{formErrors.maxStudents}</div>}
                   </div>
                 </div>
               </div>
