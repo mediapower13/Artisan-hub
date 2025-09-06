@@ -13,6 +13,13 @@ export interface AuthUser {
   department?: string
   level?: number
   phone?: string
+  bio?: string | null
+  location?: string | null
+  dateOfBirth?: string | null
+  nationality?: string | null
+  stateOfOrigin?: string | null
+  emergencyContact?: string | null
+  emergencyPhone?: string | null
 }
 
 async function hashPassword(password: string): Promise<string> {
@@ -106,8 +113,15 @@ export const authUtils = {
         role: user.role,
         studentId: user.studentId,
         department: user.department,
-        level: user.level,
-        phone: user.phone,
+  level: user.level,
+  phone: user.phone,
+  bio: user.bio,
+  location: user.location,
+  dateOfBirth: user.dateOfBirth,
+  nationality: user.nationality,
+  stateOfOrigin: user.stateOfOrigin,
+  emergencyContact: user.emergencyContact,
+  emergencyPhone: user.emergencyPhone,
         iat: Math.floor(Date.now() / 1000),
         exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60, // 7 days
       }
@@ -159,11 +173,18 @@ export const authUtils = {
         firstName: payload.firstName,
         lastName: payload.lastName,
         userType: payload.userType,
-        role: payload.role || payload.userType, // Support both fields
-        studentId: payload.studentId,
-        department: payload.department,
-        level: payload.level,
-        phone: payload.phone,
+  role: payload.role || payload.userType, // Support both fields
+  studentId: payload.studentId,
+  department: payload.department,
+  level: payload.level,
+  phone: payload.phone,
+  bio: payload.bio,
+  location: payload.location,
+  dateOfBirth: payload.dateOfBirth,
+  nationality: payload.nationality,
+  stateOfOrigin: payload.stateOfOrigin,
+  emergencyContact: payload.emergencyContact,
+  emergencyPhone: payload.emergencyPhone,
       }
     } catch (error) {
       console.log("[v0] JWT verification failed:", error)
@@ -180,7 +201,7 @@ export const authUtils = {
 
       const { data, error } = await supabaseAdmin
         .from('users')
-        .select('id, email, full_name, first_name, last_name, role, student_id, department, level, phone')
+        .select('id, email, full_name, first_name, last_name, role, student_id, department, level, phone, bio, location')
         .eq('id', id)
         .single()
       if (error || !data) return null
@@ -212,7 +233,7 @@ export const authUtils = {
 
       const { data, error } = await supabaseAdmin
         .from('users')
-        .select('id, email, full_name, first_name, last_name, role, password, student_id, department, level, phone')
+        .select('id, email, full_name, first_name, last_name, role, password, student_id, department, level, phone, bio, location')
         .eq('email', email)
         .single()
       if (error || !data) return null
