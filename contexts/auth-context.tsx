@@ -18,6 +18,14 @@ interface AuthContextType {
     studentId?: string
     department?: string
     level?: string
+  bio?: string
+  address?: string
+  dateOfBirth?: string
+  gender?: string
+  nationality?: string
+  stateOfOrigin?: string
+  emergencyContact?: string
+  emergencyPhone?: string
   }) => Promise<boolean>
   logout: () => void
   refreshUser: () => Promise<void>

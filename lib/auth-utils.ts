@@ -244,6 +244,14 @@ export const authUtils = {
     fullName: string,
     phone: string,
     role: "student" | "artisan",
+    // profile fields
+    bio?: string | null,
+    location?: string | null,
+    dateOfBirth?: string | null,
+    nationality?: string | null,
+    stateOfOrigin?: string | null,
+    emergencyContact?: string | null,
+    emergencyPhone?: string | null,
     studentId?: string,
     department?: string,
     level?: string,
@@ -280,9 +288,11 @@ export const authUtils = {
             student_id: user.studentId || null,
             department: user.department || null,
             level: user.level || null,
+            bio: user.bio || null,
+            location: user.location || null,
           }
         ])
-        .select('id, email, full_name, first_name, last_name, role, student_id, department, level, phone')
+        .select('id, email, full_name, first_name, last_name, role, student_id, department, level, phone, bio, location')
         .single()
 
       if (error) {

@@ -223,6 +223,101 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
             />
           </div>
 
+          {/* Profile details (optional) */}
+          <div className="space-y-2">
+            <Label htmlFor="bio">Short Bio</Label>
+            <Textarea
+              id="bio"
+              placeholder="A short bio that will appear on your profile (optional)"
+              value={formData.bio}
+              onChange={(e) => handleInputChange("bio", e.target.value)}
+              rows={3}
+              className="border-input bg-background/50 backdrop-blur-sm"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="address">Address</Label>
+              <Input
+                id="address"
+                placeholder="City, State or Campus Location"
+                value={formData.address}
+                onChange={(e) => handleInputChange("address", e.target.value)}
+                className="border-input bg-background/50 backdrop-blur-sm"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="dateOfBirth">Date of Birth</Label>
+              <Input
+                id="dateOfBirth"
+                type="date"
+                value={formData.dateOfBirth}
+                onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
+                className="border-input bg-background/50 backdrop-blur-sm"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="gender">Gender</Label>
+              <Select value={formData.gender} onValueChange={(value) => handleInputChange("gender", value)}>
+                <SelectTrigger className="h-12 border-input bg-background/50 backdrop-blur-sm">
+                  <SelectValue placeholder="Select gender" />
+                </SelectTrigger>
+                <SelectContent className="glass-card border-border min-w-[160px]">
+                  <SelectItem value="Male">Male</SelectItem>
+                  <SelectItem value="Female">Female</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="nationality">Nationality</Label>
+              <Input
+                id="nationality"
+                placeholder="e.g., Nigerian"
+                value={formData.nationality}
+                onChange={(e) => handleInputChange("nationality", e.target.value)}
+                className="border-input bg-background/50 backdrop-blur-sm"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="stateOfOrigin">State of Origin</Label>
+              <Input
+                id="stateOfOrigin"
+                placeholder="State of origin"
+                value={formData.stateOfOrigin}
+                onChange={(e) => handleInputChange("stateOfOrigin", e.target.value)}
+                className="border-input bg-background/50 backdrop-blur-sm"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="emergencyContact">Emergency Contact</Label>
+              <Input
+                id="emergencyContact"
+                placeholder="Full name"
+                value={formData.emergencyContact}
+                onChange={(e) => handleInputChange("emergencyContact", e.target.value)}
+                className="border-input bg-background/50 backdrop-blur-sm"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="emergencyPhone">Emergency Phone</Label>
+              <Input
+                id="emergencyPhone"
+                placeholder="Contact phone number"
+                value={formData.emergencyPhone}
+                onChange={(e) => handleInputChange("emergencyPhone", e.target.value)}
+                className="border-input bg-background/50 backdrop-blur-sm"
+              />
+            </div>
+          </div>
+
           {/* Password Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
