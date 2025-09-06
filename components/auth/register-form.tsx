@@ -4,6 +4,7 @@ import type React from "react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -26,6 +27,15 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     password: "",
     confirmPassword: "",
     role: "" as "student" | "artisan",
+  // Common profile fields
+  bio: "",
+  address: "",
+  dateOfBirth: "",
+  gender: "",
+  nationality: "",
+  stateOfOrigin: "",
+  emergencyContact: "",
+  emergencyPhone: "",
     // Student specific fields
     studentId: "",
     department: "",
@@ -88,6 +98,15 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       return "Please specify your specialization"
     }
 
+    // Optional profile checks
+    if (formData.bio && formData.bio.length > 1000) {
+      return "Bio must be under 1000 characters"
+    }
+
+    if (formData.emergencyPhone && formData.emergencyPhone.length < 7) {
+      return "Emergency phone looks too short"
+    }
+
     return null
   }
 
@@ -108,6 +127,15 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       lastName: formData.lastName,
       role: formData.role as "student" | "artisan",
       phone: formData.phone,
+  // Profile fields
+  bio: formData.bio || undefined,
+  address: formData.address || undefined,
+  dateOfBirth: formData.dateOfBirth || undefined,
+  gender: formData.gender || undefined,
+  nationality: formData.nationality || undefined,
+  stateOfOrigin: formData.stateOfOrigin || undefined,
+  emergencyContact: formData.emergencyContact || undefined,
+  emergencyPhone: formData.emergencyPhone || undefined,
       // Student specific data
       studentId: formData.role === "student" ? formData.studentId : undefined,
       department: formData.role === "student" ? (formData.department === "Other" ? formData.customDepartment : formData.department) : undefined,
