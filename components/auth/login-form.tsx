@@ -31,11 +31,16 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
       return
     }
 
-    const success = await login(email, password)
-    if (success) {
-      onSuccess?.()
-    } else {
-      setError("Invalid email or password")
+    try {
+      const success = await login(email, password)
+      if (success) {
+        onSuccess?.()
+      } else {
+        setError("Invalid email or password. Please check your credentials and try again.")
+      }
+    } catch (error) {
+      console.error("Login error:", error)
+      setError("Login failed. Please try again.")
     }
   }
 

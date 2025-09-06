@@ -90,7 +90,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || "Login failed")
+        console.error("Login failed:", data.error || "Unknown error")
+        return false
       }
 
       console.log("Login successful:", data)
@@ -99,7 +100,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return true
     } catch (error) {
       console.error("Login error:", error)
-      throw error
+      return false
     } finally {
       setIsLoading(false)
     }
@@ -115,6 +116,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     studentId?: string
     department?: string
     level?: string
+    bio?: string
+    address?: string
+    dateOfBirth?: string
+    gender?: string
+    nationality?: string
+    stateOfOrigin?: string
+    emergencyContact?: string
+    emergencyPhone?: string
   }): Promise<boolean> => {
     setIsLoading(true)
     try {
@@ -127,9 +136,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const data = await response.json()
 
       if (response.ok && data.user) {
+        console.log("Registration successful:", data)
         setUser(data.user)
         return true
       }
+      console.error("Registration failed:", data.error || "Unknown error")
       return false
     } catch (error) {
       console.error("Registration failed:", error)

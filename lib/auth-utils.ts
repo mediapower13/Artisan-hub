@@ -49,7 +49,12 @@ async function verifyPassword(password: string, hashedPassword: string): Promise
 
     const encoder = new TextEncoder()
     const salt = new Uint8Array(saltHex.match(/.{2}/g)!.map((byte) => Number.parseInt(byte, 16)))
-    const passwordData = encoder.encode(password + saltHex)
+    const passwordData = encoder.encode(
+      password + 
+      Array.from(salt)
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("")
+    )
 
     const hashBuffer = await crypto.subtle.digest("SHA-256", passwordData)
     const hashArray = Array.from(new Uint8Array(hashBuffer))
@@ -204,7 +209,14 @@ export const authUtils = {
         .select('id, email, full_name, first_name, last_name, role, student_id, department, level, phone, bio, location')
         .eq('id', id)
         .single()
-      if (error || !data) return null
+      
+      if (error) {
+        console.error("Error fetching user by id:", error)
+        return null
+      }
+      
+      if (!data) return null
+      
       return {
         id: data.id,
         email: data.email,
@@ -217,6 +229,8 @@ export const authUtils = {
         department: data.department,
         level: data.level,
         phone: data.phone,
+        bio: data.bio,
+        location: data.location,
       }
     } catch (error) {
       console.error("Error fetching user:", error)
@@ -231,12 +245,24 @@ export const authUtils = {
         return null
       }
 
+      console.log("Searching for user with email:", email)
       const { data, error } = await supabaseAdmin
         .from('users')
         .select('id, email, full_name, first_name, last_name, role, password, student_id, department, level, phone, bio, location')
         .eq('email', email)
         .single()
-      if (error || !data) return null
+      
+      if (error) {
+        console.error("Supabase error fetching user:", error)
+        return null
+      }
+      
+      if (!data) {
+        console.log("No user found with email:", email)
+        return null
+      }
+
+      console.log("User found:", { id: data.id, email: data.email, role: data.role })
       return {
         id: data.id,
         email: data.email,
@@ -249,6 +275,8 @@ export const authUtils = {
         department: data.department,
         level: data.level,
         phone: data.phone,
+        bio: data.bio,
+        location: data.location,
         password: data.password,
       }
     } catch (error) {
@@ -293,6 +321,8 @@ export const authUtils = {
         student_id: user.studentId,
         department: user.department,
         level: user.level,
+        bio: user.bio,
+        location: user.location,
       })
 
       const { data, error } = await supabaseAdmin
@@ -339,6 +369,8 @@ export const authUtils = {
         department: data.department,
         level: data.level,
         phone: data.phone,
+        bio: data.bio,
+        location: data.location,
       }
     } catch (error) {
       console.error("Error creating user:", error)

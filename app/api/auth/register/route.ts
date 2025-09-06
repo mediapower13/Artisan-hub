@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await authUtils.hashPassword(password)
 
     console.log("Creating user in Supabase:", { email, role, firstName, lastName })
+    console.log("Hashed password length:", hashedPassword.length)
     // Create user in Supabase
     const fullName = `${firstName} ${lastName}`
     const newUser = await authUtils.createUser({
