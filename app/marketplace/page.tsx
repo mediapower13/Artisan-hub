@@ -609,6 +609,7 @@ export default function MarketplacePage() {
               </Card>
             </TabsContent>
           </Tabs>
+          </div>
         </section>
       </main>
       <Footer />
