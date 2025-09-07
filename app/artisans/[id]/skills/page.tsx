@@ -221,7 +221,7 @@ export default function ArtisanSkillsPage() {
                           <div className="flex items-center space-x-2">
                             <Users className="h-4 w-4 text-primary" />
                             <span className="text-gray-600">Level:</span>
-                            <span className="font-medium">{skill.level}</span>
+                            <span className="font-medium capitalize">{skill.difficulty}</span>
                           </div>
                         </div>
                         
