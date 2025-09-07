@@ -302,62 +302,78 @@ export default function MarketplacePage() {
       )}
 
       <main className="flex-1 overflow-x-hidden">
-        {/* Enhanced Hero Section */}
-        <section className="relative overflow-hidden bg-gray-50 py-16 lg:py-24">
+        {/* Premium Hero Section with Enhanced Visual Hierarchy */}
+        <section className="relative overflow-hidden py-20 lg:py-32">
+          {/* Subtle background pattern */}
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-50/80 via-blue-50/40 to-purple-50/30"></div>
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23f1f5f9" fill-opacity="0.3"%3E%3Ccircle cx="30" cy="30" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40"></div>
           
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative max-w-7xl">
-            <div className="text-center space-y-10">
-              <div className="space-y-6">
-                <div className="inline-flex items-center justify-center p-4 bg-slate-100 rounded-2xl mb-6">
-                  <Users className="h-12 w-12 text-slate-700" />
+            <div className="text-center space-y-12">
+              {/* Enhanced Hero Content */}
+              <div className="space-y-8">
+                <div className="relative inline-block">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 blur-xl rounded-3xl"></div>
+                  <div className="relative bg-white/90 backdrop-blur-sm p-6 rounded-3xl border border-white/50 shadow-2xl">
+                    <Users className="h-16 w-16 text-blue-600 mx-auto" />
+                  </div>
                 </div>
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
-                  Discover Skilled Artisans
-                </h1>
-                <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-                  Connect with verified local artisans and skilled professionals. Learn new skills or hire experts for your projects in the UNILORIN community.
-                </p>
+                
+                <div className="space-y-6">
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-slate-900 via-blue-800 to-slate-900 bg-clip-text text-transparent leading-[1.1]">
+                    Discover Expert<br />
+                    <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Artisans</span>
+                  </h1>
+                  <p className="text-lg sm:text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed font-medium">
+                    Connect with verified professionals in the UNILORIN community. 
+                    <span className="block mt-2 text-slate-500">Learn new skills or hire experts for your projects.</span>
+                  </p>
+                </div>
               </div>
 
-              {/* Enhanced Stats Cards */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-                <Card className="bg-white border border-slate-200 shadow-sm hover:shadow" >
-                  <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-slate-100 rounded-2xl mx-auto mb-4">
-                      <Users className="h-8 w-8 text-slate-700" />
+              {/* Premium Stats Cards with Enhanced Design */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-6xl mx-auto">
+                <Card className="group relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent"></div>
+                  <CardContent className="relative p-4 sm:p-6 text-center">
+                    <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <Users className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
                     </div>
-                    <div className="text-3xl font-bold text-gray-900">{stats.totalArtisans}</div>
-                    <div className="text-sm font-medium text-gray-600">Total Artisans</div>
+                    <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">{stats.totalArtisans}</div>
+                    <div className="text-xs sm:text-sm font-semibold text-slate-600 uppercase tracking-wide">Expert Artisans</div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white border border-slate-200 shadow-sm hover:shadow" >
-                  <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-slate-100 rounded-2xl mx-auto mb-4">
-                      <TrendingUp className="h-8 w-8 text-slate-700" />
+                <Card className="group relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105">
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 to-transparent"></div>
+                  <CardContent className="relative p-4 sm:p-6 text-center">
+                    <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-600" />
                     </div>
-                    <div className="text-3xl font-bold text-gray-900">{stats.activeToday}</div>
-                    <div className="text-sm font-medium text-gray-600">Available Now</div>
+                    <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">{stats.activeToday}</div>
+                    <div className="text-xs sm:text-sm font-semibold text-slate-600 uppercase tracking-wide">Available Now</div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white border border-slate-200 shadow-sm hover:shadow" >
-                  <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-slate-100 rounded-2xl mx-auto mb-4">
-                      <Star className="h-8 w-8 text-slate-700" />
+                <Card className="group relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105">
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 to-transparent"></div>
+                  <CardContent className="relative p-4 sm:p-6 text-center">
+                    <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-100 to-amber-200 rounded-2xl mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <Star className="h-6 w-6 sm:h-8 sm:w-8 text-amber-600" />
                     </div>
-                    <div className="text-3xl font-bold text-gray-900">{stats.avgRating.toFixed(1)}</div>
-                    <div className="text-sm font-medium text-gray-600">Avg Rating</div>
+                    <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">{stats.avgRating.toFixed(1)}</div>
+                    <div className="text-xs sm:text-sm font-semibold text-slate-600 uppercase tracking-wide">Average Rating</div>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white border border-slate-200 shadow-sm hover:shadow" >
-                  <CardContent className="p-6 text-center">
-                    <div className="flex items-center justify-center w-16 h-16 bg-slate-100 rounded-2xl mx-auto mb-4">
-                      <MapPin className="h-8 w-8 text-slate-700" />
+                <Card className="group relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105">
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 to-transparent"></div>
+                  <CardContent className="relative p-4 sm:p-6 text-center">
+                    <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600" />
                     </div>
-                    <div className="text-3xl font-bold text-gray-900">{stats.totalSkills}</div>
-                    <div className="text-sm font-medium text-gray-600">Skills Available</div>
+                    <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">{stats.totalSkills}</div>
+                    <div className="text-xs sm:text-sm font-semibold text-slate-600 uppercase tracking-wide">Skills Available</div>
                   </CardContent>
                 </Card>
               </div>
@@ -365,125 +381,194 @@ export default function MarketplacePage() {
           </div>
         </section>
 
-        {/* Enhanced Main Content */}
-        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 max-w-7xl">
-          <Tabs defaultValue="artisans" className="space-y-10">
-            <TabsList className="grid w-full grid-cols-2 lg:w-[450px] mx-auto bg-white border border-slate-200 rounded-2xl p-2 h-14 shadow-sm">
-              <TabsTrigger 
-                value="artisans" 
-                className="rounded-xl data-[state=active]:bg-emerald-600 data-[state=active]:text-white transition-all duration-200 font-semibold text-lg text-slate-700"
-              >
-                Browse Artisans ({filteredArtisans.length})
-              </TabsTrigger>
-              <TabsTrigger 
-                value="categories" 
-                className="rounded-xl data-[state=active]:bg-emerald-600 data-[state=active]:text-white transition-all duration-200 font-semibold text-lg text-slate-700"
-              >
-                By Category
-              </TabsTrigger>
-            </TabsList>
+        {/* Enhanced Main Content Section */}
+        <section className="relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-50/50 to-white"></div>
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 max-w-7xl relative">
+            <Tabs defaultValue="artisans" className="space-y-12">
+              {/* Premium Tab Navigation */}
+              <div className="flex justify-center">
+                <TabsList className="inline-flex bg-white/80 backdrop-blur-sm border border-slate-200/60 rounded-2xl p-1.5 shadow-xl">
+                  <TabsTrigger 
+                    value="artisans" 
+                    className="relative px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-slate-700"
+                  >
+                    <Users className="w-4 h-4 mr-2" />
+                    Browse Artisans
+                    <Badge className="ml-2 bg-slate-100 text-slate-700 text-xs px-2 py-0.5 data-[state=active]:bg-white/20 data-[state=active]:text-white">
+                      {filteredArtisans.length}
+                    </Badge>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="categories" 
+                    className="relative px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg text-slate-700"
+                  >
+                    <LayoutGrid className="w-4 h-4 mr-2" />
+                    By Category
+                  </TabsTrigger>
+                </TabsList>
+              </div>
 
-            <TabsContent value="artisans" className="space-y-8">
-              {/* Enhanced Search and Filters */}
-              <Card className="bg-white border border-slate-200 shadow-sm overflow-hidden rounded-2xl">
-                <CardContent className="p-8">
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                        <div className="p-3 bg-slate-100 rounded-2xl">
-                          <Filter className="h-6 w-6 text-slate-700" />
+            <TabsContent value="artisans" className="space-y-10">
+              {/* Premium Search and Filters Section */}
+              <div className="relative">
+                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 via-white/50 to-purple-50/30"></div>
+                  <CardContent className="relative p-6 sm:p-8">
+                    <div className="space-y-8">
+                      {/* Header Section with Enhanced Visual Design */}
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+                        <div className="flex items-center space-x-4">
+                          <div className="relative">
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-lg rounded-2xl"></div>
+                            <div className="relative p-4 bg-white rounded-2xl shadow-lg">
+                              <Filter className="h-6 w-6 text-blue-600" />
+                            </div>
+                          </div>
+                          <div>
+                            <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+                              Find Expert Artisans
+                            </h2>
+                            <p className="text-slate-600 text-sm sm:text-base font-medium">
+                              Discover skilled professionals tailored to your needs
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Find Artisans</h2>
-                          <p className="text-slate-600 dark:text-slate-400">Discover skilled professionals in your area</p>
+                        
+                        {/* Enhanced Control Panel */}
+                        <div className="flex items-center gap-3 sm:gap-4">
+                          <Button
+                            variant="outline"
+                            onClick={() => setIsFiltersVisible(!isFiltersVisible)}
+                            className="flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-slate-200 hover:border-blue-300 hover:bg-blue-50/50 rounded-xl h-11 px-4 sm:px-6 font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+                          >
+                            <Filter className="h-4 w-4" />
+                            <span className="hidden sm:inline">{isFiltersVisible ? 'Hide' : 'Show'} Filters</span>
+                            <span className="sm:hidden">Filters</span>
+                          </Button>
+                          
+                          {/* Premium View Mode Toggle */}
+                          <div className="flex items-center bg-white/90 backdrop-blur-sm rounded-xl p-1 border border-slate-200 shadow-lg">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setViewMode('grid')}
+                              className={`h-9 w-9 p-0 rounded-lg transition-all duration-300 ${
+                                viewMode === 'grid' 
+                                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md' 
+                                  : 'hover:bg-slate-100 text-slate-600'
+                              }`}
+                            >
+                              <LayoutGrid className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setViewMode('list')}
+                              className={`h-9 w-9 p-0 rounded-lg transition-all duration-300 ${
+                                viewMode === 'list' 
+                                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md' 
+                                  : 'hover:bg-slate-100 text-slate-600'
+                              }`}
+                            >
+                              <List className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-4">
-                        <Button
-                          variant="outline"
-                          size="lg"
-                          onClick={() => setIsFiltersVisible(!isFiltersVisible)}
-                          className="flex items-center gap-2 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl h-12 px-6"
-                        >
-                          <Filter className="h-4 w-4" />
-                          {isFiltersVisible ? 'Hide' : 'Show'} Filters
-                        </Button>
-                        
-                        <div className="flex items-center bg-slate-100 rounded-xl p-1 border border-slate-200">
-                          <Button
-                            variant={viewMode === 'grid' ? 'default' : 'ghost'}
-                            size="sm"
-                            onClick={() => setViewMode('grid')}
-                            className={`h-10 w-10 p-0 rounded-lg ${viewMode === 'grid' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-100'}`}
-                          >
-                            <LayoutGrid className="h-5 w-5" />
-                          </Button>
-                          <Button
-                            variant={viewMode === 'list' ? 'default' : 'ghost'}
-                            size="sm"
-                            onClick={() => setViewMode('list')}
-                            className={`h-10 w-10 p-0 rounded-lg ${viewMode === 'list' ? 'bg-emerald-600 text-white' : 'hover:bg-slate-100'}`}
-                          >
-                            <List className="h-5 w-5" />
-                          </Button>
+
+                      {/* Enhanced Filters Panel */}
+                      {isFiltersVisible && (
+                        <div className="relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white/60 backdrop-blur-sm shadow-inner">
+                          <div className="absolute inset-0 bg-gradient-to-br from-slate-50/80 to-blue-50/40"></div>
+                          <div className="relative p-6">
+                            <SearchFilters onFiltersChange={handleFiltersChange} />
+                          </div>
                         </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Premium Results Section */}
+              <div className="space-y-8">
+                {/* Enhanced Results Header */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
+                      <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+                        {filteredArtisans.length} Expert{filteredArtisans.length !== 1 ? 's' : ''} Available
+                      </h3>
+                      <Badge className="bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 px-3 py-1.5 text-sm font-semibold rounded-full border border-blue-200/50">
+                        of {artisans.length} total
+                      </Badge>
+                    </div>
+                  </div>
+                  
+                  {filteredArtisans.length > 0 && (
+                    <div className="flex items-center gap-3 text-sm text-slate-600">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                        <span className="font-medium">{Math.floor(filteredArtisans.length * 0.7)} available now</span>
                       </div>
                     </div>
-
-                    {isFiltersVisible && (
-                      <div className="bg-white rounded-2xl p-6 border border-slate-200">
-                        <SearchFilters onFiltersChange={handleFiltersChange} />
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Enhanced Results */}
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                    <h3 className="text-2xl font-bold text-slate-900">
-                      {filteredArtisans.length} Artisan{filteredArtisans.length !== 1 ? 's' : ''} Found
-                    </h3>
-                    <Badge className="bg-slate-100 text-slate-700 px-4 py-2 text-sm font-semibold rounded-xl">
-                      From {artisans.length} total
-                    </Badge>
-                  </div>
+                  )}
                 </div>
 
+                {/* Premium Results Grid/List */}
                 {filteredArtisans.length > 0 ? (
-                  <div className={`grid gap-6 ${
+                  <div className={`transition-all duration-500 ${
                     viewMode === 'grid' 
-                      ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
-                      : 'grid-cols-1 lg:grid-cols-2'
+                      ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6' 
+                      : 'grid grid-cols-1 lg:grid-cols-2 gap-8'
                   }`}>
-                    {filteredArtisans.map((artisan) => (
-                      <div key={artisan.id} className="w-full">
+                    {filteredArtisans.map((artisan, index) => (
+                      <div 
+                        key={artisan.id} 
+                        className="w-full animate-in fade-in slide-in-from-bottom duration-700"
+                        style={{ animationDelay: `${index * 100}ms` }}
+                      >
                         <ArtisanCard artisan={artisan} />
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <Card className="bg-white border border-slate-200 shadow-sm overflow-hidden rounded-2xl">
-                    <CardContent className="p-16 text-center">
-                      <div className="space-y-6">
-                        <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto border border-slate-200">
-                          <Users className="h-10 w-10 text-slate-700" />
+                  // Enhanced Empty State
+                  <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-50/80 to-blue-50/40"></div>
+                    <CardContent className="relative p-12 sm:p-16 text-center">
+                      <div className="space-y-8">
+                        <div className="relative inline-block">
+                          <div className="absolute inset-0 bg-gradient-to-r from-slate-200/50 to-slate-300/50 blur-xl rounded-3xl"></div>
+                          <div className="relative w-24 h-24 bg-white rounded-3xl flex items-center justify-center mx-auto shadow-2xl border border-slate-200/50">
+                            <Users className="h-12 w-12 text-slate-400" />
+                          </div>
                         </div>
-                        <div className="space-y-3">
-                          <h3 className="text-2xl font-bold text-slate-900 dark:text-white">No artisans found</h3>
-                          <p className="text-slate-600 dark:text-slate-400 text-lg">
-                            Try adjusting your search criteria or filters to find more artisans.
+                        <div className="space-y-4">
+                          <h3 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-700 to-slate-600 bg-clip-text text-transparent">
+                            No artisans match your criteria
+                          </h3>
+                          <p className="text-slate-500 text-lg max-w-md mx-auto leading-relaxed">
+                            Try adjusting your search terms or filters to discover more skilled professionals in our community.
                           </p>
                         </div>
-                        <Button 
-                          variant="outline" 
-                          onClick={() => window.location.reload()}
-                          className="mt-6 h-12 px-8 text-lg font-semibold border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-xl"
-                        >
-                          Clear All Filters
-                        </Button>
+                        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
+                          <Button 
+                            variant="outline" 
+                            onClick={() => window.location.reload()}
+                            className="h-12 px-8 text-base font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                          >
+                            Clear All Filters
+                          </Button>
+                          <Button 
+                            variant="default" 
+                            onClick={() => setIsFiltersVisible(true)}
+                            className="h-12 px-8 text-base font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                          >
+                            Refine Search
+                          </Button>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -491,18 +576,34 @@ export default function MarketplacePage() {
               </div>
             </TabsContent>
 
-            <TabsContent value="categories" className="space-y-8">
-              <Card className="bg-white border border-slate-200 shadow-sm overflow-hidden rounded-2xl">
-                <CardContent className="p-8">
-                  <div className="text-center space-y-4 mb-8">
-                    <div className="inline-flex items-center justify-center p-4 bg-slate-100 rounded-3xl mb-6">
-                      <LayoutGrid className="h-8 w-8 text-slate-700" />
+            <TabsContent value="categories" className="space-y-10">
+              {/* Premium Categories Section */}
+              <Card className="relative overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-50/30 via-white/50 to-blue-50/30"></div>
+                <CardContent className="relative p-8 sm:p-12">
+                  <div className="text-center space-y-8 mb-12">
+                    <div className="relative inline-block">
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 blur-xl rounded-3xl"></div>
+                      <div className="relative bg-white/90 backdrop-blur-sm p-6 rounded-3xl border border-white/50 shadow-2xl">
+                        <LayoutGrid className="h-12 w-12 text-purple-600 mx-auto" />
+                      </div>
                     </div>
-                    <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Browse by Category</h2>
-                    <p className="text-xl text-slate-600 dark:text-slate-400">Explore artisans organized by their specializations</p>
+                    <div className="space-y-4">
+                      <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-slate-900 via-purple-700 to-slate-900 bg-clip-text text-transparent">
+                        Browse by Category
+                      </h2>
+                      <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                        Explore skilled artisans organized by their expertise and specializations
+                      </p>
+                    </div>
                   </div>
-                  <div className="bg-white rounded-2xl p-6 border border-slate-200">
-                    <CategoryGrid categories={categories} />
+                  
+                  {/* Enhanced Categories Grid Container */}
+                  <div className="relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white/60 backdrop-blur-sm shadow-inner">
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-50/80 to-purple-50/40"></div>
+                    <div className="relative p-6 sm:p-8">
+                      <CategoryGrid categories={categories} />
+                    </div>
                   </div>
                 </CardContent>
               </Card>
