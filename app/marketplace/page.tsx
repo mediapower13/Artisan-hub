@@ -526,8 +526,11 @@ export default function MarketplacePage() {
                     {filteredArtisans.map((artisan, index) => (
                       <div 
                         key={artisan.id} 
-                        className="w-full animate-in fade-in slide-in-from-bottom duration-700"
-                        style={{ animationDelay: `${index * 100}ms` }}
+                        className={`w-full animate-in fade-in slide-in-from-bottom duration-700 ${
+                          index < 4 ? 'delay-100' : 
+                          index < 8 ? 'delay-200' : 
+                          index < 12 ? 'delay-300' : 'delay-500'
+                        }`}
                       >
                         <ArtisanCard artisan={artisan} />
                       </div>
