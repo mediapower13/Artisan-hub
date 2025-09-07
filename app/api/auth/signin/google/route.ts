@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     const redirectUri = `${baseUrl}/api/auth/google/callback`
     
     if (!googleClientId || googleClientId === 'your-google-client-id-here') {
-      return NextResponse.redirect('/login?error=oauth_not_configured')
+      return NextResponse.redirect(`${baseUrl}/login?error=oauth_not_configured`)
     }
 
     // Build Google OAuth URL
@@ -21,7 +21,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.redirect(googleAuthUrl.toString())
   } catch (error) {
-    console.error("Google OAuth initiation error:", error)
-    return NextResponse.redirect('/login?error=oauth_init_failed')
-  }
+      console.error('Google OAuth initiation error:', error)
+      const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
+      return NextResponse.redirect(`${baseUrl}/login?error=oauth_init_failed`)
+    }
 }

@@ -29,7 +29,14 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     // Student specific fields
     studentId: "",
     department: "",
+    customDepartment: "",
     level: "",
+    // Artisan specific fields (for UI, but not sent to backend)
+    businessName: "",
+    specialization: "",
+    customSpecialization: "",
+    experience: "",
+    location: "",
   })
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -64,6 +71,23 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       return "Please fill in all student information"
     }
 
+    // Additional validation for custom department
+    if (formData.role === "student" && formData.department === "Other" && !formData.customDepartment) {
+      return "Please specify your department"
+    }
+
+    if (
+      formData.role === "artisan" &&
+      (!formData.businessName || !formData.specialization || !formData.experience || !formData.location)
+    ) {
+      return "Please fill in all artisan information"
+    }
+
+    // Additional validation for custom specialization
+    if (formData.role === "artisan" && formData.specialization === "Other" && !formData.customSpecialization) {
+      return "Please specify your specialization"
+    }
+
     // Optional profile checks
 
 
@@ -89,7 +113,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       phone: formData.phone,
       // Student specific data
       studentId: formData.role === "student" ? formData.studentId : undefined,
-      department: formData.role === "student" ? formData.department : undefined,
+      department: formData.role === "student" ? (formData.department === "Other" ? formData.customDepartment : formData.department) : undefined,
       level: formData.role === "student" ? formData.level : undefined,
     }
 
@@ -613,7 +637,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
               <span className="w-full border-t border-muted-foreground/20" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">Or sign up with email</span>
+              <span className="bg-background px-3 py-1 text-muted-foreground relative z-10">Or sign up with email</span>
             </div>
           </div>
 

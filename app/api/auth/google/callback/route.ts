@@ -8,10 +8,11 @@ export async function GET(request: NextRequest) {
   // If no code, redirect to Google OAuth
   if (!code) {
     const googleClientId = process.env.GOOGLE_CLIENT_ID
-    const redirectUri = `${process.env.NEXTAUTH_URL}/api/auth/google/callback`
+    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
+    const redirectUri = `${baseUrl}/api/auth/google/callback`
     
     if (!googleClientId || googleClientId === 'your-google-client-id-here') {
-      return NextResponse.redirect('/login?error=oauth_not_configured')
+      return NextResponse.redirect(`${baseUrl}/login?error=oauth_not_configured`)
     }
 
     const googleAuthUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth')
@@ -36,7 +37,7 @@ export async function GET(request: NextRequest) {
         client_secret: process.env.GOOGLE_CLIENT_SECRET!,
         code,
         grant_type: 'authorization_code',
-        redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/google/callback`,
+        redirect_uri: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/google/callback`,
       }),
     })
 
@@ -54,7 +55,8 @@ export async function GET(request: NextRequest) {
     const { supabaseAdmin } = await import("@/lib/supabase")
     
     if (!supabaseAdmin) {
-      throw new Error("Supabase admin not available")
+      console.error("Supabase admin not available")
+      return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login?error=database_unavailable`)
     }
 
     // Check if user exists

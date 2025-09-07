@@ -22,7 +22,6 @@
     "clean": "rm -rf .next out dist"
   },
   "dependencies": {
-    "@auth/supabase-adapter": "^1.10.0",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "1.2.2",
     "@radix-ui/react-alert-dialog": "1.1.4",
@@ -62,7 +61,6 @@
     "input-otp": "1.4.1",
     "lucide-react": "^0.454.0",
     "next": "^14.2.32",
-    "next-auth": "^4.24.11",
     "next-themes": "^0.4.6",
     "react": "^18",
     "react-day-picker": "9.8.0",
