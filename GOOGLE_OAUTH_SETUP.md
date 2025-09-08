@@ -1,4 +1,4 @@
-<!-- # Google OAuth Setup Guide
+# Google OAuth Setup Guide
 
 ## 🔐 Google Authentication Integration
 
@@ -99,4 +99,4 @@ GOOGLE_CLIENT_SECRET=your-actual-google-client-secret-here
 node -e "console.log(process.env.GOOGLE_CLIENT_ID ? 'Google Client ID loaded' : 'Missing Google Client ID')"
 ```
 
-Your platform now provides a smooth, secure authentication experience with Gmail verification! 🎉 -->
+Your platform now provides a smooth, secure authentication experience with Gmail verification! 🎉
