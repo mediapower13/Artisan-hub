@@ -1,4 +1,4 @@
-<!-- # Google OAuth Setup Guide
+# Google OAuth Setup Guide
 
 This guide will walk you through setting up Google OAuth authentication for the University of Ilorin Artisan Community Platform.
 
@@ -193,4 +193,4 @@ pnpm run setup-env
 
 ---
 
-**Need Help?** If you encounter issues, check the terminal logs when testing OAuth flow, and ensure all environment variables are properly set. -->
+**Need Help?** If you encounter issues, check the terminal logs when testing OAuth flow, and ensure all environment variables are properly set.
