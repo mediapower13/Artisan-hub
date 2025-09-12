@@ -1,4 +1,4 @@
-# Certificate and Bio Upload System for Artisan Registration
+<!-- # Certificate and Bio Upload System for Artisan Registration
 
 This document describes the new certificate and bio upload system that has been implemented for artisan registration with admin verification.
 
@@ -237,4 +237,4 @@ For technical issues or questions about the certificate upload system:
 1. Check the console logs for error details
 2. Verify file format and size requirements
 3. Ensure proper Supabase configuration
-4. Contact the development team for assistance
+4. Contact the development team for assistance -->
