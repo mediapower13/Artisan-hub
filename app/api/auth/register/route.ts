@@ -63,6 +63,48 @@ export async function POST(request: NextRequest) {
     }
 
     console.log("User created successfully:", newUser.id)
+
+    // If user is an artisan, create provider profile
+    if (role === "artisan" && userData.businessName) {
+      console.log("Creating provider profile for artisan")
+      try {
+        const providerData = {
+          user_id: newUser.id,
+          business_name: userData.businessName,
+          description: `Professional ${userData.specialization} services`, // Default description
+          bio: userData.bio || null,
+          specialization: [userData.specialization],
+          experience: userData.experience || 1,
+          location: userData.location,
+          certificates: userData.certificates || [],
+          verification_status: 'pending' as const,
+          verified: false,
+          rating: 0,
+          total_reviews: 0,
+          verification_evidence: userData.certificates || [],
+          availability_is_available: true,
+          availability_available_for_work: true,
+          availability_available_for_learning: true,
+          availability_response_time: "Usually responds within 24 hours",
+          pricing_base_rate: null,
+          pricing_learning_rate: null,
+          pricing_currency: "NGN",
+        }
+
+        const providerResult = await authUtils.createProvider(providerData)
+        if (!providerResult) {
+          console.error("Failed to create provider profile")
+          // Don't fail the registration, just log the error
+        } else {
+          console.log("Provider profile created successfully:", providerResult.id)
+        }
+      } catch (providerError) {
+        console.error("Error creating provider profile:", providerError)
+        // Don't fail the registration, just log the error
+      }
+    }
+
+    console.log("User created successfully:", newUser.id)
     console.log("Generating JWT token")
     // Generate JWT token
     const token = await authUtils.generateToken(newUser)

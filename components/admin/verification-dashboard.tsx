@@ -40,91 +40,96 @@ export function VerificationDashboard({ admin }: VerificationDashboardProps) {
 
   // Mock data for demonstration
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      const mockRequests: VerificationRequest[] = [
-        {
-          id: "vr-1",
-          providerId: "provider-1",
-          providerName: "Adebayo Fashion Design",
-          providerEmail: "adebayo.johnson@student.unilorin.edu.ng",
-          studentId: "UNILORIN/2020/123456",
-          department: "Fine Arts",
-          status: "pending",
-          submittedAt: new Date("2024-01-15T10:00:00Z"),
-          reviewedAt: undefined,
-          reviewedBy: undefined,
-          businessName: "Adebayo Custom Tailoring",
-          businessDescription: "Professional tailoring and fashion design services specializing in traditional and modern Nigerian attire.",
-          evidenceFiles: [
-            { url: "/mock-portfolio-1.jpg", type: "portfolio" },
-            { url: "/mock-certificate-1.pdf", type: "certificate" },
-            { url: "/mock-student-id.jpg", type: "student_id" }
-          ],
-          specializations: ["Fashion Design", "Tailoring", "Traditional Wear"],
-          experienceYears: 3,
-          adminNotes: undefined
-        },
-        {
-          id: "vr-2",
-          providerId: "provider-2",
-          providerName: "Fatima Web Solutions",
-          providerEmail: "fatima.abdul@student.unilorin.edu.ng",
-          studentId: "UNILORIN/2021/234567",
-          department: "Computer Science",
-          status: "approved",
-          submittedAt: new Date("2024-01-10T14:30:00Z"),
-          reviewedAt: new Date("2024-01-12T09:15:00Z"),
-          reviewedBy: "admin-1",
-          businessName: "Fatima Digital Services",
-          businessDescription: "Web development and digital marketing services for small businesses and startups.",
-          evidenceFiles: [
-            { url: "/mock-portfolio-2.jpg", type: "portfolio" },
-            { url: "/mock-certificate-2.pdf", type: "certificate" }
-          ],
-          specializations: ["Web Development", "Digital Marketing", "UI/UX Design"],
-          experienceYears: 2,
-          adminNotes: "Excellent portfolio, verified student status. Approved for web development services."
-        },
-        {
-          id: "vr-3",
-          providerId: "provider-3",
-          providerName: "Musa Auto Repair",
-          providerEmail: "musa.ibrahim@student.unilorin.edu.ng",
-          studentId: "UNILORIN/2019/345678",
-          department: "Mechanical Engineering",
-          status: "rejected",
-          submittedAt: new Date("2024-01-08T16:45:00Z"),
-          reviewedAt: new Date("2024-01-09T11:20:00Z"),
-          reviewedBy: "admin-2",
-          businessName: "Musa Motors",
-          businessDescription: "Automotive repair and maintenance services.",
-          evidenceFiles: [
-            { url: "/mock-certificate-3.pdf", type: "certificate" }
-          ],
-          specializations: ["Auto Repair", "Engine Diagnostics"],
-          experienceYears: 1,
-          adminNotes: "Insufficient evidence provided. Missing portfolio examples and student ID verification. Please resubmit with additional documentation."
+    // Fetch real verification requests from API
+    const fetchVerificationRequests = async () => {
+      try {
+        const response = await fetch('/api/admin/verification')
+        if (response.ok) {
+          const result = await response.json()
+          setVerificationRequests(result.data || [])
+        } else {
+          console.error('Failed to fetch verification requests')
+          // Fallback to mock data
+          const mockRequests: VerificationRequest[] = [
+            {
+              id: "vr-1",
+              providerId: "provider-1",
+              providerName: "Adebayo Fashion Design",
+              providerEmail: "adebayo.johnson@student.unilorin.edu.ng",
+              studentId: "UNILORIN/2020/123456",
+              department: "Fine Arts",
+              status: "pending",
+              submittedAt: new Date("2024-01-15T10:00:00Z"),
+              reviewedAt: undefined,
+              reviewedBy: undefined,
+              businessName: "Adebayo Custom Tailoring",
+              businessDescription: "Professional tailoring and fashion design services specializing in traditional and modern Nigerian attire.",
+              bio: "I am a passionate fashion designer with over 3 years of experience creating custom clothing. I specialize in traditional Nigerian attire and modern fashion designs. I hold a certificate in Fashion Design and have completed several successful projects for clients across Ilorin.",
+              certificates: [
+                "/api/uploads/certificates/cert1.pdf",
+                "/api/uploads/certificates/portfolio1.jpg"
+              ],
+              evidenceFiles: [
+                { url: "/mock-portfolio-1.jpg", type: "portfolio" },
+                { url: "/mock-certificate-1.pdf", type: "certificate" },
+                { url: "/mock-student-id.jpg", type: "student_id" }
+              ],
+              specializations: ["Fashion Design", "Tailoring", "Traditional Wear"],
+              experienceYears: 3,
+              adminNotes: undefined
+            },
+            {
+              id: "vr-2",
+              providerId: "provider-2",
+              providerName: "Fatima Web Solutions",
+              providerEmail: "fatima.abdul@student.unilorin.edu.ng",
+              studentId: "UNILORIN/2021/234567",
+              department: "Computer Science",
+              status: "approved",
+              submittedAt: new Date("2024-01-10T14:30:00Z"),
+              reviewedAt: new Date("2024-01-12T09:15:00Z"),
+              reviewedBy: "admin-1",
+              businessName: "Fatima Digital Services",
+              businessDescription: "Web development and digital marketing services for small businesses and startups.",
+              bio: "Full-stack developer with expertise in React, Node.js, and modern web technologies. I help businesses establish their online presence through custom websites and digital marketing strategies.",
+              certificates: [
+                "/api/uploads/certificates/web-dev-cert.pdf",
+                "/api/uploads/certificates/portfolio-web.jpg"
+              ],
+              evidenceFiles: [
+                { url: "/mock-portfolio-2.jpg", type: "portfolio" },
+                { url: "/mock-certificate-2.pdf", type: "certificate" }
+              ],
+              specializations: ["Web Development", "Digital Marketing", "UI/UX Design"],
+              experienceYears: 2,
+              adminNotes: "Excellent portfolio, verified student status. Approved for web development services."
+            }
+          ]
+          setVerificationRequests(mockRequests)
         }
-      ]
-
-      const mockStats: PlatformStats = {
-        totalUsers: 1245,
-        totalProviders: 89,
-        totalStudents: 1156,
-        pendingVerifications: 15,
-        approvedProviders: 67,
-        rejectedApplications: 7,
-        totalSkills: 156,
-        totalEnrollments: 334,
-        monthlyGrowthRate: 12.5,
-        averageRating: 4.3
+      } catch (error) {
+        console.error('Error fetching verification requests:', error)
+        // Use mock data as fallback
+        setVerificationRequests([])
+      } finally {
+        const mockStats: PlatformStats = {
+          totalUsers: 1245,
+          totalProviders: 89,
+          totalStudents: 1156,
+          pendingVerifications: 15,
+          approvedProviders: 67,
+          rejectedApplications: 7,
+          totalSkills: 156,
+          totalEnrollments: 334,
+          monthlyGrowthRate: 12.5,
+          averageRating: 4.3
+        }
+        setStats(mockStats)
+        setIsLoading(false)
       }
+    }
 
-      setVerificationRequests(mockRequests)
-      setStats(mockStats)
-      setIsLoading(false)
-    }, 1000)
+    fetchVerificationRequests()
   }, [])
 
   const filteredRequests = verificationRequests.filter(request => {
@@ -138,38 +143,82 @@ export function VerificationDashboard({ admin }: VerificationDashboardProps) {
   })
 
   const handleApprove = async (requestId: string) => {
-    // Mock approval logic
-    setVerificationRequests(prev => 
-      prev.map(req => 
-        req.id === requestId 
-          ? { 
-              ...req, 
-              status: "approved", 
-              reviewedAt: new Date(), 
-              reviewedBy: admin.id,
-              adminNotes: "Approved after verification review."
-            }
-          : req
-      )
-    )
+    try {
+      const request = verificationRequests.find(req => req.id === requestId)
+      if (!request) return
+
+      const response = await fetch('/api/admin/verification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'approve',
+          providerId: request.providerId,
+          adminNotes: 'Approved after verification review.'
+        })
+      })
+
+      if (response.ok) {
+        setVerificationRequests(prev => 
+          prev.map(req => 
+            req.id === requestId 
+              ? { 
+                  ...req, 
+                  status: "approved", 
+                  reviewedAt: new Date(), 
+                  reviewedBy: admin.id,
+                  adminNotes: "Approved after verification review."
+                }
+              : req
+          )
+        )
+      } else {
+        console.error('Failed to approve provider')
+      }
+    } catch (error) {
+      console.error('Error approving provider:', error)
+    }
     setSelectedRequest(null)
   }
 
   const handleReject = async (requestId: string, reason: string) => {
-    // Mock rejection logic
-    setVerificationRequests(prev => 
-      prev.map(req => 
-        req.id === requestId 
-          ? { 
-              ...req, 
-              status: "rejected", 
-              reviewedAt: new Date(), 
-              reviewedBy: admin.id,
-              adminNotes: reason
-            }
-          : req
-      )
-    )
+    try {
+      const request = verificationRequests.find(req => req.id === requestId)
+      if (!request) return
+
+      const response = await fetch('/api/admin/verification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'reject',
+          providerId: request.providerId,
+          adminNotes: reason || 'Application rejected after review.'
+        })
+      })
+
+      if (response.ok) {
+        setVerificationRequests(prev => 
+          prev.map(req => 
+            req.id === requestId 
+              ? { 
+                  ...req, 
+                  status: "rejected", 
+                  reviewedAt: new Date(), 
+                  reviewedBy: admin.id,
+                  adminNotes: reason
+                }
+              : req
+          )
+        )
+      } else {
+        console.error('Failed to reject provider')
+      }
+    } catch (error) {
+      console.error('Error rejecting provider:', error)
+    }
     setSelectedRequest(null)
   }
 
@@ -453,12 +502,79 @@ function VerificationRequestDetail({ request, onApprove, onReject }: Verificatio
         </Card>
       </div>
 
+      {/* Bio Section */}
+      {request.bio && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center">
+              <User className="h-5 w-5 mr-2" />
+              Professional Bio
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm leading-relaxed">{request.bio}</p>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Certificates Section */}
+      {request.certificates && request.certificates.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center">
+              <FileText className="h-5 w-5 mr-2" />
+              Uploaded Certificates
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {request.certificates.map((certUrl, index) => (
+                <div key={index} className="border rounded-lg p-4 hover:bg-muted/50 transition-colors">
+                  <div className="flex items-center justify-between mb-2">
+                    <Badge variant="outline" className="text-xs">
+                      {certUrl.includes('.pdf') ? 'PDF Certificate' : 'Image Certificate'}
+                    </Badge>
+                    <Button variant="ghost" size="sm" asChild>
+                      <a href={certUrl} target="_blank" rel="noopener noreferrer" title="View certificate">
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    </Button>
+                  </div>
+                  <div className="aspect-video bg-muted rounded-md flex items-center justify-center">
+                    {certUrl.includes('.pdf') ? (
+                      <FileText className="h-8 w-8 text-muted-foreground" />
+                    ) : (
+                      <img 
+                        src={certUrl} 
+                        alt={`Certificate ${index + 1}`}
+                        className="max-w-full max-h-full object-contain rounded-md"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.parentElement!.innerHTML = '<div class="text-xs text-muted-foreground">Image Preview</div>';
+                        }}
+                      />
+                    )}
+                  </div>
+                  <Button variant="outline" size="sm" className="w-full mt-2" asChild>
+                    <a href={certUrl} download>
+                      <Download className="h-4 w-4 mr-2" />
+                      Download
+                    </a>
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Evidence Files */}
       <Card>
         <CardHeader>
           <CardTitle className="text-lg flex items-center">
             <FileText className="h-5 w-5 mr-2" />
-            Evidence Files
+            Additional Evidence Files
           </CardTitle>
         </CardHeader>
         <CardContent>

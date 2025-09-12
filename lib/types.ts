@@ -134,12 +134,14 @@ export interface VerificationRequest {
   department: string
   businessName: string
   businessDescription: string
+  bio?: string
   specializations: string[]
   experienceYears: number
   evidenceFiles: {
     url: string
     type: 'portfolio' | 'certificate' | 'student_id'
   }[]
+  certificates: string[] // New field for uploaded certificates
   status: "pending" | "approved" | "rejected"
   adminNotes?: string
   submittedAt: Date

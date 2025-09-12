@@ -138,6 +138,13 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       studentId: formData.role === "student" ? formData.studentId : undefined,
       department: formData.role === "student" ? (formData.department === "Other" ? formData.customDepartment : formData.department) : undefined,
       level: formData.role === "student" ? formData.level : undefined,
+      // Artisan specific data
+      businessName: formData.role === "artisan" ? formData.businessName : undefined,
+      specialization: formData.role === "artisan" ? (formData.specialization === "Other" ? formData.customSpecialization : formData.specialization) : undefined,
+      experience: formData.role === "artisan" ? parseInt(formData.experience) : undefined,
+      location: formData.role === "artisan" ? formData.location : undefined,
+      bio: formData.role === "artisan" ? formData.bio : undefined,
+      certificates: formData.role === "artisan" ? formData.certificates : undefined,
     }
 
     const success = await register(userData)

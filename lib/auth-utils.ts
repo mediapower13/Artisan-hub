@@ -338,4 +338,58 @@ export const authUtils = {
       return null
     }
   },
+
+  async createProvider(providerData: {
+    user_id: string,
+    business_name: string,
+    description: string,
+    bio?: string | null,
+    specialization: string[],
+    experience: number,
+    location: string,
+    certificates?: string[],
+    verification_status?: 'pending' | 'approved' | 'rejected',
+    verified?: boolean,
+    rating?: number,
+    total_reviews?: number,
+    verification_evidence?: string[],
+    availability_is_available?: boolean,
+    availability_available_for_work?: boolean,
+    availability_available_for_learning?: boolean,
+    availability_response_time?: string,
+    pricing_base_rate?: number | null,
+    pricing_learning_rate?: number | null,
+    pricing_currency?: string,
+  }): Promise<{ id: string } | null> {
+    try {
+      if (!supabaseAdmin) {
+        console.error("Supabase admin client not available")
+        return null
+      }
+
+      console.log("Creating provider profile:", providerData.business_name)
+
+      const { data, error } = await supabaseAdmin
+        .from('providers')
+        .insert([providerData])
+        .select('id')
+        .single()
+
+      if (error) {
+        console.error("Supabase provider insert error:", error)
+        return null
+      }
+
+      if (!data) {
+        console.error("No data returned from provider insert")
+        return null
+      }
+
+      console.log("Provider created successfully:", data.id)
+      return { id: data.id }
+    } catch (error) {
+      console.error("Error creating provider:", error)
+      return null
+    }
+  },
 }
