@@ -6,6 +6,32 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
+// Type definitions for the query result
+interface ProviderWithUser {
+  id: string
+  user_id: string
+  business_name: string
+  description: string
+  bio: string | null
+  specialization: string[]
+  experience: number
+  location: string
+  certificates: string[]
+  verification_status: 'pending' | 'approved' | 'rejected'
+  verification_evidence: string[]
+  created_at: string
+  updated_at: string
+  users: {
+    id: string
+    email: string
+    first_name: string
+    last_name: string
+    full_name: string
+    student_id: string | null
+    department: string | null
+  }[]
+}
+
 export async function GET(request: NextRequest) {
   try {
     // Get verification requests by fetching pending providers
@@ -25,7 +51,7 @@ export async function GET(request: NextRequest) {
         verification_evidence,
         created_at,
         updated_at,
-        users!providers_user_id_fkey (
+        users (
           id,
           email,
           first_name,
@@ -47,29 +73,34 @@ export async function GET(request: NextRequest) {
     }
 
     // Transform the data to match the VerificationRequest interface
-    const verificationRequests = providers?.map(provider => ({
-      id: `vr-${provider.id}`,
-      providerId: provider.id,
-      providerName: provider.users?.full_name || 'Unknown',
-      providerEmail: provider.users?.email || '',
-      studentId: provider.users?.student_id || '',
-      department: provider.users?.department || '',
-      businessName: provider.business_name,
-      businessDescription: provider.description,
-      bio: provider.bio,
-      specializations: provider.specialization || [],
-      experienceYears: provider.experience,
-      certificates: provider.certificates || [],
-      evidenceFiles: (provider.verification_evidence || []).map((url: string) => ({
-        url,
-        type: url.includes('.pdf') ? 'certificate' as const : 'portfolio' as const
-      })),
-      status: provider.verification_status,
-      submittedAt: new Date(provider.created_at),
-      reviewedAt: undefined,
-      reviewedBy: undefined,
-      adminNotes: undefined
-    })) || []
+    const verificationRequests = (providers as ProviderWithUser[])?.map(provider => {
+      // Get the first user from the array (should only be one due to foreign key relationship)
+      const user = provider.users?.[0];
+      
+      return {
+        id: `vr-${provider.id}`,
+        providerId: provider.id,
+        providerName: user?.full_name || 'Unknown',
+        providerEmail: user?.email || '',
+        studentId: user?.student_id || '',
+        department: user?.department || '',
+        businessName: provider.business_name,
+        businessDescription: provider.description,
+        bio: provider.bio,
+        specializations: provider.specialization || [],
+        experienceYears: provider.experience,
+        certificates: provider.certificates || [],
+        evidenceFiles: (provider.verification_evidence || []).map((url: string) => ({
+          url,
+          type: url.includes('.pdf') ? 'certificate' as const : 'portfolio' as const
+        })),
+        status: provider.verification_status,
+        submittedAt: new Date(provider.created_at),
+        reviewedAt: undefined,
+        reviewedBy: undefined,
+        adminNotes: undefined
+      }
+    }) || []
 
     return NextResponse.json({
       success: true,
