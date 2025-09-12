@@ -30,6 +30,7 @@ export interface Provider extends User {
   role: "artisan"
   businessName: string
   description: string
+  bio?: string // Professional bio/background
   specialization: string[]
   experience: number
   location: string
@@ -38,6 +39,7 @@ export interface Provider extends User {
   verified: boolean
   verificationStatus: "pending" | "approved" | "rejected"
   verificationEvidence?: string[] // Upload URLs for certificates/evidence
+  certificates?: string[] // Uploaded certificate URLs
   portfolio: PortfolioItem[]
   skills: Skill[]
   availability: {

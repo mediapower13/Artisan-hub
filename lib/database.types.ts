@@ -65,6 +65,7 @@ export interface Database {
           user_id: string
           business_name: string
           description: string
+          bio: string | null
           specialization: string[]
           experience: number
           location: string
@@ -73,6 +74,7 @@ export interface Database {
           verified: boolean
           verification_status: 'pending' | 'approved' | 'rejected'
           verification_evidence: string[]
+          certificates: string[]
           whatsapp_number: string | null
           availability_is_available: boolean
           availability_available_for_work: boolean
@@ -89,6 +91,7 @@ export interface Database {
           user_id: string
           business_name: string
           description: string
+          bio?: string | null
           specialization: string[]
           experience: number
           location: string
@@ -97,6 +100,7 @@ export interface Database {
           verified?: boolean
           verification_status?: 'pending' | 'approved' | 'rejected'
           verification_evidence?: string[]
+          certificates?: string[]
           whatsapp_number?: string | null
           availability_is_available?: boolean
           availability_available_for_work?: boolean
@@ -113,6 +117,7 @@ export interface Database {
           user_id?: string
           business_name?: string
           description?: string
+          bio?: string | null
           specialization?: string[]
           experience?: number
           location?: string
@@ -121,6 +126,7 @@ export interface Database {
           verified?: boolean
           verification_status?: 'pending' | 'approved' | 'rejected'
           verification_evidence?: string[]
+          certificates?: string[]
           whatsapp_number?: string | null
           availability_is_available?: boolean
           availability_available_for_work?: boolean
