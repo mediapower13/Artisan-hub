@@ -5,9 +5,11 @@ import type React from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { FileUpload } from "@/components/ui/file-upload"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import Link from "next/link"
@@ -37,6 +39,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     customSpecialization: "",
     experience: "",
     location: "",
+    bio: "",
+    certificates: [] as string[],
   })
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -45,6 +49,20 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const handleCertificateUpload = (urls: string[]) => {
+    setFormData((prev) => ({ 
+      ...prev, 
+      certificates: [...prev.certificates, ...urls] 
+    }))
+  }
+
+  const handleCertificateRemove = (url: string) => {
+    setFormData((prev) => ({ 
+      ...prev, 
+      certificates: prev.certificates.filter(cert => cert !== url) 
+    }))
   }
 
   const validateForm = () => {
@@ -78,14 +96,19 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
     if (
       formData.role === "artisan" &&
-      (!formData.businessName || !formData.specialization || !formData.experience || !formData.location)
+      (!formData.businessName || !formData.specialization || !formData.experience || !formData.location || !formData.bio)
     ) {
-      return "Please fill in all artisan information"
+      return "Please fill in all artisan information including bio"
     }
 
     // Additional validation for custom specialization
     if (formData.role === "artisan" && formData.specialization === "Other" && !formData.customSpecialization) {
       return "Please specify your specialization"
+    }
+
+    // Certificate validation for artisans
+    if (formData.role === "artisan" && formData.certificates.length === 0) {
+      return "Please upload at least one certificate or proof of expertise"
     }
 
     // Optional profile checks
@@ -608,6 +631,39 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                       <SelectItem value="Hybrid" className="h-10 p-3 cursor-pointer hover:bg-accent focus:bg-accent text-foreground">Hybrid (Online + Physical)</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+                
+                {/* Bio Field for Artisans */}
+                <div className="space-y-2">
+                  <Label htmlFor="bio">Professional Bio *</Label>
+                  <Textarea
+                    id="bio"
+                    placeholder="Tell us about your background, expertise, and what makes you unique as an artisan..."
+                    value={formData.bio}
+                    onChange={(e) => handleInputChange("bio", e.target.value)}
+                    className="min-h-[120px] border-input bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary/20 transition-all resize-none"
+                    maxLength={500}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    {formData.bio.length}/500 characters
+                  </p>
+                </div>
+
+                {/* Certificate Upload for Artisans */}
+                <div className="space-y-2">
+                  <FileUpload
+                    onUpload={handleCertificateUpload}
+                    onRemove={handleCertificateRemove}
+                    uploadedFiles={formData.certificates}
+                    maxFiles={3}
+                    label="Certificates & Proof of Expertise"
+                    description="Upload certificates, portfolios, or other documents that showcase your skills and expertise. This helps verify your credentials."
+                    required={true}
+                    className="w-full"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Upload up to 3 files (PDF, JPG, PNG, WEBP). These will be reviewed by our admin team for verification.
+                  </p>
                 </div>
               </div>
             </div>
