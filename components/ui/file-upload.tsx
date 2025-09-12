@@ -72,7 +72,7 @@ export function FileUpload({
         const formData = new FormData()
         formData.append("file", file)
         formData.append("folder", "certificates")
-        formData.append("userId", "temp_user_id") // Will be replaced with actual user ID
+        formData.append("userId", crypto.randomUUID()) // Generate a unique ID for now
 
         // Simulate progress
         setUploadProgress(prev => ({ ...prev, [fileId]: 0 }))
