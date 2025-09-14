@@ -11,21 +11,31 @@ export async function GET(request: NextRequest) {
     const location = searchParams.get("location")
     const verified = searchParams.get("verified")
 
-    // Get providers from Supabase with filters
-    const filters: any = {}
+    // IMPORTANT: Only show verified artisans to students
+    // Get providers from Supabase with strict verification filters
+    const filters: any = {
+      verified: true, // Must be verified
+      verification_status: 'approved' // Must be approved by admin
+    }
     
     if (location && location !== "All locations") {
       filters.location = location
     }
-    
-    if (verified === "true") {
-      filters.verified = true
-    }
 
     const providers = await getProviders(filters)
 
+    // Filter out any providers that don't meet all verification requirements
+    const fullyVerifiedProviders = providers.filter((provider: any) => 
+      provider.verified === true &&
+      provider.verification_status === 'approved' &&
+      provider.bio && // Must have bio
+      provider.certificates && provider.certificates.length > 0 && // Must have certificates
+      provider.business_name && // Must have business name
+      provider.user?.student_id // Must have matric number
+    )
+
     // Transform providers to match expected artisan format
-    let artisans = providers.map((provider: any) => ({
+    let artisans = fullyVerifiedProviders.map((provider: any) => ({
       id: provider.id,
       name: provider.user?.full_name || provider.business_name,
       business_name: provider.business_name,

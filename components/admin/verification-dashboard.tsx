@@ -502,6 +502,110 @@ function VerificationRequestDetail({ request, onApprove, onReject }: Verificatio
         </Card>
       </div>
 
+      {/* Verification Checklist */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center">
+            <CheckCircle className="h-5 w-5 mr-2" />
+            Verification Checklist
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {/* Matric Number Verification */}
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className={`h-3 w-3 rounded-full ${request.matricNumberVerified ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                <div>
+                  <p className="font-medium">Student Matric Number</p>
+                  <p className="text-sm text-muted-foreground">{request.matricNumber}</p>
+                </div>
+              </div>
+              {request.matricNumberVerified ? (
+                <CheckCircle className="h-5 w-5 text-green-500" />
+              ) : (
+                <XCircle className="h-5 w-5 text-red-500" />
+              )}
+            </div>
+
+            {/* Business Name Verification */}
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className={`h-3 w-3 rounded-full ${request.businessNameVerified ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                <div>
+                  <p className="font-medium">Business Name</p>
+                  <p className="text-sm text-muted-foreground">{request.businessName}</p>
+                </div>
+              </div>
+              {request.businessNameVerified ? (
+                <CheckCircle className="h-5 w-5 text-green-500" />
+              ) : (
+                <XCircle className="h-5 w-5 text-red-500" />
+              )}
+            </div>
+
+            {/* Bio Verification */}
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className={`h-3 w-3 rounded-full ${request.bioVerified ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                <div>
+                  <p className="font-medium">Professional Bio</p>
+                  <p className="text-sm text-muted-foreground">
+                    {request.bio ? `${request.bio.substring(0, 50)}...` : 'No bio provided'}
+                  </p>
+                </div>
+              </div>
+              {request.bioVerified ? (
+                <CheckCircle className="h-5 w-5 text-green-500" />
+              ) : (
+                <XCircle className="h-5 w-5 text-red-500" />
+              )}
+            </div>
+
+            {/* Certificates Verification */}
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className={`h-3 w-3 rounded-full ${request.certificatesVerified ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                <div>
+                  <p className="font-medium">Certificates & Proof</p>
+                  <p className="text-sm text-muted-foreground">
+                    {request.certificates.length} file(s) uploaded
+                  </p>
+                </div>
+              </div>
+              {request.certificatesVerified ? (
+                <CheckCircle className="h-5 w-5 text-green-500" />
+              ) : (
+                <XCircle className="h-5 w-5 text-red-500" />
+              )}
+            </div>
+
+            {/* Overall Status */}
+            <div className={`p-3 border-2 rounded-lg ${request.verificationComplete ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className={`h-4 w-4 rounded-full ${request.verificationComplete ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                  <p className="font-semibold">
+                    {request.verificationComplete ? 'Ready for Approval' : 'Verification Incomplete'}
+                  </p>
+                </div>
+                {request.verificationComplete ? (
+                  <CheckCircle className="h-6 w-6 text-green-500" />
+                ) : (
+                  <XCircle className="h-6 w-6 text-red-500" />
+                )}
+              </div>
+              <p className="text-sm text-muted-foreground mt-1">
+                {request.verificationComplete 
+                  ? 'All verification requirements have been met. Artisan can be approved.'
+                  : 'Some verification requirements are missing or incomplete.'
+                }
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Bio Section */}
       {request.bio && (
         <Card>
