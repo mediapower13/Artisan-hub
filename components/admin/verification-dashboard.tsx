@@ -57,6 +57,7 @@ export function VerificationDashboard({ admin }: VerificationDashboardProps) {
               providerName: "Adebayo Fashion Design",
               providerEmail: "adebayo.johnson@student.unilorin.edu.ng",
               studentId: "UNILORIN/2020/123456",
+              matricNumber: "UNILORIN/2020/123456",
               department: "Fine Arts",
               status: "pending",
               submittedAt: new Date("2024-01-15T10:00:00Z"),
@@ -76,7 +77,13 @@ export function VerificationDashboard({ admin }: VerificationDashboardProps) {
               ],
               specializations: ["Fashion Design", "Tailoring", "Traditional Wear"],
               experienceYears: 3,
-              adminNotes: undefined
+              adminNotes: undefined,
+              // Verification tracking fields
+              matricNumberVerified: false,
+              businessNameVerified: false,
+              certificatesVerified: false,
+              bioVerified: false,
+              verificationComplete: false
             },
             {
               id: "vr-2",
@@ -84,6 +91,7 @@ export function VerificationDashboard({ admin }: VerificationDashboardProps) {
               providerName: "Fatima Web Solutions",
               providerEmail: "fatima.abdul@student.unilorin.edu.ng",
               studentId: "UNILORIN/2021/234567",
+              matricNumber: "UNILORIN/2021/234567",
               department: "Computer Science",
               status: "approved",
               submittedAt: new Date("2024-01-10T14:30:00Z"),
@@ -102,7 +110,13 @@ export function VerificationDashboard({ admin }: VerificationDashboardProps) {
               ],
               specializations: ["Web Development", "Digital Marketing", "UI/UX Design"],
               experienceYears: 2,
-              adminNotes: "Excellent portfolio, verified student status. Approved for web development services."
+              adminNotes: "Excellent portfolio, verified student status. Approved for web development services.",
+              // Verification tracking fields (all verified since it's approved)
+              matricNumberVerified: true,
+              businessNameVerified: true,
+              certificatesVerified: true,
+              bioVerified: true,
+              verificationComplete: true
             }
           ]
           setVerificationRequests(mockRequests)
