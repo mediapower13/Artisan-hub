@@ -19,6 +19,14 @@ interface ProviderWithUser {
   certificates: string[]
   verification_status: 'pending' | 'approved' | 'rejected'
   verification_evidence: string[]
+  verification_submitted_at: string
+  verification_reviewed_at: string | null
+  verification_reviewed_by: string | null
+  verification_notes: string | null
+  matric_number_verified: boolean
+  business_name_verified: boolean
+  certificates_verified: boolean
+  bio_verified: boolean
   created_at: string
   updated_at: string
   users: {
@@ -49,6 +57,14 @@ export async function GET(request: NextRequest) {
         certificates,
         verification_status,
         verification_evidence,
+        verification_submitted_at,
+        verification_reviewed_at,
+        verification_reviewed_by,
+        verification_notes,
+        matric_number_verified,
+        business_name_verified,
+        certificates_verified,
+        bio_verified,
         created_at,
         updated_at,
         users (
@@ -62,7 +78,7 @@ export async function GET(request: NextRequest) {
         )
       `)
       .eq('verification_status', 'pending')
-      .order('created_at', { ascending: false })
+      .order('verification_submitted_at', { ascending: false })
 
     if (error) {
       console.error("Error fetching verification requests:", error)
