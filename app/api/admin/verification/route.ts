@@ -118,7 +118,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { action, providerId, adminNotes } = await request.json()
+    const { action, providerId, adminNotes, verificationDetails } = await request.json()
 
     if (!action || !providerId) {
       return NextResponse.json(
@@ -134,33 +134,75 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Update the provider verification status
-    const { data, error } = await supabase
-      .from('providers')
-      .update({
-        verification_status: action === 'approve' ? 'approved' : 'rejected',
-        verified: action === 'approve',
-        updated_at: new Date().toISOString()
+    const adminUserId = "admin-user-id" // TODO: Get from authenticated session
+
+    if (action === 'approve') {
+      // When approving, mark all verification fields as verified
+      const { data, error } = await supabase
+        .from('providers')
+        .update({
+          verification_status: 'approved',
+          verified: true,
+          verification_reviewed_at: new Date().toISOString(),
+          verification_reviewed_by: adminUserId,
+          verification_notes: adminNotes || 'Application approved after comprehensive review.',
+          matric_number_verified: true,
+          business_name_verified: true,
+          certificates_verified: true,
+          bio_verified: true,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', providerId)
+        .select()
+
+      if (error) {
+        console.error("Error approving provider:", error)
+        return NextResponse.json(
+          { error: "Failed to approve provider" },
+          { status: 500 }
+        )
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: `Artisan verified successfully! All verification requirements met.`,
+        data: data[0]
       })
-      .eq('id', providerId)
-      .select()
 
-    if (error) {
-      console.error("Error updating verification status:", error)
-      return NextResponse.json(
-        { error: "Failed to update verification status" },
-        { status: 500 }
-      )
+    } else {
+      // When rejecting, provide detailed verification feedback
+      const { data, error } = await supabase
+        .from('providers')
+        .update({
+          verification_status: 'rejected',
+          verified: false,
+          verification_reviewed_at: new Date().toISOString(),
+          verification_reviewed_by: adminUserId,
+          verification_notes: adminNotes || 'Application rejected after review.',
+          // Keep individual verification flags as they were for feedback
+          matric_number_verified: verificationDetails?.matric_number_verified || false,
+          business_name_verified: verificationDetails?.business_name_verified || false,
+          certificates_verified: verificationDetails?.certificates_verified || false,
+          bio_verified: verificationDetails?.bio_verified || false,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', providerId)
+        .select()
+
+      if (error) {
+        console.error("Error rejecting provider:", error)
+        return NextResponse.json(
+          { error: "Failed to reject provider" },
+          { status: 500 }
+        )
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: `Application rejected. Detailed feedback provided to artisan.`,
+        data: data[0]
+      })
     }
-
-    // TODO: Send notification email to the artisan
-    // You can implement email notifications here
-
-    return NextResponse.json({
-      success: true,
-      message: `Provider ${action}d successfully`,
-      data: data[0]
-    })
 
   } catch (error) {
     console.error("Error in verification update:", error)

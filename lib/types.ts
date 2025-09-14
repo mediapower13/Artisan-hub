@@ -124,13 +124,14 @@ export interface Category {
   skills?: string[] // Optional popular skills array
 }
 
-// Verification request type
+// Verification request type with comprehensive verification tracking
 export interface VerificationRequest {
   id: string
   providerId: string
   providerName: string
   providerEmail: string
   studentId: string
+  matricNumber: string // Student matric number for verification
   department: string
   businessName: string
   businessDescription: string
@@ -147,6 +148,12 @@ export interface VerificationRequest {
   submittedAt: Date
   reviewedAt?: Date
   reviewedBy?: string
+  // Individual verification tracking
+  matricNumberVerified: boolean
+  businessNameVerified: boolean
+  certificatesVerified: boolean
+  bioVerified: boolean
+  verificationComplete: boolean // All requirements met
 }
 
 export interface AdminUser extends User {
