@@ -99,6 +99,7 @@ export async function GET(request: NextRequest) {
         providerName: user?.full_name || 'Unknown',
         providerEmail: user?.email || '',
         studentId: user?.student_id || '',
+        matricNumber: user?.student_id || '', // Matric number for verification
         department: user?.department || '',
         businessName: provider.business_name,
         businessDescription: provider.description,
@@ -111,10 +112,21 @@ export async function GET(request: NextRequest) {
           type: url.includes('.pdf') ? 'certificate' as const : 'portfolio' as const
         })),
         status: provider.verification_status,
-        submittedAt: new Date(provider.created_at),
-        reviewedAt: undefined,
-        reviewedBy: undefined,
-        adminNotes: undefined
+        submittedAt: new Date(provider.verification_submitted_at || provider.created_at),
+        reviewedAt: provider.verification_reviewed_at ? new Date(provider.verification_reviewed_at) : undefined,
+        reviewedBy: provider.verification_reviewed_by || undefined,
+        adminNotes: provider.verification_notes || undefined,
+        // Individual verification tracking
+        matricNumberVerified: provider.matric_number_verified || false,
+        businessNameVerified: provider.business_name_verified || false,
+        certificatesVerified: provider.certificates_verified || false,
+        bioVerified: provider.bio_verified || false,
+        verificationComplete: (
+          provider.matric_number_verified &&
+          provider.business_name_verified &&
+          provider.certificates_verified &&
+          provider.bio_verified
+        ) || false
       }
     }) || []
 
