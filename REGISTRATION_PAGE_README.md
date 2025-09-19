@@ -1,4 +1,4 @@
-<!-- # Registration Page Documentation
+# Registration Page Documentation
 
 ## Overview
 
@@ -406,4 +406,4 @@ CREATE TABLE providers (
 5. Initialize Supabase database
 6. Start development server: `pnpm dev`
 
-This registration system provides a robust, secure, and user-friendly onboarding experience for the UNILORIN Artisan Community Platform, supporting both students and artisans with comprehensive data collection and modern authentication features. -->
+This registration system provides a robust, secure, and user-friendly onboarding experience for the UNILORIN Artisan Community Platform, supporting both students and artisans with comprehensive data collection and modern authentication features.
