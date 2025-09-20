@@ -216,11 +216,11 @@ POST /api/admin/verification - Approve/reject artisans
 -- Efficient bio text search
 -- Quick pending request lookup
 ```
-
+<!-- 
 ### **Caching Strategy:**
 - Verified artisans list cached
 - Verification status cached
 - Admin dashboard optimized
 - Fast student searches
 
-This enhanced system ensures that students interact only with **fully verified, admin-approved artisans** while providing admins with comprehensive tools to maintain quality and security standards.
+This enhanced system ensures that students interact only with **fully verified, admin-approved artisans** while providing admins with comprehensive tools to maintain quality and security standards. -->
