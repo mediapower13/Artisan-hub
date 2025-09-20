@@ -1,4 +1,4 @@
-<!-- # Enhanced Admin Verification System for Artisan Registration
+# Enhanced Admin Verification System for Artisan Registration
 
 ## 🎯 **System Overview**
 
@@ -204,7 +204,7 @@ POST /api/admin/verification - Approve/reject artisans
 ### **Certificate Verification:**
 - Authentic documentation provided
 - Relevant to claimed specialization
-- Clear and readable certificates
+<!-- - Clear and readable certificates
 - Minimum one certificate required
 
 ## ⚡ **Performance Optimizations**
@@ -215,7 +215,7 @@ POST /api/admin/verification - Approve/reject artisans
 -- Fast certificate searches
 -- Efficient bio text search
 -- Quick pending request lookup
-```
+``` -->
 
 ### **Caching Strategy:**
 - Verified artisans list cached
@@ -223,4 +223,4 @@ POST /api/admin/verification - Approve/reject artisans
 - Admin dashboard optimized
 - Fast student searches
 
-This enhanced system ensures that students interact only with **fully verified, admin-approved artisans** while providing admins with comprehensive tools to maintain quality and security standards. -->
+This enhanced system ensures that students interact only with **fully verified, admin-approved artisans** while providing admins with comprehensive tools to maintain quality and security standards.
