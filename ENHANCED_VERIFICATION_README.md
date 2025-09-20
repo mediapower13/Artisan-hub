@@ -204,7 +204,7 @@ POST /api/admin/verification - Approve/reject artisans
 ### **Certificate Verification:**
 - Authentic documentation provided
 - Relevant to claimed specialization
-<!-- - Clear and readable certificates
+- Clear and readable certificates
 - Minimum one certificate required
 
 ## ⚡ **Performance Optimizations**
@@ -215,7 +215,7 @@ POST /api/admin/verification - Approve/reject artisans
 -- Fast certificate searches
 -- Efficient bio text search
 -- Quick pending request lookup
-``` -->
+```
 
 ### **Caching Strategy:**
 - Verified artisans list cached
