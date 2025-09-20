@@ -1,4 +1,4 @@
-# Enhanced Admin Verification System for Artisan Registration
+<!-- # Enhanced Admin Verification System for Artisan Registration
 
 ## 🎯 **System Overview**
 
@@ -223,4 +223,4 @@ POST /api/admin/verification - Approve/reject artisans
 - Admin dashboard optimized
 - Fast student searches
 
-This enhanced system ensures that students interact only with **fully verified, admin-approved artisans** while providing admins with comprehensive tools to maintain quality and security standards.
+This enhanced system ensures that students interact only with **fully verified, admin-approved artisans** while providing admins with comprehensive tools to maintain quality and security standards. -->
